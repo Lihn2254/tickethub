@@ -87,7 +87,7 @@ export default function Home() {
       <h1 className="mb-10 text-5xl funnel-text font-medium">
         Upcoming events
       </h1>
-      <main className="grid grid-cols-3  items-center sm:items-start gap-6">
+      <main className="grid lg:grid-cols-3 grid-cols-1 items-center sm:items-start gap-6">
         {events.map((event) => (
           <EventCard
             key={event.id}

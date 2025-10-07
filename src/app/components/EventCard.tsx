@@ -8,7 +8,7 @@ export default function EventCard(event: {
   artists: string[];
 }) {
   return (
-    <article className="max-w-3xl mx-auto bg-white border-2 rounded-2xl p-6 shadow-lg border-blue min-h-80 min-w-110">
+    <article className="max-w-3xl mx-auto bg-white border-2 rounded-2xl p-6 shadow-lg border-light-blue min-h-80 min-w-110">
       <h1 className="text-3xl font-bold text-blue mb-6">{event.eventName}</h1>
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-shrink-0">
