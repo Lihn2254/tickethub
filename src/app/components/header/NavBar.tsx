@@ -7,21 +7,21 @@ export default function NavBar() {
       <ul className="flex items-center gap-6 text-md text-gray-600 font-medium">
         <li className="cursor-pointer hover:text-primary transition-colors">
           <Link
-            key={'lakds'}
+            key={'events'}
             href={'/'}
           >
             <p>Events</p>
           </Link>
         </li>
         <li className="cursor-pointer hover:text-primary transition-colors"><Link
-            key={'lakds'}
-            href={'/profile'}
+            key={'user'}
+            href={'/user/tickets'}
           >
             <p>My Tickets</p>
           </Link>
         </li>
         <li className="cursor-pointer hover:text-primary transition-colors"><Link
-            key={'lakds'}
+            key={'about'}
             href={'/about'}
           >
             <p>About Us</p>

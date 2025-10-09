@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { RefObject, useRef, useState } from "react";
+import { useOutsideClick } from "@/app/hooks/useOutsideClick";
 
 function MenuLink({
   text,
@@ -27,9 +28,13 @@ function MenuLink({
   );
 }
 
-function ProfileOptions({ buttonClicked }: { buttonClicked: () => void }) {
+function ProfileOptions({
+  buttonClicked
+}: {
+  buttonClicked: () => void
+}) {
   return (
-    <ul className="mt-2 flex flex-col w-min-fit gap-1.5 absolute bg-white border-2 rounded-md p-4 border-light-blue whitespace-nowrap -translate-x-30">
+    <ul  className="mt-2 flex flex-col w-min-fit gap-1.5 absolute bg-white border-2 rounded-md p-4 border-light-blue whitespace-nowrap -translate-x-30">
       <li>
         <p className="font-bold">Erick Hermosillo</p>
       </li>
@@ -77,13 +82,20 @@ function ProfileOptions({ buttonClicked }: { buttonClicked: () => void }) {
 
 export default function UserIcon() {
   const [dropMenu, setDropMenu] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const buttonClicked = () => {
-    dropMenu === false ? setDropMenu(true) : setDropMenu(false);
+    setDropMenu(!dropMenu);
   };
 
+  useOutsideClick(containerRef, () => {
+    if (dropMenu) {
+      setDropMenu(false);
+    }
+  });
+
   return (
-    <div className="relative">
+    <div ref={containerRef} className="relative">
       <button
         onClick={buttonClicked}
         className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors"
@@ -96,7 +108,7 @@ export default function UserIcon() {
           priority
         />
       </button>
-      {dropMenu ? <ProfileOptions buttonClicked={buttonClicked} /> : <></>}
+      {dropMenu && <ProfileOptions buttonClicked={buttonClicked} />}
     </div>
   );
 }
