@@ -1,5 +1,8 @@
 import EventCard from "./components/EventCard";
 
+// TODO
+// Add date, time and location to EventCard
+
 export default function Home() {
   const events: {
     id: number;
