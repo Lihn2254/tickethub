@@ -52,7 +52,7 @@ function ProfileOptions({
         <MenuLink
           text="My tickets"
           buttonClicked={buttonClicked}
-          href="/user"
+          href="/user/tickets"
           src="/ticket.svg"
           alt="Ticket"
         />{" "}

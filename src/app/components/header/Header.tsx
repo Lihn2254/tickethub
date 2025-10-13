@@ -5,7 +5,7 @@ import UserIcon from "./UserIcon";
 
 export default function Header() {
   return (
-    <header className="w-full bg-white shadow-md">
+    <header className="w-full bg-white shadow-md sticky top-0">
       <div className="container mx-auto flex items-center justify-between relative p-4">
         <div className="flex items-center">
           <Link href="/">
