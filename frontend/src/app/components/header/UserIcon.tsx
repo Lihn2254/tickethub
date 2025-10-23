@@ -36,17 +36,17 @@ function ProfileOptions({
   user: User | null,
   buttonClicked: () => void
 }) {
-  const { logoutUser } = useAuth(); // Get the logout function
+  const { logoutUser } = useAuth();
 
   const handleLogout = () => {
     logoutUser();
-    buttonClicked(); // Close the dropdown menu
+    buttonClicked();
   };
 
   return (
     <ul  className="mt-2 flex flex-col min-w-35 gap-1.5 absolute bg-white border-2 rounded-md p-4 border-light-blue whitespace-nowrap right-0">
       <li>
-        <p className="font-bold">{`${user?.email}`}</p>
+        <p className="font-bold">{`${user?.username}`}</p>
       </li>
       <hr className="mt-1 mb-1" />
       <li>

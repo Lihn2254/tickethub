@@ -26,6 +26,7 @@ type Ticket = {
 
 interface User {
   id: number;
-  name: string;
   email: string;
+  username: string;
+  registrationDate: Date;
 }
