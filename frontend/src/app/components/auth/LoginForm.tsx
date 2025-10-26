@@ -3,9 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { login } from "../services/auth";
+import { login } from "../../services/auth";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -47,7 +47,7 @@ export default function LoginForm() {
       <form className="flex flex-col">
         <div className="flex items-center mb-5">
           <Image src="/icons/login.svg" alt="Log In" width={40} height={20} />
-          <span className="text-3xl font-semibold text-blue ml-2">Sign In</span>
+          <span className="text-3xl font-bold text-blue ml-2">Log In</span>
         </div>
         <label className="inputLabel">Username or email address</label>
         <input
@@ -78,7 +78,7 @@ export default function LoginForm() {
           className="inputOk"
           value={password}
         >
-          Sign In
+          Log In
         </button>
       </form>
       <div className="flex flex-row justify-center mt-8">

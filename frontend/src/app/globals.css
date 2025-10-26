@@ -13,6 +13,7 @@
   --color-foreground: var(--foreground);
   --color-blue: #166CC8;
   --color-light-blue: #2986cc;
+  --color-alt-blue: #668CFF;
   --color-dark-blue: #16537e;
   --color-darker-blue: #00497D;
   --color-yellow: #f1c232;
@@ -39,7 +40,14 @@ body {
 }
 
 .concert-background {
-  background-image: url('/background1.jpg');
+  background-image: url('/stock/background1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.mcr-background {
+  background-image: url('/stock/mcr_background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -56,11 +64,15 @@ body {
   }
 
   .inputOk {
-    @apply border-2 border-darker-blue bg-darker-blue text-white rounded-2xl p-2;
+    @apply border-2 border-darker-blue bg-darker-blue text-white rounded-2xl p-2 font-semibold;
   }
 
   .inputLabel {
     @apply font-medium pb-1;
+  }
+
+  .growButton {
+    @apply transition-all duration-300 hover:scale-105;
   }
 
   .footer-section{
