@@ -18,13 +18,16 @@ DROP TABLE IF EXISTS artists CASCADE;
 -- Table: USERS
 -- Stores login and basic account information.
 -- =================================================================
-CREATE TABLE users (
-    id BIGINT PRIMARY KEY,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    username VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL, -- In a real app, this should be a securely hashed password.
-    registration_date DATE DEFAULT CURRENT_DATE NOT NULL
-);
+
+-- !! This table will no longer be used. I changed he inheritance strategy. Now Clients and Organizers inherited Users attributes !!
+
+-- CREATE TABLE users (
+--     id BIGINT PRIMARY KEY,
+--     email VARCHAR(255) UNIQUE NOT NULL,
+--     username VARCHAR(100) UNIQUE NOT NULL,
+--     password VARCHAR(255) NOT NULL, -- In a real app, this should be a securely hashed password.
+--     registration_date DATE DEFAULT CURRENT_DATE NOT NULL
+-- );
 
 -- =================================================================
 -- Table: ARTISTS
@@ -62,15 +65,21 @@ CREATE TABLE events (
 -- =================================================================
 CREATE TABLE clients (
     id BIGINT PRIMARY KEY,
-    first_name VARCHAR(100) NOT NULL,
-    middle_name VARCHAR(100),
-    first_lastname VARCHAR(100) NOT NULL,
-    second_lastname VARCHAR(100),
+    -- user info
+    email VARCHAR(255) UNIQUE NOT NULL,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL, -- TODO Implement password hashing
+    registration_date DATE DEFAULT CURRENT_DATE NOT NULL,
+    -- client info
+    name VARCHAR(100) NOT NULL,
+    --middle_name VARCHAR(100),
+    lastname VARCHAR(100) NOT NULL,
+    --second_lastname VARCHAR(100),
     gender VARCHAR(50),
     birth_date DATE NOT NULL,
-    phone VARCHAR(20),
-    user_id BIGINT UNIQUE NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    phone VARCHAR(10)
+    --user_id BIGINT UNIQUE NOT NULL,
+    --FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- =================================================================
@@ -80,12 +89,18 @@ CREATE TABLE clients (
 -- =================================================================
 CREATE TABLE organizers (
     id BIGINT PRIMARY KEY,
+    -- user info
+    email VARCHAR(255) UNIQUE NOT NULL,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL, -- TODO Implement password hashing
+    registration_date DATE DEFAULT CURRENT_DATE NOT NULL,
+    -- organizer info
     name VARCHAR(255) NOT NULL,
     contact VARCHAR(255),
     representative VARCHAR(255),
-    socials JSONB,
-    user_id BIGINT UNIQUE NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    socials JSONB
+    --user_id BIGINT UNIQUE NOT NULL,
+    --FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- =================================================================
@@ -98,7 +113,7 @@ CREATE TABLE orders (
     total_amount DECIMAL(10, 2) NOT NULL, -- Suitable for monetary values.
     payment_status VARCHAR(20) NOT NULL,
     user_id BIGINT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT -- Prevent deleting a user with orders.
+    FOREIGN KEY (user_id) REFERENCES clients(id) ON DELETE RESTRICT -- Prevent deleting a user with orders.
 );
 
 -- =================================================================
