@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { checkDuplicate, login } from "../../services/auth";
+import { checkDuplicate, login, register } from "../../services/auth";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
 
@@ -14,26 +14,47 @@ export default function SignupForm() {
   const [username, setUsername] = useState("");
   const [accountType, setAccountType] = useState("personal"); //personal || organization
   //TODO - No sé si aquí usar useRef en lugar de useState para no provocar un render cada que se cambian estos campos
-  const [firstName, setFirstName] = useState("");
-  const [middleName, setMiddleName] = useState(null); //Can be null on the db
-  const [firstLN, setFirstLN] = useState("");
-  const [secondLN, setSecondLN] = useState(null); //Can be null on the db
-  const [gender, setGender] = useState(null); //Can be null on the db
-  const [birthday, setBirthday] = useState(null); //CANNOT be null on the db
-  const [phone, setPhone] = useState(null);
+  const [name, setName] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [gender, setGender] = useState(""); //Can be null on the db
+  const [birthDate, setBirthDate] = useState<Date | null>(null);
+  const [phone, setPhone] = useState(""); //Can be null on the db
+  const [socials, setSocials] = useState();
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [isEmailAvaliable, setIsEmailAvaliable] = useState(false);
   const [isUsernameAvaliable, setIsUsernameAvaliable] = useState(false);
+  const [isUserInfoOk, setIsUserInfoOk] = useState(false);
 
-  const changeEmail = (email: string) => {
-    setEmail(email);
-    if (isEmailAvaliable) {
-      setIsEmailAvaliable(false);
+  const changeStringInput = (text: string, type: string) => {
+    switch (type) {
+      case "email": {
+        setEmail(text);
+        setIsEmailAvaliable(false);
+        break;
+      }
+      case "username": {
+        setUsername(text);
+        setIsUsernameAvaliable(false);
+        break;
+      }
+      case "name": {
+        setName(text);
+        break;
+      }
+      case "lastname": {
+        setLastname(text);
+        break;
+      }
+      case "gender": {
+        setGender(text);
+        break;
+      }
+      case "phone": {
+        setPhone(text);
+        break;
+      }
     }
-  };
-
-  const changeUsername = (username: string) => {
-    setUsername(username);
-    setIsUsernameAvaliable(false);
   };
 
   const handleEmailSubmit = async () => {
@@ -66,6 +87,11 @@ export default function SignupForm() {
   const handleUsernameSubmit = async () => {
     console.log("Continue clicked.");
 
+    if (!(username.length >= 1)) {
+      alert("Please enter a valid username.");
+      return;
+    }
+
     try {
       const checkedUsername = await checkDuplicate(username);
       if (!checkedUsername) {
@@ -78,15 +104,97 @@ export default function SignupForm() {
     }
   };
 
+  const handleClientInfoSubmit = () => {
+    if (name.length < 1 || lastname.length < 1) {
+      alert("Name fields cannot be empty.");
+    } else if (gender.length < 1) {
+      alert("Please select a gender.");
+    } else if (phone.length < 10) {
+      alert("Phone must have 10 digits.");
+    } else if (birthDate == null) {
+      alert("Please select your birth date.");
+    } else {
+      setIsUserInfoOk(true);
+    }
+  };
+
+  const handlePasswordSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    let tmpUser: User;
+
+    switch (accountType) {
+      case "client": {
+        tmpUser = {
+          //user
+          userId: null,
+          email: email,
+          username: username,
+          password: password,
+          registrationDate: null,
+          //client
+          userType: "client",
+          id: null,
+          name: name,
+          lastname: lastname,
+          gender: gender,
+          birthDate: birthDate,
+          phone: phone,
+        };
+        break;
+      }
+      case "organization": {
+        tmpUser = {
+          //user
+          userId: null,
+          email: email,
+          username: username,
+          password: password,
+          registrationDate: null,
+          //organization
+          userType: "organization",
+          id: null,
+          name: name,
+          socials: [], // TODO
+        };
+        break;
+      }
+      default: {
+        console.error("User type could be determined.")
+        return;
+      }
+    }
+    const newUser = await register(tmpUser);
+    return newUser;
+  };
+
   const handleAccountTypeSelection = (origin: string) => {
     origin == "personal"
       ? setAccountType("personal")
       : setAccountType("organization");
   };
 
-  function handleGoBack(): void {
-    setIsEmailAvaliable(false);
-  }
+  const handleGoBack = (origin: string) => {
+    if (origin == "user") {
+      setEmail("");
+      // setUsername("");
+      // setAccountType("");
+      setIsEmailAvaliable(false);
+    } else if (origin == "client" || origin == "organization") {
+      setUsername("");
+      // setName("");
+      // setLastname("");
+      // setGender("");
+      // setBirthDate(null);
+      // setPhone("");
+      setIsUsernameAvaliable(false);
+      setIsUserInfoOk(false);
+    } else if (origin == "password") {
+      setPassword("");
+      setPassword2("");
+      setIsUserInfoOk(false);
+    }
+  };
 
   const renderCurrentStep = () => {
     if (!isEmailAvaliable && !isUsernameAvaliable) {
@@ -95,24 +203,46 @@ export default function SignupForm() {
           email={email}
           isEmailAvaliable={isEmailAvaliable}
           handleEmailSubmit={handleEmailSubmit}
-          changeEmail={changeEmail}
+          changeEmail={changeStringInput}
         />
       );
     } else if (isEmailAvaliable && !isUsernameAvaliable) {
       return (
-        <>
-          <UserInfoInput
-            username={username}
-            accountType={accountType}
-            handleUsernameSubmit={handleUsernameSubmit}
-            handleAccountTypeSelection={handleAccountTypeSelection}
-            handleGoBack={handleGoBack}
-            changeUsername={changeUsername}
-          />
-        </>
+        <UserInfoInput
+          username={username}
+          accountType={accountType}
+          handleUsernameSubmit={handleUsernameSubmit}
+          handleAccountTypeSelection={handleAccountTypeSelection}
+          handleGoBack={handleGoBack}
+          changeUsername={changeStringInput}
+        />
       );
-    } else {
-      return <PasswordInput/>;
+    } else if (accountType == "personal" && !isUserInfoOk) {
+      return (
+        <ClientInput
+          name={name}
+          lastname={lastname}
+          gender={gender}
+          birthDate={birthDate}
+          phone={phone}
+          handleClientInfoSubmit={handleClientInfoSubmit}
+          handleGoBack={handleGoBack}
+          changeStringInput={changeStringInput}
+          changeDate={(date: Date) => setBirthDate(date)}
+        />
+      );
+    } else if (accountType == "organization" && !isUserInfoOk) {
+      //TODO
+    } else if (isUserInfoOk) {
+      return (
+        <PasswordInput
+          password={password}
+          password2={password2}
+          handleGoBack={handleGoBack}
+          handlePasswordSubmit={handlePasswordSubmit}
+          changePassword={changeStringInput}
+        />
+      );
     }
   };
 
@@ -147,13 +277,10 @@ interface EmailInputProps {
   email: string;
   isEmailAvaliable: boolean;
   handleEmailSubmit: () => void;
-  changeEmail: (email: string) => void;
+  changeEmail: (email: string, type: string) => void;
 }
 
 function EmailInput(props: EmailInputProps) {
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-
   return (
     <form className="flex flex-col">
       <label className="inputLabel">Email address</label>
@@ -161,7 +288,7 @@ function EmailInput(props: EmailInputProps) {
         type="email"
         placeholder="Email"
         className="inputForm"
-        onChange={(e) => props.changeEmail(e.target.value)}
+        onChange={(e) => props.changeEmail(e.target.value, "email")}
       />
       {!props.isEmailAvaliable ? (
         <button
@@ -181,8 +308,8 @@ interface UserInfoInputProps {
   accountType: string;
   handleUsernameSubmit: () => void;
   handleAccountTypeSelection: (accountType: string) => void;
-  handleGoBack: () => void;
-  changeUsername: (username: string) => void;
+  handleGoBack: (origin: string) => void;
+  changeUsername: (username: string, type: string) => void;
 }
 
 function UserInfoInput(props: UserInfoInputProps) {
@@ -193,7 +320,9 @@ function UserInfoInput(props: UserInfoInputProps) {
         type="text"
         placeholder="Username"
         className="inputForm"
-        onChange={(e) => props.changeUsername(e.target.value)}
+        onChange={(e) =>
+          props.changeUsername(e.target.value.toLowerCase(), "username")
+        }
       />
       <div className="pb-1">
         <span className="font-medium">Select your account type</span>
@@ -217,7 +346,9 @@ function UserInfoInput(props: UserInfoInputProps) {
           </article>
           <article
             className={`flex flex-col flex-1 p-3 border-l-1 ${
-              props.accountType == "organization" ? "bg-light-yellow" : "bg-white"
+              props.accountType == "organization"
+                ? "bg-light-yellow"
+                : "bg-white"
             }`}
             onClick={(e) => props.handleAccountTypeSelection("organization")}
           >
@@ -238,7 +369,7 @@ function UserInfoInput(props: UserInfoInputProps) {
         <button
           type="button"
           className="growButton border-2 border-darker-blue rounded-2xl p-2 font-semibold text-darker-blue mt-4 flex-1 flex flex-row items-center justify-center gap-0.5"
-          onClick={(e) => props.handleGoBack()}
+          onClick={(e) => props.handleGoBack("user")}
         >
           <Image
             src="/icons/go_back_blue.svg"
@@ -248,7 +379,11 @@ function UserInfoInput(props: UserInfoInputProps) {
           />
           <span>Go back</span>
         </button>
-        <button type="button" className="inputOk growButton mt-4 flex-3" onClick={props.handleUsernameSubmit}>
+        <button
+          type="button"
+          className="inputOk growButton mt-4 flex-3"
+          onClick={(e) => props.handleUsernameSubmit()}
+        >
           Continue
         </button>
       </div>
@@ -256,17 +391,137 @@ function UserInfoInput(props: UserInfoInputProps) {
   );
 }
 
-function ClientInput() {
-
+interface ClientInputProps {
+  name: string;
+  lastname: string;
+  gender: string;
+  birthDate: Date | null;
+  phone: string;
+  handleGoBack: (origin: string) => void;
+  handleClientInfoSubmit: () => void;
+  changeStringInput: (value: string, type: string) => void;
+  changeDate: (date: Date) => void;
 }
 
-function PasswordInput() {
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
+function ClientInput(props: ClientInputProps) {
+  const handlePhoneChange = (inputValue: string) => {
+    const justDigits = inputValue.replace(/\D/g, "");
+    const limitedDigits = justDigits.slice(0, 10);
+    props.changeStringInput(limitedDigits, "phone");
+  };
+
+  return (
+    <div>
+      <form className="flex flex-col">
+        {/* Name and lastname */}
+        <div className="flex flex-row justify-around gap-8">
+          <div className="flex flex-col flex-1">
+            <label className="inputLabel">Name</label>
+            <input
+              type="text"
+              placeholder="Name"
+              className="inputForm"
+              onChange={(e) => props.changeStringInput(e.target.value, "name")}
+            />
+          </div>
+          <div className="flex flex-col flex-1">
+            <label className="inputLabel">Lastname</label>
+            <input
+              type="text"
+              placeholder="Lastname"
+              className="inputForm"
+              onChange={(e) =>
+                props.changeStringInput(e.target.value, "lastname")
+              }
+            />
+          </div>
+        </div>
+
+        {/* Gender selector */}
+        <div className="flex flex-col w-fit mt-2">
+          <label className="inputLabel">Gender</label>
+          <select
+            className="inputForm"
+            onChange={(e) => props.changeStringInput(e.target.value, "gender")}
+          >
+            <option value="" defaultValue="disabled">
+              Select gender
+            </option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div className="flex flex-row justify-around gap-8 mt-2">
+          {/* Birth date selector */}
+          <div className="flex flex-col flex-1">
+            <label className="inputLabel">Birth Date</label>
+            <input
+              type="date"
+              className="inputForm"
+              max={new Date().toISOString().split("T")[0]}
+              onChange={(e) => props.changeDate(new Date(e.target.value))}
+            />
+          </div>
+
+          {/* Phone input */}
+          <div className="flex flex-col flex-1">
+            <label className="inputLabel">Phone</label>
+            <input
+              type="tel"
+              placeholder="e.g., 667-123-4567"
+              className="inputForm"
+              value={props.phone ?? ""}
+              onChange={(e) => handlePhoneChange(e.target.value)}
+            />
+          </div>
+        </div>
+      </form>
+      <div className="flex flex-row gap-4">
+        <button
+          type="button"
+          className="growButton border-2 border-darker-blue rounded-2xl p-2 font-semibold text-darker-blue mt-4 flex-1 flex flex-row items-center justify-center gap-0.5"
+          onClick={(e) => props.handleGoBack("client")}
+        >
+          <Image
+            src="/icons/go_back_blue.svg"
+            alt="Go back"
+            width={30}
+            height={30}
+          />
+          <span>Go back</span>
+        </button>
+        <button
+          type="button"
+          className="inputOk growButton mt-4 flex-3"
+          onClick={props.handleClientInfoSubmit}
+        >
+          Continue
+        </button>
+      </div>
+    </div>
+  );
+}
+
+interface PasswordInputProps {
+  password: string;
+  password2: string;
+  handleGoBack: (origin: string) => void;
+  handlePasswordSubmit: (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => Promise<Client | Organization | undefined>;
+  changePassword: (password: string, type: string) => void;
+}
+
+function PasswordInput(props: PasswordInputProps) {
   const [samePassword, setSamePassword] = useState(true);
 
-  const validatePassword = () => {
-    setSamePassword(password == password2);
+  const validatePassword = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setSamePassword(props.password == props.password2);
+    if (samePassword) {
+      props.handlePasswordSubmit(e);
+    }
   };
 
   return (
@@ -274,24 +529,45 @@ function PasswordInput() {
       {!samePassword ? (
         <span className="text-red-500 pb-2">Passwords do not match!</span>
       ) : null}
-      <label className="inputLabel">Password</label>
-      <input
-        type="password"
-        placeholder="Password"
-        className="inputForm"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <label className="inputLabel">Confirm password</label>
-      <input
-        id="passwordConfirmation"
-        type="password"
-        placeholder="Password"
-        className="inputForm"
-        onChange={(e) => setPassword2(e.target.value)}
-      />
-      <button onClick={validatePassword} type="button" className="inputOk">
-        Continue
-      </button>
+      <form>
+        <label className="inputLabel">Password</label>
+        <input
+          type="password"
+          placeholder="Password"
+          className="inputForm"
+          onChange={(e) => props.changePassword(e.target.value, "password")}
+        />
+        <label className="inputLabel">Confirm password</label>
+        <input
+          id="passwordConfirmation"
+          type="password"
+          placeholder="Password"
+          className="inputForm"
+          onChange={(e) => props.changePassword(e.target.value, "password2")}
+        />
+      </form>
+      <div className="flex flex-row gap-4">
+        <button
+          type="button"
+          className="growButton border-2 border-darker-blue rounded-2xl p-2 font-semibold text-darker-blue mt-4 flex-1 flex flex-row items-center justify-center gap-0.5"
+          onClick={(e) => props.handleGoBack("password")}
+        >
+          <Image
+            src="/icons/go_back_blue.svg"
+            alt="Go back"
+            width={30}
+            height={30}
+          />
+          <span>Go back</span>
+        </button>
+        <button
+          type="button"
+          className="inputOk growButton mt-4 flex-3"
+          onClick={(e) => validatePassword(e)}
+        >
+          Continue
+        </button>
+      </div>
     </div>
   );
 }

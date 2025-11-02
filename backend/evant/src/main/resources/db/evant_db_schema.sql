@@ -96,8 +96,8 @@ CREATE TABLE organizers (
     registration_date DATE DEFAULT CURRENT_DATE NOT NULL,
     -- organizer info
     name VARCHAR(255) NOT NULL,
-    contact VARCHAR(255),
-    representative VARCHAR(255),
+    -- contact VARCHAR(255),
+    -- representative VARCHAR(255),
     socials JSONB
     --user_id BIGINT UNIQUE NOT NULL,
     --FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -112,8 +112,8 @@ CREATE TABLE orders (
     order_date DATE NOT NULL DEFAULT CURRENT_DATE,
     total_amount DECIMAL(10, 2) NOT NULL, -- Suitable for monetary values.
     payment_status VARCHAR(20) NOT NULL,
-    user_id BIGINT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES clients(id) ON DELETE RESTRICT -- Prevent deleting a user with orders.
+    client_id BIGINT NOT NULL,
+    FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE RESTRICT -- Prevent deleting a user with orders.
 );
 
 -- =================================================================
@@ -154,5 +154,30 @@ CREATE TABLE event_artist (
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
     FOREIGN KEY (artist_id) REFERENCES artists(id) ON DELETE CASCADE
 );
+
+-- =================================================================
+-- View to display all users
+-- =================================================================
+
+CREATE VIEW v_all_users AS
+SELECT
+    id,
+    email,
+    username,
+    password,
+    registration_date,
+    'client' AS account_type
+FROM
+    clients
+UNION ALL
+SELECT
+    id,
+    email,
+    username,
+    password,
+    registration_date,
+    'organizer' AS account_type
+FROM
+    organizers;
 
 -- End of Script

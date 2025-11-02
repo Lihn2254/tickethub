@@ -1,5 +1,7 @@
 package com.evant.controllers;
 
+import java.util.Date;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -7,12 +9,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.evant.domain.Client;
 import com.evant.domain.User;
+import com.evant.services.ClientService;
 import com.evant.services.UserService;
 
 record LoginRequest(String email, String password) {}
 
 record singleStringRequest(String text) {} // Email || username
+
+record RegisterRequest(int userId, String email, String username, String password, Date registrationDate, String userType){}
+
 
 @RestController
 @RequestMapping("/api/user")
@@ -40,11 +47,17 @@ public class UserController {
     }
 
     @PostMapping("/check-duplicate")
-    public ResponseEntity<Boolean> checkEmail(@RequestBody singleStringRequest request) {
+    public ResponseEntity<Boolean> checkDuplicate(@RequestBody singleStringRequest request) {
         Boolean isAvaliable = userService.isCredentialAvaliable(request.text());
 
-        System.err.println(request.text() + " is avaliable: " + isAvaliable);
+        System.out.println(request.text() + " is avaliable: " + isAvaliable);
 
         return ResponseEntity.ok(isAvaliable);
     }
+
+    // @PostMapping("/register")
+    // public ResponseEntity<User> register(@RequestBody singleStringRequest request) {
+
+    //     return ResponseEntity.ok(true);
+    // }
 }

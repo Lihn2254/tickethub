@@ -4,15 +4,15 @@ import { useRouter, usePathname } from 'next/navigation';
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface AuthContextType {
-  user: User | null;
-  loginUser: (userData: User) => void;
+  user: Client | Organization | null;
+  loginUser: (userData: Client | Organization) => void;
   logoutUser: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<Client | Organization | null>(null);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [pathname, router]);
 
-  const loginUser = (userData: User) => {
+  const loginUser = (userData: Client | Organization) => {
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
   };

@@ -10,11 +10,11 @@
 
 -- Insert into USERS
 -- Passwords should be hashed in a real application (e.g., using bcrypt).
-INSERT INTO users (id, email, username, password) VALUES
-(1, 'john.doe@email.com', 'johndoe', 'hashed_password_1'),
-(2, 'jane.smith@email.com', 'janesmith', 'hashed_password_2'),
-(3, 'promo.events@email.com', 'promomusic', 'hashed_password_3'),
-(4, 'admin@email.com', 'admin', 'admin');
+-- INSERT INTO users (id, email, username, password) VALUES
+-- (1, 'john.doe@email.com', 'johndoe', 'hashed_password_1'),
+-- (2, 'jane.smith@email.com', 'janesmith', 'hashed_password_2'),
+-- (3, 'promo.events@email.com', 'promomusic', 'hashed_password_3'),
+-- (4, 'admin@email.com', 'admin', 'admin');
 
 -- Insert into ARTISTS
 INSERT INTO artists (id, name, description, genre, members, socials) VALUES
@@ -33,13 +33,14 @@ INSERT INTO events (id, name, flyer, genre, subtitle, description, city, address
 -- =================================================================
 
 -- Insert into CLIENTS (links to users with id 1 and 2)
-INSERT INTO clients (id, first_name, first_lastname, gender, birth_date, phone, user_id) VALUES
-(1, 'John', 'Doe', 'Male', '1990-05-15', '667-123-4567', 1),
-(2, 'Jane', 'Smith', 'Female', '1992-08-22', '667-987-6543', 2);
+INSERT INTO clients (id, email, username, password, name, lastname, gender, birth_date, phone) VALUES
+(1, 'john.doe@email.com', 'johndoe', 'hashed_password_1', 'John', 'Doe', 'Male', '1990-05-15', '6671234567'),
+(2, 'jane.smith@email.com', 'janesmith', 'hashed_password_2', 'Jane', 'Smith', 'Female', '1992-08-22', '6679876543'),
+(3, 'admin@email.com', 'admin', 'admin', 'Erick', 'Hermosillo', 'Male', '2004-05-02', '6671932888');
 
 -- Insert into ORGANIZER (links to user with id 3)
-INSERT INTO organizers (id, name, contact, representative, socials, user_id) VALUES
-(1, 'PromoMusic Culiacán', 'contact@promomusic.com', 'Ricardo Lopez', '{"website": "promomusic.com"}', 3);
+INSERT INTO organizers (id, email, username, password, name, socials) VALUES
+(1, 'promo.events@email.com', 'promomusic', 'hashed_password_3', 'PromoMusic Culiacán', '{"website": "promomusic.com"}');
 
 -- =================================================================
 -- 3. Insert into junction tables for many-to-many relationships
@@ -64,7 +65,7 @@ INSERT INTO event_artist (event_id, artist_id) VALUES
 -- =================================================================
 
 -- Insert into ORDERS (made by clients with user_id 1 and 2)
-INSERT INTO orders (id, total_amount, payment_status, user_id) VALUES
+INSERT INTO orders (id, total_amount, payment_status, client_id) VALUES
 (1, 950.00, 'Paid', 1), -- John Doe's order
 (2, 400.00, 'Paid', 2); -- Jane Smith's order
 
