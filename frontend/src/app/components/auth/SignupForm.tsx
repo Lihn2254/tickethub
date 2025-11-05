@@ -12,7 +12,7 @@ export default function SignupForm() {
   const [success, setSuccess] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
-  const [accountType, setAccountType] = useState("personal"); //personal || organization
+  const [accountType, setAccountType] = useState("client"); //client | organizer
   //TODO - No sé si aquí usar useRef en lugar de useState para no provocar un render cada que se cambian estos campos
   const [name, setName] = useState("");
   const [lastname, setLastname] = useState("");
@@ -25,6 +25,8 @@ export default function SignupForm() {
   const [isEmailAvaliable, setIsEmailAvaliable] = useState(false);
   const [isUsernameAvaliable, setIsUsernameAvaliable] = useState(false);
   const [isUserInfoOk, setIsUserInfoOk] = useState(false);
+  const { loginUser } = useAuth();
+  const router = useRouter();
 
   const changeStringInput = (text: string, type: string) => {
     switch (type) {
@@ -52,6 +54,14 @@ export default function SignupForm() {
       }
       case "phone": {
         setPhone(text);
+        break;
+      }
+      case "password": {
+        setPassword(text);
+        break;
+      }
+      case "password2": {
+        setPassword2(text);
         break;
       }
     }
@@ -127,14 +137,13 @@ export default function SignupForm() {
       case "client": {
         tmpUser = {
           //user
-          userId: null,
+          id: null,
           email: email,
           username: username,
           password: password,
           registrationDate: null,
           //client
-          userType: "client",
-          id: null,
+          accountType: "client",
           name: name,
           lastname: lastname,
           gender: gender,
@@ -143,35 +152,45 @@ export default function SignupForm() {
         };
         break;
       }
-      case "organization": {
+      case "organizer": {
         tmpUser = {
           //user
-          userId: null,
+          id: null,
           email: email,
           username: username,
           password: password,
           registrationDate: null,
-          //organization
-          userType: "organization",
-          id: null,
+          //organizer
+          accountType: "organizer",
           name: name,
           socials: [], // TODO
         };
         break;
       }
       default: {
-        console.error("User type could be determined.")
+        console.error("User type could be determined.");
         return;
       }
     }
-    const newUser = await register(tmpUser);
-    return newUser;
+
+    try {
+      const newUser = await register(tmpUser);
+      if (newUser.accountType == "client") {
+        loginUser(newUser);
+        router.push("/");
+      } else if (newUser.accountType == "organizer") {
+        loginUser(newUser);
+        router.push("/");
+      }
+      setSuccess('Sign up successful')
+    } catch (error: any) {
+      setError(error.message);
+      alert("Something went wrong. The new account could not be registered.");
+    }
   };
 
   const handleAccountTypeSelection = (origin: string) => {
-    origin == "personal"
-      ? setAccountType("personal")
-      : setAccountType("organization");
+    origin == "client" ? setAccountType("client") : setAccountType("organizer");
   };
 
   const handleGoBack = (origin: string) => {
@@ -180,7 +199,7 @@ export default function SignupForm() {
       // setUsername("");
       // setAccountType("");
       setIsEmailAvaliable(false);
-    } else if (origin == "client" || origin == "organization") {
+    } else if (origin == "client" || origin == "organizer") {
       setUsername("");
       // setName("");
       // setLastname("");
@@ -217,7 +236,7 @@ export default function SignupForm() {
           changeUsername={changeStringInput}
         />
       );
-    } else if (accountType == "personal" && !isUserInfoOk) {
+    } else if (accountType == "client" && !isUserInfoOk) {
       return (
         <ClientInput
           name={name}
@@ -231,7 +250,7 @@ export default function SignupForm() {
           changeDate={(date: Date) => setBirthDate(date)}
         />
       );
-    } else if (accountType == "organization" && !isUserInfoOk) {
+    } else if (accountType == "organizer" && !isUserInfoOk) {
       //TODO
     } else if (isUserInfoOk) {
       return (
@@ -329,9 +348,9 @@ function UserInfoInput(props: UserInfoInputProps) {
         <div className="flex flex-row border-2 rounded-2xl contain-content mt-2">
           <article
             className={`flex flex-col flex-1 p-3 border-r-1 ${
-              props.accountType == "personal" ? "bg-light-yellow" : "bg-white"
+              props.accountType == "client" ? "bg-light-yellow" : "bg-white"
             }`}
-            onClick={(e) => props.handleAccountTypeSelection("personal")}
+            onClick={(e) => props.handleAccountTypeSelection("client")}
           >
             <div className="flex flex-row items-center gap-1">
               <Image
@@ -346,11 +365,9 @@ function UserInfoInput(props: UserInfoInputProps) {
           </article>
           <article
             className={`flex flex-col flex-1 p-3 border-l-1 ${
-              props.accountType == "organization"
-                ? "bg-light-yellow"
-                : "bg-white"
+              props.accountType == "organizer" ? "bg-light-yellow" : "bg-white"
             }`}
-            onClick={(e) => props.handleAccountTypeSelection("organization")}
+            onClick={(e) => props.handleAccountTypeSelection("organizer")}
           >
             <div className="flex flex-row items-center gap-1">
               <Image
@@ -359,7 +376,7 @@ function UserInfoInput(props: UserInfoInputProps) {
                 width={22}
                 height={25}
               />
-              <span className="font-bold">Organization</span>
+              <span className="font-bold">Organizer</span>
             </div>
             <span>Organize your own shows for everyone to have fun</span>
           </article>
@@ -510,7 +527,7 @@ interface PasswordInputProps {
   handleGoBack: (origin: string) => void;
   handlePasswordSubmit: (
     e: React.MouseEvent<HTMLButtonElement>
-  ) => Promise<Client | Organization | undefined>;
+  ) => Promise<void>;
   changePassword: (password: string, type: string) => void;
 }
 
@@ -529,7 +546,7 @@ function PasswordInput(props: PasswordInputProps) {
       {!samePassword ? (
         <span className="text-red-500 pb-2">Passwords do not match!</span>
       ) : null}
-      <form>
+      <form className="flex flex-col">
         <label className="inputLabel">Password</label>
         <input
           type="password"

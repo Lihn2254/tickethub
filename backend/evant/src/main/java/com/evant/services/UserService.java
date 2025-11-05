@@ -1,5 +1,8 @@
 package com.evant.services;
 
+import java.util.Date;
+import java.util.Random;
+
 import org.springframework.stereotype.Service;
 
 import com.evant.domain.User;
@@ -29,12 +32,28 @@ public class UserService {
                 } else {
                     throw new Exception("Password is incorrect.");
                 }
+            } else {
+                throw new Exception("User was not found.");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.getStackTrace();
         }
 
         return null;
+    }
+
+    public User register(User user) throws Exception {
+        User tmpUser;
+        try {
+            user.setId(new Random().nextInt(1, (int) Math.pow(2, 31)));
+            user.setRegistrationDate(new Date());
+            tmpUser = userRepository.save(user);
+            tmpUser.setPassword(null);
+            return tmpUser;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("An error ocurred. User could not be saved.");
+        }
     }
 
     public Boolean isCredentialAvaliable(String text) {
@@ -42,6 +61,16 @@ public class UserService {
             return userRepository.findByEmail(text) == null;
         } else {
             return userRepository.findByUsername(text) == null;
+        }
+    }
+
+    public Boolean delete(User user) throws Exception{
+        try {
+            userRepository.delete(user);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("An error ocurred. User could not be deleted properly.");
         }
     }
 }

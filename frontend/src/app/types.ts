@@ -25,7 +25,7 @@ type Ticket = {
 }
 
 interface UserBase {
-    userId: number | null;
+    id: number | null;
     email: string;
     username: string;
     password: string | null;
@@ -33,8 +33,7 @@ interface UserBase {
 }
 
 interface Client extends UserBase {
-    userType: 'client';
-    id: number | null;
+    accountType: 'client';
     name: string;
     lastname: string;
     gender: string;
@@ -42,37 +41,10 @@ interface Client extends UserBase {
     phone: string;
 }
 
-interface Organization extends UserBase {
-    userType: 'organization';
-    id: number | null;
+interface Organizer extends UserBase {
+    accountType: 'organizer';
     name: string;
     socials: string[];
 }
 
-type User = Client | Organization;
-
-// interface User {
-//   id: number | null;
-//   email: string;
-//   username: string;
-//   password: string | null;
-//   registrationDate: Date | null;
-// }
-
-// interface Client {
-//     user: User;
-//     id: number | null;
-//     name: string;
-//     lastname: string;
-//     gender: string;
-//     birthDate: Date | null;
-//     phone: string;
-// }
-
-// interface Organization {
-//     user: User;
-//     id: number | null;
-//     name: string;
-//     socials: string[];
-// }
-
+type User = Client | Organizer;

@@ -12,10 +12,16 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = {"organizers", "artists"})
+@ToString(exclude = {"organizers", "artists"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -23,7 +29,7 @@ import lombok.NoArgsConstructor;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private String flyer;
     private String name, genre, subtitle, description, city, address;
     private Date startTime;

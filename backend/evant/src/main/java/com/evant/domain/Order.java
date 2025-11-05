@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private Date orderDate;
     private Double totalAmount;
     private String paymentStatus;

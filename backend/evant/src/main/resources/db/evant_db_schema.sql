@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS artists CASCADE;
 -- !! This table will no longer be used. I changed he inheritance strategy. Now Clients and Organizers inherited Users attributes !!
 
 -- CREATE TABLE users (
---     id BIGINT PRIMARY KEY,
+--     id INTEGER PRIMARY KEY,
 --     email VARCHAR(255) UNIQUE NOT NULL,
 --     username VARCHAR(100) UNIQUE NOT NULL,
 --     password VARCHAR(255) NOT NULL, -- In a real app, this should be a securely hashed password.
@@ -34,7 +34,7 @@ DROP TABLE IF EXISTS artists CASCADE;
 -- Stores information about musical artists or performers.
 -- =================================================================
 CREATE TABLE artists (
-    id BIGINT PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
     genre VARCHAR(100),
@@ -47,7 +47,7 @@ CREATE TABLE artists (
 -- Stores details about each event.
 -- =================================================================
 CREATE TABLE events (
-    id BIGINT PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     flyer VARCHAR(255) NOT NULL, -- Stores a URL or path to the flyer image.
     genre VARCHAR(100) NOT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE events (
 -- This has a one-to-one relationship with the USERS table.
 -- =================================================================
 CREATE TABLE clients (
-    id BIGINT PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     -- user info
     email VARCHAR(255) UNIQUE NOT NULL,
     username VARCHAR(100) UNIQUE NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE clients (
     gender VARCHAR(50),
     birth_date DATE NOT NULL,
     phone VARCHAR(10)
-    --user_id BIGINT UNIQUE NOT NULL,
+    --user_id INTEGER UNIQUE NOT NULL,
     --FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -88,7 +88,7 @@ CREATE TABLE clients (
 -- This also has a one-to-one relationship with the USERS table.
 -- =================================================================
 CREATE TABLE organizers (
-    id BIGINT PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     -- user info
     email VARCHAR(255) UNIQUE NOT NULL,
     username VARCHAR(100) UNIQUE NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE organizers (
     -- contact VARCHAR(255),
     -- representative VARCHAR(255),
     socials JSONB
-    --user_id BIGINT UNIQUE NOT NULL,
+    --user_id INTEGER UNIQUE NOT NULL,
     --FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -108,11 +108,11 @@ CREATE TABLE organizers (
 -- Stores information about a ticket purchase transaction.
 -- =================================================================
 CREATE TABLE orders (
-    id BIGINT PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     order_date DATE NOT NULL DEFAULT CURRENT_DATE,
     total_amount DECIMAL(10, 2) NOT NULL, -- Suitable for monetary values.
     payment_status VARCHAR(20) NOT NULL,
-    client_id BIGINT NOT NULL,
+    client_id INTEGER NOT NULL,
     FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE RESTRICT -- Prevent deleting a user with orders.
 );
 
@@ -121,12 +121,12 @@ CREATE TABLE orders (
 -- Stores individual tickets linked to an order and an event.
 -- =================================================================
 CREATE TABLE tickets (
-    id BIGINT PRIMARY KEY,
-    attendees BIGINT NOT NULL DEFAULT 1,
+    id INTEGER PRIMARY KEY,
+    attendees INTEGER NOT NULL DEFAULT 1,
     qr_code VARCHAR(255), -- Stores a URL or the encoded string for the QR code.
     status VARCHAR(20) NOT NULL, -- e.g., 'active', 'used', 'canceled'. Using a string is more readable.
-    order_id BIGINT NOT NULL,
-    event_id BIGINT NOT NULL,
+    order_id INTEGER NOT NULL,
+    event_id INTEGER NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE RESTRICT
 );
@@ -138,8 +138,8 @@ CREATE TABLE tickets (
 -- Table: EVENT_ORGANIZER
 -- Links events to their organizers.
 CREATE TABLE event_organizer (
-    event_id BIGINT NOT NULL,
-    organizer_id BIGINT NOT NULL,
+    event_id INTEGER NOT NULL,
+    organizer_id INTEGER NOT NULL,
     PRIMARY KEY (event_id, organizer_id), -- Composite primary key ensures a unique pair.
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
     FOREIGN KEY (organizer_id) REFERENCES organizers(id) ON DELETE CASCADE
@@ -148,8 +148,8 @@ CREATE TABLE event_organizer (
 -- Table: EVENT_ARTIST
 -- Links events to the artists performing.
 CREATE TABLE event_artist (
-    event_id BIGINT NOT NULL,
-    artist_id BIGINT NOT NULL,
+    event_id INTEGER NOT NULL,
+    artist_id INTEGER NOT NULL,
     PRIMARY KEY (event_id, artist_id),
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
     FOREIGN KEY (artist_id) REFERENCES artists(id) ON DELETE CASCADE
@@ -179,5 +179,25 @@ SELECT
     'organizer' AS account_type
 FROM
     organizers;
+
+--CREATE SEQUENCE user_id_seq;
+
+CREATE OR REPLACE FUNCTION set_current_registration_date()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.registration_date = CURRENT_DATE;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_clients_registration_date
+BEFORE INSERT ON clients
+FOR EACH ROW
+EXECUTE FUNCTION set_current_registration_date();
+
+CREATE TRIGGER trg_organizers_registration_date
+BEFORE INSERT ON organizers
+FOR EACH ROW
+EXECUTE FUNCTION set_current_registration_date();
 
 -- End of Script

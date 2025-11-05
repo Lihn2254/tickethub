@@ -4,7 +4,9 @@ import java.util.Date;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,12 +16,15 @@ import com.evant.domain.User;
 import com.evant.services.ClientService;
 import com.evant.services.UserService;
 
-record LoginRequest(String email, String password) {}
+record LoginRequest(String email, String password) {
+}
 
-record singleStringRequest(String text) {} // Email || username
+record singleStringRequest(String text) {
+} // Email || username
 
-record RegisterRequest(int userId, String email, String username, String password, Date registrationDate, String userType){}
-
+record RegisterRequest(int userId, String email, String username, String password, Date registrationDate,
+        String userType) {
+}
 
 @RestController
 @RequestMapping("/api/user")
@@ -39,7 +44,7 @@ public class UserController {
 
         if (authenticatedUser == null) {
             System.out.println("User was not found.");
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.status(500).build();
         }
 
         System.out.println("User " + authenticatedUser.toString() + " was returned.");
@@ -55,9 +60,32 @@ public class UserController {
         return ResponseEntity.ok(isAvaliable);
     }
 
-    // @PostMapping("/register")
-    // public ResponseEntity<User> register(@RequestBody singleStringRequest request) {
+    @PutMapping("/register")
+    public ResponseEntity<User> register(@RequestBody User user) {
+        System.out.println("Sign up request received for user: " + user.toString());
 
-    //     return ResponseEntity.ok(true);
-    // }
+        User registeredUser;
+        try {
+            registeredUser = userService.register(user);
+            System.out.println("User: " + user.toString() + "was registered and returned.");
+            return ResponseEntity.ok(registeredUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Boolean> delete(@RequestBody User user) {
+        System.out.println("Deletion request received for user: " + user.getUsername() + " | " + user.getEmail());
+ 
+        try {
+            boolean res = userService.delete(user);
+            System.out.println("User: " + user.toString() + "was successfully deleted.");
+            return ResponseEntity.ok(res);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }   
+    }
 }

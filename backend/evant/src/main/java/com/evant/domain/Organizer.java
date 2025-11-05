@@ -12,10 +12,15 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
-@EqualsAndHashCode(callSuper=true)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true, exclude = {"events"})
+@ToString(callSuper = true, exclude = {"events"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

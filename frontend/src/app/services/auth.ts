@@ -39,13 +39,29 @@ export async function register(user: User): Promise<User> {
   const res = await fetch("http://localhost:8080/api/user/register", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ user }),
+    body: JSON.stringify(user),
   });
 
   if (!res.ok) {
     const errorData = await res.json();
     throw new Error(errorData.message);
   }
-  //console.log(res.json());
+
   return res.json();
+}
+
+export async function deleteAccount(user: User): Promise<boolean> {
+  const res = await fetch("http://localhost:8080/api/user/delete", {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(user),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.message);
+  }
+
+  const wasDeleted: boolean = await res.json();
+  return wasDeleted;
 }

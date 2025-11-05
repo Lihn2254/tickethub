@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private int attendees;
     private String qrcode, status;
     @ManyToOne

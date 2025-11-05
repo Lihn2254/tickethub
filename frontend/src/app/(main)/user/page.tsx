@@ -1,5 +1,16 @@
+import { useAuth } from "@/app/context/AuthContext";
+
 export default function User() {
+    const { user } = useAuth();
+
     return(
-        <h1>This is the user page.</h1>
+        <div>
+            <h1>User inforrmation</h1>
+            <ul>
+                {user?.email}
+            </ul>
+        </div>
+        
+
     );
 }

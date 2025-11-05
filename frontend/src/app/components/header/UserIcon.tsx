@@ -46,9 +46,10 @@ function ProfileOptions({
   return (
     <ul  className="mt-2 flex flex-col min-w-35 gap-1.5 absolute bg-white border-2 rounded-md p-4 border-light-blue whitespace-nowrap right-0">
       <li>
-        <p className="font-bold">{`${user?.username}`}</p>
+        <p className="font-bold">{user?.name}</p>
+        <p className="text-sm font-semibold">{user?.username}</p>
       </li>
-      <hr className="mt-1 mb-1" />
+      <hr className="mt-1 mb-1"/>
       <li>
         <MenuLink
           text="Profile"

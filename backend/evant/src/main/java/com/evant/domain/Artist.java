@@ -14,9 +14,16 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = {"events"})
+@ToString(exclude = {"events"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -24,7 +31,7 @@ import lombok.NoArgsConstructor;
 public class Artist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private String name, description, genre, members;
 
     @JdbcTypeCode(SqlTypes.JSON)
