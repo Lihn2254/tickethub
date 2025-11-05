@@ -23,9 +23,9 @@ INSERT INTO artists (id, name, description, genre, members, socials) VALUES
 (3, 'Voltage Valley', 'A classic metal band that delivers thunderous anthems.', 'Metal', 'Vince (Vocals), Jax (Guitar), Spike (Bass), Roxy (Drums)', '{"spotify": "spotify.com/voltagevalley", "instagram": "instagram.com/voltagevalley"}');
 
 -- Insert into EVENTS
-INSERT INTO events (id, name, flyer, genre, subtitle, description, city, address, start_time) VALUES
-(1, 'Rock Revival Tour', '/flyers/rock_revival.jpg', 'Rock', 'Classic rock anthems that never die.', 'Get ready to headbang! A lineup of legendary bands is here to play all the hits that shaped a generation.', 'Culiacán', 'Foro Tecate, Av. Federalismo', '2025-11-15 20:00:00-07'),
-(2, 'Indie Folk Gathering', '/flyers/indie_folk.jpg', 'Indie', 'Heartfelt lyrics and rustic charm.', 'Discover your new favorite indie folk artists in an intimate and cozy setting.', 'Culiacán', 'Teatro Lince, Blvd. Rolando Arjona', '2025-12-05 19:30:00-07');
+INSERT INTO events (id, name, flyer, genre, subtitle, description, city, address, start_time, price) VALUES
+(1, 'Rock Revival Tour', '/flyers/rock_revival.jpg', 'Rock', 'Classic rock anthems that never die.', 'Get ready to headbang! A lineup of legendary bands is here to play all the hits that shaped a generation.', 'Culiacán', 'Foro Tecate, Av. Federalismo', '2025-11-15 20:00:00-07', 500.00),
+(2, 'Indie Folk Gathering', '/flyers/indie_folk.jpg', 'Indie', 'Heartfelt lyrics and rustic charm.', 'Discover your new favorite indie folk artists in an intimate and cozy setting.', 'Culiacán', 'Teatro Lince, Blvd. Rolando Arjona', '2025-12-05 19:30:00-07', 400.00);
 
 -- =================================================================
 -- 2. Insert into tables with foreign key dependencies
@@ -66,17 +66,29 @@ INSERT INTO event_artist (event_id, artist_id) VALUES
 
 -- Insert into ORDERS (made by clients with user_id 1 and 2)
 INSERT INTO orders (id, total_amount, payment_status, client_id) VALUES
-(1, 950.00, 'Paid', 1), -- John Doe's order
-(2, 400.00, 'Paid', 2); -- Jane Smith's order
+(1, 1000.00, 'Paid', 1), -- John Doe's order
+(2, 400.00, 'Paid', 2), -- Jane Smith's order
+-- Admin's order;
+(3, 1500.00, 'Paid', 3),
+(4, 1200.00, 'Paid', 3);
 
 -- Insert into TICKETS
 -- John Doe's order (id 1) contains 2 tickets for the Rock Revival Tour (event id 1)
-INSERT INTO tickets (id, attendees, qr_code, status, order_id, event_id) VALUES
-(1, 2, 'qr_code_string_1a2b', 'active', 1, 1);
+INSERT INTO tickets (id, qr_code, status, purchase_price, order_id, event_id) VALUES
+(1, 'qr_code_string_1a2b', 'active', 500.00, 1, 1),
+(2, 'qr_code_string_5e6f', 'active', 500.00, 1, 1);
 
 -- Jane Smith's order (id 2) contains 1 ticket for the Indie Folk Gathering (event id 2)
-INSERT INTO tickets (id, attendees, qr_code, status, order_id, event_id) VALUES
-(2, 1, 'qr_code_string_3c4d', 'active', 2, 2);
+INSERT INTO tickets (id, qr_code, status, purchase_price, order_id, event_id) VALUES
+(3, 'qr_code_string_3c4d', 'active', 400.00, 2, 2);
+
+-- Admin's order (id 3) contains 4 tickets for (event id 1)
+INSERT INTO tickets (id, qr_code, status, purchase_price, order_id, event_id) VALUES
+(4, 'qr_code_string_7c4d', 'active', 500.00, 3, 1),
+(5, 'qr_code_string_9c4d', 'active', 500.00, 3, 1),
+(6, 'qr_code_string_11c4d', 'active', 400.00, 4, 2),
+(7, 'qr_code_string_13c4d', 'active', 400.00, 4, 2),
+(8, 'qr_code_string_15c4d', 'active', 400.00, 4, 2);
 
 
 -- End of Script

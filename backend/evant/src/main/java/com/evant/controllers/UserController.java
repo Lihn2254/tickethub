@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.evant.domain.Client;
 import com.evant.domain.User;
-import com.evant.services.ClientService;
 import com.evant.services.UserService;
 
 record LoginRequest(String email, String password) {

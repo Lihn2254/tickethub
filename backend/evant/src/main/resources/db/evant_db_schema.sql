@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS tickets CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;
 DROP TABLE IF EXISTS clients CASCADE;
 DROP TABLE IF EXISTS organizers CASCADE;
-DROP TABLE IF EXISTS users CASCADE;
+--DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS events CASCADE;
 DROP TABLE IF EXISTS artists CASCADE;
 
@@ -55,7 +55,8 @@ CREATE TABLE events (
     description TEXT,
     city VARCHAR(255) NOT NULL,
     address VARCHAR(255) NOT NULL,
-    start_time DATE NOT NULL
+    start_time DATE NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
 );
 
 -- =================================================================
@@ -122,9 +123,9 @@ CREATE TABLE orders (
 -- =================================================================
 CREATE TABLE tickets (
     id INTEGER PRIMARY KEY,
-    attendees INTEGER NOT NULL DEFAULT 1,
     qr_code VARCHAR(255), -- Stores a URL or the encoded string for the QR code.
     status VARCHAR(20) NOT NULL, -- e.g., 'active', 'used', 'canceled'. Using a string is more readable.
+    purchase_price DECIMAL(10, 2) NOT NULL,
     order_id INTEGER NOT NULL,
     event_id INTEGER NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,

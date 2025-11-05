@@ -6,15 +6,11 @@ import java.util.Random;
 import org.springframework.stereotype.Service;
 
 import com.evant.domain.User;
-import com.evant.repositories.ClientRepository;
-import com.evant.repositories.OrganizerRepository;
 import com.evant.repositories.UserRepository;
 
 @Service
 public class UserService {
     private UserRepository userRepository;
-    private ClientRepository clientRepository;
-    private OrganizerRepository organizerRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
