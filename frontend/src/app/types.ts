@@ -7,6 +7,7 @@ type Xevent = {
     description: string;
     location: { city: string; address: string };
     startTime: Date;
+    price: number;
     artists: string[];
 }
 

@@ -78,4 +78,8 @@ body {
   .footer-section{
     @apply w-60
   }
+
+  .options-list{
+    @apply pl-5 pr-5 pt-3 pb-3
+  }
 }

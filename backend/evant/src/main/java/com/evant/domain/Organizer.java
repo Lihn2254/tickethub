@@ -6,6 +6,10 @@ import java.util.Set;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
@@ -32,5 +36,6 @@ public class Organizer extends User{
     private Map<String, String> socials;
 
     @ManyToMany(mappedBy = "organizers")
+    @JsonIgnore
     private Set<Event> events;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import TicketCard from "@/app/components/TicketCard";
+import Image from "next/image";
 import { use, useState } from "react";
 
 export default function Tickets() {
@@ -8,9 +9,21 @@ export default function Tickets() {
   const [status, setStatus] = useState(0);
 
   const navItems = [
-    { key: 0, label: "Upcoming" },
-    { key: 1, label: "Past" },
-    { key: 2, label: "Canceled" },
+    {
+      key: 0,
+      label: "Upcoming",
+      img: { src: "/icons/upcoming.svg", alt: "Upcoming" },
+    },
+    {
+      key: 1,
+      label: "Past",
+      img: { src: "/icons/upcoming.svg", alt: "Upcoming" },
+    },
+    {
+      key: 2,
+      label: "Canceled",
+      img: { src: "/icons/upcoming.svg", alt: "Upcoming" },
+    },
   ];
 
   const ticketList: Ticket[] = [
@@ -120,17 +133,30 @@ export default function Tickets() {
     },
   ];
 
-  const handleClick = (key:number) => {
+  const handleClick = (key: number) => {
     setNavItem(key);
   };
 
   return (
     <div className="flex min-h-145 max-h-210 overflow-hidden pt-5">
-      <nav className="mr-10 p-5 w-1/4 flex align-top pt-10">
+      <nav className="mr-10 p-5 w-1/3 flex align-top pt-10">
         <ul className="text-2xl text-end w-full">
-          {navItems.map(item => (
-            <li key={item.key} className="mb-0.5">
-              <button type="button" onClick={() => handleClick(item.key)} className={`${item.key === navItem ? 'underline underline-offset-2 text-blue' : ''}`}>{item.label}</button>
+          {navItems.map((item) => (
+            <li
+              key={item.key}
+              onClick={() => handleClick(item.key)}
+              className="hover:bg-gray-200 rounded-2xl options-list funnel-text font-light"
+            >
+              <button
+                type="button"
+                className={`${
+                  item.key === navItem
+                    ? "underline underline-offset-2 text-blue"
+                    : ""
+                }`}
+              >
+                {item.label}
+              </button>
             </li>
           ))}
         </ul>
@@ -138,13 +164,10 @@ export default function Tickets() {
 
       <section className="flex flex-col gap-6 p-5 overflow-y-scroll">
         {ticketList
-          .filter(ticket => ticket.status === navItem)
+          .filter((ticket) => ticket.status === navItem)
           .map((ticket) => (
-          <TicketCard
-            key={ticket.id}
-            {...ticket}
-          ></TicketCard>
-        ))}
+            <TicketCard key={ticket.id} {...ticket}></TicketCard>
+          ))}
       </section>
     </div>
   );

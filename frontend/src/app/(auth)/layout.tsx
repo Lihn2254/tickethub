@@ -4,8 +4,8 @@ import "../globals.css";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Log in",
-  description: "Log in to Evant",
+  title: "Sign in",
+  description: "Log in to TicketHub",
 };
 
 export default function LoginLayout({

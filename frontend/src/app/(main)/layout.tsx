@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import { AuthProvider } from "../context/AuthContext";
 
 export const metadata: Metadata = {
-  title: "Ticket App",
+  title: "TicketHub",
   description: "Ticket sales for events.",
 };
 

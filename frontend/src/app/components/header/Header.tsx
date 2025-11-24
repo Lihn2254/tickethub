@@ -19,7 +19,7 @@ export default function Header() {
           </Link>
           <Link href="/">
             <span className="title">
-              Evant
+              TicketHub
             </span>
           </Link>
         </div>

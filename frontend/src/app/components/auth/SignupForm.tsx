@@ -276,7 +276,7 @@ export default function SignupForm() {
           priority
         />
         <div className="flex flex-col">
-          <span className="title">Welcome to Evant!</span>
+          <span className="title">Welcome to TicketHub!</span>
           <span className="text-xl text-dark-blue ml-3 pt-1">
             Your gateway to unforgettable events.
           </span>

@@ -3,6 +3,9 @@ package com.evant.domain;
 import java.sql.Date;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +29,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @Entity
 @Table(name = "events")
+@JsonIdentityInfo(
+  generator = ObjectIdGenerators.PropertyGenerator.class, 
+  property = "id"
+)
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,7 @@
+import { apiUrl } from "../utils";
+
 export async function login(email: string, password: string): Promise<User> {
-  const res = await fetch("http://localhost:8080/api/user/login", {
+  const res = await fetch(`${apiUrl}/user/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -12,12 +14,6 @@ export async function login(email: string, password: string): Promise<User> {
 
   return res.json();
 }
-
-// function mapDataToUser(data: any): Client | Organization {
-//   if data
-  
-//   return user;
-// }
 
 export async function checkDuplicate(text: string): Promise<boolean> {
   const res = await fetch("http://localhost:8080/api/user/check-duplicate", {

@@ -72,7 +72,7 @@ export default function LoginForm() {
           height={40}
           priority
         />
-        <span className="title">Evant</span>
+        <span className="title">TicketHub</span>
       </div>
       <hr className="w-30 mb-5 border-2 border-yellow" />
 
