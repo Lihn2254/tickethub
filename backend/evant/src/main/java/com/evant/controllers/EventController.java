@@ -27,7 +27,7 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Event>> getEvents(@RequestParam(name = "genre", required = false) List<String> genre,
             @RequestParam(name = "city", required = false) List<String> city,
             @RequestParam(name = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start,

@@ -100,8 +100,20 @@ export default function Home() {
   //   },
   // ];
 
-  useEffect(() => {
-    const loadEvents = async() => {
+  // useEffect(() => {
+  //   const loadEvents = async() => {
+  //     try {
+  //         const events = await getEvents(null, null, null, null);
+  //         setEvents(events);
+  //     } catch (error) {
+  //       console.error('Failed to fecth events: ', error)
+  //     }
+  //   }
+
+  //   loadEvents();
+  // }, []);
+
+  const loadEvents = async() => {
       try {
           const events = await getEvents(null, null, null, null);
           setEvents(events);
@@ -110,9 +122,6 @@ export default function Home() {
       }
     }
 
-    loadEvents();
-  }, []);
-
   return (
     <div className="justify-items-center min-h-screen p-8 pb-20">
       <h1 className="mb-2 text-5xl funnel-text font-medium">Upcoming events</h1>
@@ -120,9 +129,11 @@ export default function Home() {
         Aquí poner opciones de filtrado.
       </p>
       <main className="flex flex-col lg:flex-row flex-wrap gap-6 justify-center">
+        <button onClick={loadEvents} className="rounded-2xl bg-blue">Get Events</button>
         {events.map((event) => (
           <EventCard key={event.id} {...event} />
         ))}
+        
       </main>
     </div>
   );

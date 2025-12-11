@@ -16,7 +16,7 @@ export async function login(email: string, password: string): Promise<User> {
 }
 
 export async function checkDuplicate(text: string): Promise<boolean> {
-  const res = await fetch("http://localhost:8080/api/user/check-duplicate", {
+  const res = await fetch(`${apiUrl}/user/check-duplicate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text }),
