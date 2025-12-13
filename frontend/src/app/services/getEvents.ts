@@ -1,11 +1,12 @@
-import { apiUrl } from "../utils";
+import { ApiEvent } from "../types/event";
+import { apiUrl } from "../api";
 
 export default async function getEvents(
-  genres: string[] | null, 
-  cities: string[] | null, 
-  start: Date | null, 
+  genres: string[] | null,
+  cities: string[] | null,
+  start: Date | null,
   end: Date | null
-): Promise<Xevent[]> {
+): Promise<ApiEvent[]> {
 
   const params = new URLSearchParams();
 
@@ -24,8 +25,8 @@ export default async function getEvents(
 
   const queryString = params.toString();
 
-  const fetchUrl = queryString 
-    ? `${apiUrl}/events?${queryString}` 
+  const fetchUrl = queryString
+    ? `${apiUrl}/events?${queryString}`
     : `${apiUrl}/events`;
 
   const res = await fetch(fetchUrl);

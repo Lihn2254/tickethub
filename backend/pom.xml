@@ -8,11 +8,11 @@
 		<version>3.5.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.evant</groupId>
-	<artifactId>evant</artifactId>
+	<groupId>com.tickethub</groupId>
+	<artifactId>tickethub</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>evant</name>
-	<description>Demo project for Spring Boot</description>
+	<name>tickethub</name>
+	<description>Backend for TicketHub webapp.</description>
 	<url/>
 	<licenses>
 		<license/>

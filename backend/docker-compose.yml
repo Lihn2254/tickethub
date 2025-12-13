@@ -2,9 +2,9 @@ services:
   postgres-db:
     image: postgres:15
     restart: always
-    container_name: evant_db
+    container_name: tickethub_db
     environment:
-      POSTGRES_DB: evant_db
+      POSTGRES_DB: tickethub
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: Eva01
     ports:

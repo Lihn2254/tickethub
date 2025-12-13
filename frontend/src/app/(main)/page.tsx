@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import EventCard from "../components/EventCard";
 import { useEffect, useState } from "react";
 import getEvents from "../services/getEvents";
+import { Xevent } from "../types/event";
+import { mapApiEventsToXevents } from "../utils";
 
 export default function Home() {
   const [events, setEvents] = useState<Xevent[]>([]);
@@ -100,27 +102,19 @@ export default function Home() {
   //   },
   // ];
 
-  // useEffect(() => {
-  //   const loadEvents = async() => {
-  //     try {
-  //         const events = await getEvents(null, null, null, null);
-  //         setEvents(events);
-  //     } catch (error) {
-  //       console.error('Failed to fecth events: ', error)
-  //     }
-  //   }
-
-  //   loadEvents();
-  // }, []);
-
-  const loadEvents = async() => {
+  useEffect(() => {
+    const loadEvents = async() => {
       try {
           const events = await getEvents(null, null, null, null);
-          setEvents(events);
+          const mappedEvents = mapApiEventsToXevents(events);
+          setEvents(mappedEvents);
       } catch (error) {
         console.error('Failed to fecth events: ', error)
       }
     }
+
+    loadEvents();
+  }, []);
 
   return (
     <div className="justify-items-center min-h-screen p-8 pb-20">
@@ -129,7 +123,6 @@ export default function Home() {
         Aquí poner opciones de filtrado.
       </p>
       <main className="flex flex-col lg:flex-row flex-wrap gap-6 justify-center">
-        <button onClick={loadEvents} className="rounded-2xl bg-blue">Get Events</button>
         {events.map((event) => (
           <EventCard key={event.id} {...event} />
         ))}

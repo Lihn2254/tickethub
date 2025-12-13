@@ -1,4 +1,5 @@
-import { apiUrl } from "../utils";
+import { User } from "../types/user";
+import { apiUrl } from "../api";
 
 export async function login(email: string, password: string): Promise<User> {
   const res = await fetch(`${apiUrl}/user/login`, {

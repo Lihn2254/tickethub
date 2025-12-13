@@ -24,7 +24,7 @@ export default function Settings() {
 
   return (
     <div className="flex flex-row">
-      <section className="w-1/4 pl-20 pt-10 pb-10 border-r-1 border-r-red-600">
+      <section className="w-1/4 pl-20 pt-10 pb-10 border-r border-r-red-600">
         <span className="font-semibold text-3xl">Settings</span>
         <nav className="flex align-top pt-8">
           <ul className="text-xl w-full">
