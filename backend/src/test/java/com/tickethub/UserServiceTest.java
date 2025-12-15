@@ -1,8 +1,5 @@
-// src/test/java/com/evant/services/UserServiceTest.java
-
 package com.tickethub;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -12,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.tickethub.domain.User;
 import com.tickethub.repositories.UserRepository;
 import com.tickethub.services.UserService;
 

@@ -1,5 +1,8 @@
 package com.tickethub.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,16 +24,27 @@ public class EventImageController {
     }
 
     @GetMapping
-    public ResponseEntity<ImageDTO> getFlyerImage(@RequestParam(name = "flyer_path", required = true) String fileName) {
-        System.out.println("Request received for image: " + fileName);
-        ImageDTO flyerImg = eventImageService.getFlyerImage(fileName);
-
+    public ResponseEntity<List<ImageDTO>> getFlyerImage(@RequestParam(name = "flyer_path", required = true) List<String> fileNames) {
+        List<ImageDTO> flyerBatch = new ArrayList<>();
+        
+        System.out.println("Request received for the following images:");
+        //Check one by one if the files exist
+        for (String fileName : fileNames) {
+            System.out.println(fileName);
+            ImageDTO flyerImg = eventImageService.getFlyerImage(fileName);
             if (flyerImg != null) {
-                System.out.println("Image with name: " + fileName + " was returned.");
-                return ResponseEntity.ok(flyerImg);
+                System.out.println("Image with name: " + fileName + " was returned.\n------");
+                flyerBatch.add(flyerImg);
+            } else {
+               System.err.println("Image could not be found.\n------"); 
             }
+        }
 
-            System.err.println("Image could not be found.");
-            return ResponseEntity.status(500).build();
+        if (!flyerBatch.isEmpty()) {
+            return ResponseEntity.ok(flyerBatch);
+        }    
+        
+        //In caso no images where found
+        return ResponseEntity.status(500).build();
     }
 }

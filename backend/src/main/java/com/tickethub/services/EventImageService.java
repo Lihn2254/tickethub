@@ -17,8 +17,6 @@ public class EventImageService {
             String imgDirectory = "F:/Git_Repositories/ticketmaster/flyer_img/";
             Path path = Paths.get(imgDirectory, fileName);
 
-            System.out.println(path.toAbsolutePath());
-
             if (Files.exists(path)) {
                 flyerImg.setFlyerImg(Files.readAllBytes(path));
                 flyerImg.setExt(fileName.substring(fileName.indexOf('.') + 1)); //Return the file type without the dot.
