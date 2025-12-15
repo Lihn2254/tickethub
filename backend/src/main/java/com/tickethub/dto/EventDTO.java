@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventDTO {
+public class EventDTO implements Comparable<EventDTO>{
     private int id;
     private String flyerPath;
     private String name;
@@ -26,4 +26,11 @@ public class EventDTO {
     private BigDecimal price;
     private Set<OrganizerDTO> organizers;
     private Set<ArtistDTO> artists;
+
+    //Natural ordering by startTime
+    @Override
+    public int compareTo(EventDTO other) {
+        int dateComparison = this.startTime.compareTo(other.startTime);
+        return dateComparison;
+    }
 }
