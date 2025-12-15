@@ -1,4 +1,4 @@
-import { ApiEvent } from "../types/event";
+import { ApiEvent, ApiFlyer } from "../types/eventTypes";
 import { apiUrl } from "../api";
 
 export default async function getEvents(
@@ -30,6 +30,25 @@ export default async function getEvents(
     : `${apiUrl}/events`;
 
   const res = await fetch(fetchUrl);
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.message);
+  }
+
+  return res.json();
+}
+
+export async function getFlyerImages(flyerPaths: string[]): Promise<ApiFlyer[]> {
+  const params = new URLSearchParams();
+
+  if(flyerPaths) {
+    flyerPaths.forEach(flyerImg => params.append('flyer_path', flyerImg));
+  }
+
+  const queryString = params.toString();
+
+  const res = await fetch(`${apiUrl}/events/images?${queryString}`);
 
   if (!res.ok) {
     const errorData = await res.json();

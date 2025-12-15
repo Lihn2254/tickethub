@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ImageDTO {
-    private byte[] flyerImg;
+    private byte[] img;
     private String ext;
 }

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Ticket } from "../types/ticket";
+import { Ticket } from "../types/ticketTypes";
 
 export default function TicketCard(ticket: Ticket) {
   const date = new Intl.DateTimeFormat("en-US", {

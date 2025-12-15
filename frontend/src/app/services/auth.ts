@@ -1,4 +1,4 @@
-import { User } from "../types/user";
+import { User } from "../types/userTypes";
 import { apiUrl } from "../api";
 
 export async function login(email: string, password: string): Promise<User> {

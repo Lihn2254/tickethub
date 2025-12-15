@@ -6,7 +6,7 @@ import { useState } from "react";
 import { checkDuplicate, login, register } from "../../services/auth";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
-import { User } from "@/app/types/user";
+import { User } from "@/app/types/userTypes";
 
 export default function SignupForm() {
   const [error, setError] = useState("");

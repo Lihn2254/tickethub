@@ -26,17 +26,28 @@ public class EventImageController {
     @GetMapping
     public ResponseEntity<List<ImageDTO>> getFlyerImage(@RequestParam(name = "flyer_path", required = true) List<String> fileNames) {
         List<ImageDTO> flyerBatch = new ArrayList<>();
+
+        if (fileNames.isEmpty()) {
+            //400 - Bad request.
+            return ResponseEntity.status(400).build();
+        }
         
         System.out.println("Request received for the following images:");
+        
         //Check one by one if the files exist
         for (String fileName : fileNames) {
             System.out.println(fileName);
+
+            //Get the image the image from the predetermined location
             ImageDTO flyerImg = eventImageService.getFlyerImage(fileName);
+
+            //If an image with the given name was found, add it to the image batch.
             if (flyerImg != null) {
                 System.out.println("Image with name: " + fileName + " was returned.\n------");
                 flyerBatch.add(flyerImg);
             } else {
                System.err.println("Image could not be found.\n------"); 
+               flyerBatch.add(flyerImg); //Adds null to the batch, so we know that particular image was not found
             }
         }
 
@@ -44,7 +55,7 @@ public class EventImageController {
             return ResponseEntity.ok(flyerBatch);
         }    
         
-        //In caso no images where found
-        return ResponseEntity.status(500).build();
+        //404 - Not found. In case no images where found
+        return ResponseEntity.status(404).build();
     }
 }
