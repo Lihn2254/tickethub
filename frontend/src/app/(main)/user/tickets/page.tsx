@@ -1,6 +1,7 @@
 "use client";
 
 import TicketCard from "@/app/components/TicketCard";
+import { Ticket } from "@/app/types/ticketTypes";
 import Image from "next/image";
 import { use, useState } from "react";
 

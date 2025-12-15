@@ -1,7 +1,20 @@
 import { AuthProvider } from "@/app/context/AuthContext";
+import { Red_Hat_Display, Funnel_Display } from "next/font/google";
 import Footer from "../components/Footer";
 import "../globals.css";
 import { Metadata } from "next";
+
+const redHat = Red_Hat_Display({
+  subsets: ["latin"],
+  variable: "--font-red-hat", 
+  display: "swap",
+});
+
+const funnel = Funnel_Display({
+  subsets: ["latin"],
+  variable: "--font-funnel",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Sign in",
@@ -15,7 +28,7 @@ export default function LoginLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased font-sans">
+      <body className={`${redHat.variable} ${funnel.variable} antialiased`}>
         <AuthProvider>
           {children}
           <Footer />

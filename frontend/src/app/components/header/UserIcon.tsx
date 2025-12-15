@@ -5,6 +5,7 @@ import Link from "next/link";
 import { RefObject, useEffect, useRef, useState } from "react";
 import { useOutsideClick } from "@/app/hooks/useOutsideClick";
 import { useAuth } from "@/app/context/AuthContext";
+import { User } from "@/app/types/userTypes";
 
 function MenuLink({
   text,

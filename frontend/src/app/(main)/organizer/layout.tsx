@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "../globals.css";
-import Header from "../components/header/Header";
-import Footer from "../components/Footer";
-import { AuthProvider } from "../context/AuthContext";
+import Footer from "@/app/components/Footer";
+import Header from "@/app/components/header/Header";
+import { AuthProvider } from "@/app/context/AuthContext";
 
 export const metadata: Metadata = {
   title: "Ticket App",

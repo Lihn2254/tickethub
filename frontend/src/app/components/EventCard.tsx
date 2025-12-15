@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { stringify } from "querystring";
+import { Xevent } from "../types/eventTypes";
 
 export default function EventCard(event: Xevent) {
   const date = new Intl.DateTimeFormat("en-US", {
@@ -21,19 +22,20 @@ export default function EventCard(event: Xevent) {
   }
 
   return (
-    <article className="bg-white border-2 rounded-2xl p-6 shadow-lg border-light-blue w-full lg:w-5/12 2xl:w-1/4 h-fit">
+    // 2xl:w-1/2
+    <article className="bg-white border-2 rounded-2xl p-6 shadow-lg border-light-blue w-full sm:w-9/12 md:w-7/12 lg:w-5/12 2xl:w-4/12 h-fit"> 
       <h1 className="text-3xl font-bold text-blue mb-6">{event.name}</h1>
       <div className="flex md:flex-row flex-col gap-6">
-        <div className="flex-shrink-0 self-center">
+        <div className="shrink-0 self-center">
           <Image
-            src={event.flyer.src}
+            src={`data:image/jpeg;base64,${event.flyer.img}`}
             alt={event.flyer.alt}
             width={400}
             height={400}
             className="rounded-lg object-cover w-40 md:w-50"
           />
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
           <h3 className="text-lg">{event.location.city}</h3>
           <h2 className="funnel-text text-xl font-semibold pb-3 text-gray-700">
             {date + " | " + time}
