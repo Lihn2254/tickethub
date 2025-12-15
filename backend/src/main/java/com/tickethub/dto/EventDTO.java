@@ -16,14 +16,10 @@ import lombok.Setter;
 public class EventDTO implements Comparable<EventDTO>{
     private int id;
     private String flyerPath;
-    private String name;
-    private String genre;
-    private String subtitle;
-    private String description;
-    private String city;
-    private String address;
+    private String name, genre, subtitle, description, city, address;
     private Date startTime;
     private BigDecimal price;
+    private int maxAttendees, avaliablePlaces, status;
     private Set<OrganizerDTO> organizers;
     private Set<ArtistDTO> artists;
 
