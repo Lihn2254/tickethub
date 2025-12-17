@@ -42,6 +42,9 @@ public class Event {
     private String name, genre, subtitle, description, city, address;
     private Date startTime;
     private BigDecimal price;
+    private int maxAttendees;
+    private int avaliablePlaces;
+    private int status;
 
     @ManyToMany
     @JoinTable(

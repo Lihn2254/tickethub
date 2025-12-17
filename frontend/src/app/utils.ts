@@ -41,6 +41,9 @@ export function mapApiEventsToXevents(apiEvents: ApiEvent[], apiFlyers: ApiFlyer
       },
       startTime: new Date(event.startTime),
       price: event.price,
+      maxAttendees: event.maxAttendees,
+      avaliablePlaces: event.avaliablePlaces,
+      status: event.status,
       artists: event.artists.map((artist) => artist.name),
     };
   });

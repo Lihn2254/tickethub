@@ -8,6 +8,9 @@ export type Xevent = {
   location: { city: string; address: string };
   startTime: Date;
   price: number;
+  maxAttendees: number;
+  avaliablePlaces: number;
+  status: number;
   artists: string[];
 };
 
@@ -22,6 +25,9 @@ export type ApiEvent = {
   address: string;
   startTime: string;
   price: number;
+  maxAttendees: number;
+  avaliablePlaces: number;
+  status: number;
   organizers: { id: number; name: string }[];
   artists: { id: number; name: string }[];
 };

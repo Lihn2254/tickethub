@@ -56,7 +56,10 @@ CREATE TABLE events (
     city VARCHAR(255) NOT NULL,
     address VARCHAR(255) NOT NULL,
     start_time DATE NOT NULL,
-    price DECIMAL(10, 2) NOT NULL
+    price DECIMAL(10, 2) NOT NULL,
+    max_attendees INTEGER NOT NULL,
+    avaliable_places INTEGER NOT NULL,
+    status SMALLINT NOT NULL -- (0) Canceled, (1) Avaliable, (2) Ended, (3) Sold out
 );
 
 -- =================================================================
@@ -111,8 +114,8 @@ CREATE TABLE organizers (
 CREATE TABLE orders (
     id INTEGER PRIMARY KEY,
     order_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    total_amount DECIMAL(10, 2) NOT NULL, -- Suitable for monetary values.
-    payment_status VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10, 2) NOT NULL, -- Total amount. Sum of all tickets purchased
+    payment_status SMALLINT NOT NULL, -- (0) Pending, (1) Paid, (2) Reimbursed
     client_id INTEGER NOT NULL,
     FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE RESTRICT -- Prevent deleting a user with orders.
 );
@@ -124,9 +127,10 @@ CREATE TABLE orders (
 CREATE TABLE tickets (
     id INTEGER PRIMARY KEY,
     qr_code VARCHAR(255), -- Stores a URL or the encoded string for the QR code.
-    status VARCHAR(20) NOT NULL, -- e.g., 'active', 'used', 'canceled'. Using a string is more readable.
-    purchase_price DECIMAL(10, 2) NOT NULL,
-    order_id INTEGER NOT NULL,
+    status SMALLINT NOT NULL, -- (0) Used, (1) Active, (2) Canceled, (3) Expired
+    purchase_price DECIMAL(10, 2) NOT NULL, -- Purchase price of 1 attendee
+    attendees INTEGER NOT NULL DEFAULT 1,
+    order_id INTEGER NOT NULL UNIQUE, -- One order can only contain one ticket
     event_id INTEGER NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE RESTRICT

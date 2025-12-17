@@ -130,7 +130,7 @@ export default function Home() {
       <p className="pb-8 pt-7 text-red-600 sticky top-0 text-center w-fit">
         Aquí poner opciones de filtrado.
       </p>
-      <main className="flex flex-col lg:flex-row w-full flex-wrap gap-6 justify-center items-center">
+      <main className="flex flex-col lg:flex-row w-full flex-wrap gap-6 justify-center items-center lg:items-start">
         {events.map((event) => (
           <EventCard key={event.id} {...event} />
         ))}

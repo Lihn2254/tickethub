@@ -36,6 +36,8 @@ public class EventController {
 
         try {
             List<EventDTO> filteredEvents = eventService.getEvents(genre, city, start, end);
+            //Sort events by date
+            //filteredEvents.stream().sort
             return ResponseEntity.ok(filteredEvents);
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,5 +1,8 @@
 package com.tickethub.services;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -61,6 +64,10 @@ public class EventService {
             // 3. Start date filter >=
             if (start != null) {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("startTime"), start));
+            } else { 
+                //If no start date is indicated, the default start date will be today.
+                ZonedDateTime zdt = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("startTime"), Date.from(zdt.toInstant())));
             }
 
             // 4. End date filter <=
@@ -76,6 +83,7 @@ public class EventService {
         List<Event> events = eventRepository.findAll(filteredEvents);
         return events.stream()
             .map(this::convertToDTO)
+            .sorted() //Sort by natural ordering of EventDTO
             .collect(Collectors.toList());
 
     } catch (Exception e) {
