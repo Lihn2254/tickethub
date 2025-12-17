@@ -48,30 +48,30 @@ INSERT INTO artists (id, name, description, genre, members, socials) VALUES
 -- =================================================================
 INSERT INTO events (id, name, flyer, genre, subtitle, description, city, address, start_time, price, max_attendees, avaliable_places, status) VALUES
 -- Past Events (Status 2 = Ended)
-(3, 'Retro Night 2025', '/flyers/retro_night.jpg', 'Pop', 'Back to the 80s', 'A night of nostalgia featuring the best hits of the 80s.', 'Culiacán', 'Casino de la Cultura', '2025-10-10', 300.00, 500, 0, 2),
-(4, 'Halloween Metal Bash', '/flyers/halloween_bash.jpg', 'Metal', 'Spooky heavy riffs', 'The loudest costume party in the city.', 'Culiacán', 'Underground Club', '2025-10-31', 450.00, 300, 0, 2),
+(3, 'Retro Night 2025', 'electronic_poster.jpg', 'Pop', 'Back to the 80s', 'A night of nostalgia featuring the best hits of the 80s.', 'Culiacán', 'Casino de la Cultura', '2025-10-10', 300.00, 500, 0, 2),
+(4, 'Halloween Metal Bash', 'metal_poster.jpg', 'Metal', 'Spooky heavy riffs', 'The loudest costume party in the city.', 'Culiacán', 'Underground Club', '2025-10-31', 450.00, 300, 0, 2),
 
 -- Upcoming Events (Status 1 = Available)
-(1, 'Rock Revival Tour', '/flyers/rock_revival.jpg', 'Rock', 'Classic rock anthems that never die.', 'Get ready to headbang! A lineup of legendary bands is here to play all the hits that shaped a generation.', 'Culiacán', 'Foro Tecate, Av. Federalismo', '2025-11-15', 500.00, 2000, 1500, 1),
-(2, 'Indie Folk Gathering', '/flyers/indie_folk.jpg', 'Indie', 'Heartfelt lyrics and rustic charm.', 'Discover your new favorite indie folk artists in an intimate and cozy setting.', 'Culiacán', 'Teatro Lince, Blvd. Rolando Arjona', '2025-12-05', 400.00, 800, 600, 1),
-(5, 'Winter Jazz Gala', '/flyers/winter_jazz.jpg', 'Jazz', 'Smooth sounds for cold nights', 'An elegant evening with the best jazz trios.', 'Culiacán', 'Teatro MIA', '2025-12-15', 800.00, 400, 350, 1),
-(6, 'Gran Baile de Año Nuevo', '/flyers/new_year.jpg', 'Banda', 'Welcome 2026', 'Celebrate the new year with Banda El Recuerdo.', 'Culiacán', 'Salón 53', '2025-12-31', 1500.00, 1000, 800, 1),
-(7, 'Indie Fest Vol. 4', '/flyers/indie_fest.jpg', 'Indie', 'Local talent showcase', 'Support local bands in this all-day festival.', 'Culiacán', 'Parque Las Riberas', '2026-01-15', 200.00, 5000, 4500, 1),
-(8, 'Techno Warehouse', '/flyers/techno.jpg', 'Techno', 'Rave until dawn', 'Underground electronic music experience.', 'Culiacán', 'Secret Location', '2026-01-20', 350.00, 200, 50, 1),
-(9, 'Norteño vs Sierreño', '/flyers/duel.jpg', 'Regional', 'The ultimate duel', 'Two styles, one stage.', 'Culiacán', 'Palenque', '2026-02-05', 600.00, 3000, 2500, 1),
-(10, 'Valentine Acoustic', '/flyers/valentine.jpg', 'Acoustic', 'Love is in the air', 'Romantic dinner and show.', 'Culiacán', 'Jardín Botánico', '2026-02-14', 1200.00, 100, 20, 1),
-(11, 'Rock in the Park', '/flyers/rock_park.jpg', 'Rock', 'Open air concert', 'Bring your blanket and enjoy the show.', 'Culiacán', 'Isla de Orabá', '2026-03-01', 0.00, 10000, 10000, 1),
-(12, 'Symphony of Spring', '/flyers/spring.jpg', 'Classical', 'Vivaldi and more', 'The Sinaloa Symphony welcomes spring.', 'Culiacán', 'Teatro Pablo de Villavicencio', '2026-03-21', 500.00, 1000, 800, 1),
-(13, 'Reggaeton Beach Party', '/flyers/beach.jpg', 'Reggaeton', 'Sun, sand, and beats', 'Transportation included to Altata.', 'Navolato', 'Altata Beach Club', '2026-04-05', 700.00, 1500, 1000, 1),
-(14, 'Metal Mayhem', '/flyers/mayhem.jpg', 'Metal', 'Moshpit guaranteed', 'Five bands, one night of destruction.', 'Culiacán', 'Estadio Universitario', '2026-04-20', 400.00, 5000, 4000, 1),
-(15, 'Synthwave Sunset', '/flyers/synth.jpg', 'Synth-Rock', 'Neon lights and vibes', 'A visual and auditory experience.', 'Culiacán', 'Roof Top Bar', '2026-05-10', 300.00, 150, 100, 1),
-(16, 'Blues & BBQ', '/flyers/blues.jpg', 'Blues', 'Good food, sad songs', 'All you can eat BBQ with live blues.', 'Culiacán', 'Ranch House', '2026-05-25', 900.00, 200, 150, 1),
-(17, 'Pop Icons Tribute', '/flyers/pop.jpg', 'Pop', 'Sing along', 'Tribute bands playing top 40 hits.', 'Culiacán', 'La 20', '2026-06-05', 250.00, 300, 200, 1),
-(18, 'Electronic Forest', '/flyers/forest.jpg', 'EDM', 'Dance in nature', 'Camping and music festival.', 'Imala', 'Imala Resort', '2026-06-20', 1800.00, 2000, 1800, 1),
-(19, 'Mariachi Gala', '/flyers/mariachi.jpg', 'Mariachi', 'Mexican Pride', 'A celebration of our traditions.', 'Culiacán', 'Plazuela Rosales', '2026-07-01', 0.00, 5000, 5000, 1),
-(20, 'Grunge Garage', '/flyers/grunge.jpg', 'Grunge', 'Flannel shirts welcome', 'Raw energy and loud amps.', 'Culiacán', 'Backyard Venue', '2026-07-15', 150.00, 100, 20, 1),
-(21, 'Summer Vibes', '/flyers/summer.jpg', 'Pop', 'Pool party', 'DJ sets and live pop acts.', 'Culiacán', 'Hotel Lucerna Pool', '2026-07-30', 600.00, 300, 250, 1),
-(22, 'The Grand Finale', '/flyers/finale.jpg', 'Rock', 'End of season', 'A massive concert to end the season.', 'Culiacán', 'Estadio Tomateros', '2026-08-15', 2000.00, 15000, 12000, 1);
+(1, 'Rock Revival Tour', 'rock_poster.jpg', 'Rock', 'Classic rock anthems that never die.', 'Get ready to headbang! A lineup of legendary bands is here to play all the hits that shaped a generation.', 'Culiacán', 'Foro Tecate, Av. Federalismo', '2025-11-15', 500.00, 2000, 1500, 1),
+(2, 'Indie Folk Gathering', 'indie_poster.jpg', 'Indie', 'Heartfelt lyrics and rustic charm.', 'Discover your new favorite indie folk artists in an intimate and cozy setting.', 'Culiacán', 'Teatro Lince, Blvd. Rolando Arjona', '2025-12-05', 400.00, 800, 600, 1),
+(5, 'Winter Jazz Gala', 'jazz_poster.jpg', 'Jazz', 'Smooth sounds for cold nights', 'An elegant evening with the best jazz trios.', 'Culiacán', 'Teatro MIA', '2025-12-15', 800.00, 400, 350, 1),
+(6, 'Gran Baile de Año Nuevo', 'acoustic_poster.jpg', 'Banda', 'Welcome 2026', 'Celebrate the new year with Banda El Recuerdo.', 'Culiacán', 'Salón 53', '2025-12-31', 1500.00, 1000, 800, 1),
+(7, 'Indie Fest Vol. 4', 'indie_poster.jpg', 'Indie', 'Local talent showcase', 'Support local bands in this all-day festival.', 'Culiacán', 'Parque Las Riberas', '2026-01-15', 200.00, 5000, 4500, 1),
+(8, 'Techno Warehouse', 'electronic_poster.jpg', 'Techno', 'Rave until dawn', 'Underground electronic music experience.', 'Culiacán', 'Secret Location', '2026-01-20', 350.00, 200, 50, 1),
+(9, 'Norteño vs Sierreño', 'acoustic_poster.jpg', 'Regional', 'The ultimate duel', 'Two styles, one stage.', 'Culiacán', 'Palenque', '2026-02-05', 600.00, 3000, 2500, 1),
+(10, 'Valentine Acoustic', 'acoustic_poster.jpg', 'Acoustic', 'Love is in the air', 'Romantic dinner and show.', 'Culiacán', 'Jardín Botánico', '2026-02-14', 1200.00, 100, 20, 1),
+(11, 'Rock in the Park', 'rock_poster.jpg', 'Rock', 'Open air concert', 'Bring your blanket and enjoy the show.', 'Culiacán', 'Isla de Orabá', '2026-03-01', 0.00, 10000, 10000, 1),
+(12, 'Symphony of Spring', 'acoustic_poster.jpg', 'Classical', 'Vivaldi and more', 'The Sinaloa Symphony welcomes spring.', 'Culiacán', 'Teatro Pablo de Villavicencio', '2026-03-21', 500.00, 1000, 800, 1),
+(13, 'Reggaeton Beach Party', 'reggaeton_poster.jpg', 'Reggaeton', 'Sun, sand, and beats', 'Transportation included to Altata.', 'Navolato', 'Altata Beach Club', '2026-04-05', 700.00, 1500, 1000, 1),
+(14, 'Metal Mayhem', 'metal_poster.jpg', 'Metal', 'Moshpit guaranteed', 'Five bands, one night of destruction.', 'Culiacán', 'Estadio Universitario', '2026-04-20', 400.00, 5000, 4000, 1),
+(15, 'Synthwave Sunset', 'electronic_poster.jpg', 'Synth-Rock', 'Neon lights and vibes', 'A visual and auditory experience.', 'Culiacán', 'Roof Top Bar', '2026-05-10', 300.00, 150, 100, 1),
+(16, 'Blues & BBQ', 'jazz_poster.jpg', 'Blues', 'Good food, sad songs', 'All you can eat BBQ with live blues.', 'Culiacán', 'Ranch House', '2026-05-25', 900.00, 200, 150, 1),
+(17, 'Pop Icons Tribute', 'indie_poster.jpg', 'Pop', 'Sing along', 'Tribute bands playing top 40 hits.', 'Culiacán', 'La 20', '2026-06-05', 250.00, 300, 200, 1),
+(18, 'Electronic Forest', 'electronic_poster.jpg', 'EDM', 'Dance in nature', 'Camping and music festival.', 'Imala', 'Imala Resort', '2026-06-20', 1800.00, 2000, 1800, 1),
+(19, 'Mariachi Gala', 'acoustic_poster.jpg', 'Mariachi', 'Mexican Pride', 'A celebration of our traditions.', 'Culiacán', 'Plazuela Rosales', '2026-07-01', 0.00, 5000, 5000, 1),
+(20, 'Grunge Garage', 'rock_poster.jpg', 'Grunge', 'Flannel shirts welcome', 'Raw energy and loud amps.', 'Culiacán', 'Backyard Venue', '2026-07-15', 150.00, 100, 20, 1),
+(21, 'Summer Vibes', 'indie_poster.jpg', 'Pop', 'Pool party', 'DJ sets and live pop acts.', 'Culiacán', 'Hotel Lucerna Pool', '2026-07-30', 600.00, 300, 250, 1),
+(22, 'The Grand Finale', 'rock_poster.jpg', 'Rock', 'End of season', 'A massive concert to end the season.', 'Culiacán', 'Estadio Tomateros', '2026-08-15', 2000.00, 15000, 12000, 1);
 
 -- =================================================================
 -- 3. CLIENTS (IDs 1-28)
