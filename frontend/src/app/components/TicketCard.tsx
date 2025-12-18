@@ -41,7 +41,7 @@ export default function TicketCard(ticket: Ticket) {
           <Image src={"/icons/qrcode.svg"} alt="qrcode" width={40} height={40} />
         </button>
         <button className="border-yellow border-3 p-1 rounded-2xl ml-2">
-          <Image src={"/icons/print.svg"} alt="print" width={40} height={40} />
+          <Image src={"/icons/download.svg"} alt="print" width={40} height={40} />
         </button>
       </div>
     </article>
