@@ -185,6 +185,28 @@ SELECT
 FROM
     organizers;
 
+-- =================================================================
+-- View to display all tickets ordered by client and order date
+-- =================================================================
+
+CREATE VIEW tickets_per_client AS
+ SELECT t.id,
+    t.qr_code,
+    t.status,
+    t.purchase_price,
+    t.attendees,
+    o.order_date,
+    o.total_amount,
+    o.payment_status,
+    o.client_id,
+    c.email,
+    c.username
+   FROM tickets t
+     JOIN orders o ON o.id = t.order_id
+     JOIN clients c ON c.id = o.client_id
+  ORDER BY c.id, o.order_date;
+
+
 --CREATE SEQUENCE user_id_seq;
 
 CREATE OR REPLACE FUNCTION set_current_registration_date()

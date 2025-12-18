@@ -21,7 +21,7 @@ record EventRequest(List<String> genre, List<String> city, Date start, Date end)
 @RequestMapping("/api/events")
 @CrossOrigin(origins = "http://localhost:3000")
 public class EventController {
-    public EventService eventService;
+    private EventService eventService;
 
     public EventController(EventService eventService) {
         this.eventService = eventService;
