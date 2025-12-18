@@ -310,4 +310,4 @@ Ensure the backend has CORS configured for the frontend URL in controllers:
 
 ## License
 
-Luego defino la licencia. •ᴗ•
+Luego defino la licencia. •ᴗ• 
