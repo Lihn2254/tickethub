@@ -1,5 +1,6 @@
 package com.tickethub.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
@@ -23,8 +24,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private Date orderDate;
-    private Double totalAmount;
-    private String paymentStatus;
+    private BigDecimal totalAmount;
+    private int paymentStatus;
     @ManyToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
