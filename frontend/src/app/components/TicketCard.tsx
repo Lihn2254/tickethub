@@ -1,8 +1,9 @@
 import Image from "next/image";
-import { Ticket } from "../types/ticketTypes";
+import { ApiTicket, Ticket } from "../types/ticketTypes";
 
 export default function TicketCard(ticket: Ticket) {
   const date = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
     month: "long",
     day: "numeric",
   }).format(ticket.event.startTime);
@@ -16,7 +17,7 @@ export default function TicketCard(ticket: Ticket) {
   return (
     <article className="bg-white border-2 rounded-2xl p-6 shadow-lg border-light-blue max-w-3xl h-fit flex flex-row">
       <Image
-        src={ticket.event.flyer.src}
+        src={`data:image/jpeg;base64,${ticket.event.flyer.img}`}
         alt={ticket.event.flyer.alt}
         width={150}
         height={150}
@@ -30,9 +31,9 @@ export default function TicketCard(ticket: Ticket) {
         </h1>
         <h3 className="text-lg">{ticket.event.location.city}</h3>
         <h2 className="funnel-text text-xl font-semibold pb-3 text-gray-700">
-          {date + " - " + time}
+          {date + " | " + time}
         </h2>
-        <p>Attendees: {` ${ticket.attendees}`}</p>
+        <p>Attendees: {ticket.attendees}</p>
       </div>
 
       {/* Buttons */}

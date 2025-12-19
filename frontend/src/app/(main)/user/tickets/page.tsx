@@ -1,142 +1,56 @@
 "use client";
 
 import TicketCard from "@/app/components/TicketCard";
-import { Ticket } from "@/app/types/ticketTypes";
+import { useAuth } from "@/app/context/AuthContext";
+import { getFlyerImages } from "@/app/services/events";
+import getTickets from "@/app/services/tickets";
+import { ApiTicket, Ticket } from "@/app/types/ticketTypes";
+import { mapApiTicketsToTickets, typeGuard } from "@/app/utils";
 import Image from "next/image";
-import { use, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function Tickets() {
   const [navItem, setNavItem] = useState(0);
-  const [status, setStatus] = useState(0);
+  const [allTickets, setAllTickets] = useState<Ticket[]>([]); 
+  const { user } = useAuth();
 
   const navItems = [
-    {
-      key: 0,
-      label: "Upcoming",
-      img: { src: "/icons/upcoming.svg", alt: "Upcoming" },
-    },
-    {
-      key: 1,
-      label: "Past",
-      img: { src: "/icons/upcoming.svg", alt: "Upcoming" },
-    },
-    {
-      key: 2,
-      label: "Canceled",
-      img: { src: "/icons/upcoming.svg", alt: "Upcoming" },
-    },
+    { key: 0, label: "Upcoming" },
+    { key: 1, label: "Past" },
+    { key: 2, label: "Canceled" },
   ];
 
-  const ticketList: Ticket[] = [
-    {
-      id: 12475,
-      event: {
-        flyer: { src: "/stock/indie_poster.jpg", alt: "Event flyer" },
-        id: 1,
-        name: "Jazz & Wine Night",
-        location: { city: "Culiacán", address: "Av. Francisco I. Madero 8763" },
-        startTime: new Date("December 17, 1995 17:00:00"),
-      },
-      qrcode: "qrcode",
-      status: 0,
-      attendees: 3,
-    },
-    {
-      id: 22457,
-      event: {
-        flyer: { src: "/stock/indie_poster.jpg", alt: "Event flyer" },
-        id: 1,
-        name: "Jazz & Wine Night",
-        location: { city: "Culiacán", address: "Av. Francisco I. Madero 8763" },
-        startTime: new Date("December 17, 1995 17:00:00"),
-      },
-      qrcode: "qrcode",
-      status: 0,
-      attendees: 3,
-    },
-    {
-      id: 32457,
-      event: {
-        flyer: { src: "/stock/indie_poster.jpg", alt: "Event flyer" },
-        id: 1,
-        name: "Jazz & Wine Night",
-        location: { city: "Culiacán", address: "Av. Francisco I. Madero 8763" },
-        startTime: new Date("December 17, 1995 17:00:00"),
-      },
-      qrcode: "qrcode",
-      status: 0,
-      attendees: 3,
-    },
-    {
-      id: 42457,
-      event: {
-        flyer: { src: "/stock/indie_poster.jpg", alt: "Event flyer" },
-        id: 1,
-        name: "Jazz & Wine Night",
-        location: { city: "Culiacán", address: "Av. Francisco I. Madero 8763" },
-        startTime: new Date("December 17, 1995 17:00:00"),
-      },
-      qrcode: "qrcode",
-      status: 0,
-      attendees: 3,
-    },
-    {
-      id: 52457,
-      event: {
-        flyer: { src: "/stock/indie_poster.jpg", alt: "Event flyer" },
-        id: 1,
-        name: "Jazz & Wine Night",
-        location: { city: "Culiacán", address: "Av. Francisco I. Madero 8763" },
-        startTime: new Date("December 17, 1995 17:00:00"),
-      },
-      qrcode: "qrcode",
-      status: 1,
-      attendees: 3,
-    },
-    {
-      id: 62457,
-      event: {
-        flyer: { src: "/stock/indie_poster.jpg", alt: "Event flyer" },
-        id: 1,
-        name: "Jazz & Wine Night",
-        location: { city: "Culiacán", address: "Av. Francisco I. Madero 8763" },
-        startTime: new Date("December 17, 1995 17:00:00"),
-      },
-      qrcode: "qrcode",
-      status: 1,
-      attendees: 3,
-    },
-    {
-      id: 72577,
-      event: {
-        flyer: { src: "/stock/indie_poster.jpg", alt: "Event flyer" },
-        id: 1,
-        name: "Jazz & Wine Night",
-        location: { city: "Culiacán", address: "Av. Francisco I. Madero 8763" },
-        startTime: new Date("December 17, 1995 17:00:00"),
-      },
-      qrcode: "qrcode",
-      status: 1,
-      attendees: 3,
-    },
-    {
-      id: 82457,
-      event: {
-        flyer: { src: "/stock/indie_poster.jpg", alt: "Event flyer" },
-        id: 1,
-        name: "Jazz & Wine Night",
-        location: { city: "Culiacán", address: "Av. Francisco I. Madero 8763" },
-        startTime: new Date("December 17, 1995 17:00:00"),
-      },
-      qrcode: "qrcode",
-      status: 2,
-      attendees: 3,
-    },
-  ];
+  useEffect(() => {
+    const loadTickets = async () => {
+      if (!user || user.accountType !== "client") return;
 
-  const handleClick = (key: number) => {
-    setNavItem(key);
-  };
+      const apiTickets = await getTickets(user);
+
+      if (apiTickets.length > 0) {
+        const flyerPaths = apiTickets.map((t) => t.event.flyerPath);
+        const eventFlyers = await getFlyerImages(flyerPaths);
+        
+        const mappedTickets = mapApiTicketsToTickets(apiTickets, eventFlyers);
+        
+        setAllTickets(mappedTickets); 
+      }
+    };
+
+    loadTickets();
+  }, [user]);
+
+  // 3. Automatically calculate the filtered list whenever 'allTickets' or 'navItem' changes.
+  // This replaces 'ticketList' state and the manual filterTickets function.
+  const filteredTickets = useMemo(() => {
+    if (navItem === 0) {
+      return allTickets.filter((ticket) => ticket.status === 1);
+    } else if (navItem === 1) {
+      return allTickets.filter((ticket) => ticket.status === 0 || ticket.status === 3);
+    } else if (navItem === 2) {
+      return allTickets.filter((ticket) => ticket.status === 2);
+    }
+    return [];
+  }, [allTickets, navItem]);
 
   return (
     <div className="flex min-h-145 max-h-210 overflow-hidden pt-5">
@@ -145,7 +59,7 @@ export default function Tickets() {
           {navItems.map((item) => (
             <li
               key={item.key}
-              onClick={() => handleClick(item.key)}
+              onClick={() => setNavItem(item.key)} 
               className="hover:bg-gray-200 rounded-2xl options-list funnel-text font-light"
             >
               <button
@@ -164,9 +78,7 @@ export default function Tickets() {
       </nav>
 
       <section className="flex flex-col gap-6 p-5 overflow-y-scroll">
-        {ticketList
-          .filter((ticket) => ticket.status === navItem)
-          .map((ticket) => (
+        {filteredTickets.map((ticket) => (
             <TicketCard key={ticket.id} {...ticket}></TicketCard>
           ))}
       </section>

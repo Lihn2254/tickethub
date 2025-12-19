@@ -14,7 +14,7 @@ import lombok.Setter;
 public class TicketEventDTO {
     private int id;
     private String name;
-    private String flyer;
+    private String flyerPath;
     private String city;
     private String address;
     private Date startTime;
