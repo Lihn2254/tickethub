@@ -10,7 +10,5 @@ export default function User() {
                 {user?.email}
             </ul>
         </div>
-        
-
     );
 }
