@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.tickethub.domain.Organizer;
 
-public interface OrganizerRepository extends JpaRepository<Organizer, Long>{
+public interface OrganizerRepository extends JpaRepository<Organizer, Integer>{
     // @Query("""
     //         select o
     //         from organizers o

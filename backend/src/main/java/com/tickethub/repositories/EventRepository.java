@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import com.tickethub.domain.Event;
 
-public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
+public interface EventRepository extends JpaRepository<Event, Integer>, JpaSpecificationExecutor<Event> {
 }
