@@ -1,6 +1,6 @@
-import { Xevent, ApiEvent, ApiFlyer } from "./types/eventTypes";
-import { ApiTicket, Ticket } from "./types/ticketTypes";
-import { User } from "./types/userTypes";
+import { Xevent, ApiEvent, ApiFlyer } from "../types/eventTypes";
+import { ApiTicket, Ticket } from "../types/ticketTypes";
+import { User } from "../types/userTypes";
 
 //Type guard
 export function typeGuard(user: User, clientFn: () => void, organizerFn: () => void): void {

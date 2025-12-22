@@ -2,7 +2,7 @@
 
 import { useRouter, usePathname } from 'next/navigation';
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { typeGuard } from '../utils';
+import { typeGuard } from '../utils/utils';
 import { User } from '../types/userTypes';
 
 interface AuthContextType {

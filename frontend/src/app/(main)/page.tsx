@@ -5,7 +5,7 @@ import EventCard from "../components/EventCard";
 import { useEffect, useState } from "react";
 import getEvents, { getFlyerImages } from "../services/events";
 import { Xevent } from "../types/eventTypes";
-import { mapApiEventsToXevents } from "../utils";
+import { mapApiEventsToXevents } from "../utils/utils";
 
 export default function Home() {
   const [events, setEvents] = useState<Xevent[]>([]);

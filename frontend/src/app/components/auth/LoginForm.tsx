@@ -6,7 +6,7 @@ import { useState } from "react";
 import { login } from "../../services/auth";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
-import { typeGuard } from "@/app/utils";
+import { typeGuard } from "@/app/utils/utils";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");

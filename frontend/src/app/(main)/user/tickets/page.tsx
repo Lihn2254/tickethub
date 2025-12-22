@@ -5,7 +5,7 @@ import { useAuth } from "@/app/context/AuthContext";
 import { getFlyerImages } from "@/app/services/events";
 import getTickets from "@/app/services/tickets";
 import { ApiTicket, Ticket } from "@/app/types/ticketTypes";
-import { mapApiTicketsToTickets, typeGuard } from "@/app/utils";
+import { mapApiTicketsToTickets, typeGuard } from "@/app/utils/utils";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
