@@ -1,7 +1,42 @@
 import Image from "next/image";
 import { ApiTicket, Ticket } from "../types/ticketTypes";
+import { useState, useEffect } from "react";
+import Modal from "./Modal";
+import generateQRCode from "../utils/qrcode";
+
+function QRmodal({
+  ticketId,
+  isOpen,
+  onClose,
+}: {
+  ticketId: number;
+  isOpen: boolean;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    if (isOpen) {
+      // setTimeout to ensure the canvas is rendered before calling generateQRCode
+      const timer = setTimeout(() => {
+        generateQRCode(ticketId);
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, ticketId]);
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="QR Code"
+    >
+      <canvas id="qrcode-canvas" className="p-1 w-full h-full"></canvas>
+    </Modal>
+  );
+}
 
 export default function TicketCard(ticket: Ticket) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const date = new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "long",
@@ -12,7 +47,9 @@ export default function TicketCard(ticket: Ticket) {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
-  }).format(ticket.event.startTime.getDate());
+  }).format(ticket.event.startTime);
+
+  const onModalClose = () => setIsModalOpen(false);
 
   return (
     <article className="bg-white border-2 rounded-2xl p-6 shadow-lg border-light-blue max-w-3xl h-fit flex flex-row">
@@ -38,13 +75,32 @@ export default function TicketCard(ticket: Ticket) {
 
       {/* Buttons */}
       <div className="ml-10">
-        <button className="border-yellow border-3 p-1 rounded-2xl">
-          <Image src={"/icons/qrcode.svg"} alt="qrcode" width={40} height={40} />
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="border-yellow border-3 p-1 rounded-2xl"
+        >
+          <Image
+            src={"/icons/qrcode.svg"}
+            alt="qrcode"
+            width={40}
+            height={40}
+          />
         </button>
         <button className="border-yellow border-3 p-1 rounded-2xl ml-2">
-          <Image src={"/icons/download.svg"} alt="print" width={40} height={40} />
+          <Image
+            src={"/icons/download.svg"}
+            alt="print"
+            width={40}
+            height={40}
+          />
         </button>
       </div>
+
+      <QRmodal
+        ticketId={ticket.id}
+        isOpen={isModalOpen}
+        onClose={onModalClose}
+      />
     </article>
   );
 }
