@@ -47,7 +47,7 @@ export default function TicketCard(ticket: Ticket) {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
-  }).format(ticket.event.startTime);
+  }).format(ticket.event.startTime.getDate());
 
   const onModalClose = () => setIsModalOpen(false);
 
