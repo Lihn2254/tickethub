@@ -11,7 +11,7 @@ import { useEffect, useMemo, useState } from "react";
 
 export default function Tickets() {
   const [navItem, setNavItem] = useState(0);
-  const [allTickets, setAllTickets] = useState<Ticket[]>([]); 
+  const [allTickets, setAllTickets] = useState<Ticket[]>([]);
   const { user } = useAuth();
 
   const navItems = [
@@ -29,10 +29,10 @@ export default function Tickets() {
       if (apiTickets.length > 0) {
         const flyerPaths = apiTickets.map((t) => t.event.flyerPath);
         const eventFlyers = await getFlyerImages(flyerPaths);
-        
+
         const mappedTickets = mapApiTicketsToTickets(apiTickets, eventFlyers);
-        
-        setAllTickets(mappedTickets); 
+
+        setAllTickets(mappedTickets);
       }
     };
 
@@ -45,7 +45,9 @@ export default function Tickets() {
     if (navItem === 0) {
       return allTickets.filter((ticket) => ticket.status === 1);
     } else if (navItem === 1) {
-      return allTickets.filter((ticket) => ticket.status === 0 || ticket.status === 3);
+      return allTickets.filter(
+        (ticket) => ticket.status === 0 || ticket.status === 3
+      );
     } else if (navItem === 2) {
       return allTickets.filter((ticket) => ticket.status === 2);
     }
@@ -59,7 +61,7 @@ export default function Tickets() {
           {navItems.map((item) => (
             <li
               key={item.key}
-              onClick={() => setNavItem(item.key)} 
+              onClick={() => setNavItem(item.key)}
               className="hover:bg-gray-200 rounded-2xl options-list funnel-text font-light"
             >
               <button
@@ -77,10 +79,18 @@ export default function Tickets() {
         </ul>
       </nav>
 
-      <section className="flex flex-col gap-6 p-5 overflow-y-scroll">
-        {filteredTickets.map((ticket) => (
+      <section className="flex flex-col gap-6 p-5 overflow-y-scroll w-full justify-center">
+        {filteredTickets.length > 1 ? (
+          filteredTickets.map((ticket) => (
             <TicketCard key={ticket.id} {...ticket}></TicketCard>
-          ))}
+          ))
+        ) : (
+          <div className="flex flex-col items-center self-auto w-full text-3xl text-gray-400">
+            <h1 className="pb-3">No tickets were found!</h1>
+            <h2>Why don't you take a look at our events?</h2>
+            <h1 className="mt-10 text-9xl">;D</h1>
+          </div>
+        )}
       </section>
     </div>
   );

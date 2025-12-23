@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import { stringify } from "querystring";
 import { Xevent } from "../types/eventTypes";
+import { useEffect } from "react";
 
 export default function EventCard(event: Xevent) {
   const date = new Intl.DateTimeFormat("en-US", {
@@ -18,12 +19,35 @@ export default function EventCard(event: Xevent) {
   }).format(event.startTime.getDate());
 
   const handleClick = () => {
-    console.log('Nya! X3 You clicked on me!');
-  }
+    console.log("Nya! X3 You clicked on me!");
+  };
+
+  const isSoldOut = () => {
+    if (event.avaliablePlaces == 0) {
+      return (
+        <button
+          type="button"
+          className="border-gray-400 border-2 text-gray-400 font-bold mt-5 py-2 px-4 rounded-lg hover:bg-primary-hover self-stretch"
+        >
+          Sold Out!
+        </button>
+      );
+    } else {
+      return (
+        <button
+          type="button"
+          onClick={handleClick}
+          className="border-yellow hover:border-darker-blue hover:text-darker-blue transition-all duration-300 hover:scale-105 border-2 text-yellow font-bold mt-5 py-2 px-4 rounded-lg hover:bg-primary-hover self-stretch"
+        >
+          Buy Tickets
+        </button>
+      );
+    }
+  };
 
   return (
     // 2xl:w-1/2
-    <article className="bg-white border-2 rounded-2xl p-6 shadow-lg border-light-blue w-full sm:w-9/12 md:w-7/12 lg:w-5/12 2xl:w-4/12 h-fit"> 
+    <article className="bg-white border-2 rounded-2xl p-6 shadow-lg border-light-blue w-full sm:w-9/12 md:w-7/12 lg:w-5/12 2xl:w-4/12 h-fit">
       <h1 className="text-3xl font-bold text-blue mb-6">{event.name}</h1>
       <div className="flex md:flex-row flex-col gap-6">
         <div className="shrink-0 self-center">
@@ -54,9 +78,7 @@ export default function EventCard(event: Xevent) {
               </li>
             ))}
           </ul>
-          <button type="button" onClick={handleClick} className="border-yellow hover:border-darker-blue hover:text-darker-blue transition-all duration-300 hover:scale-105 border-2 text-yellow font-bold mt-5 py-2 px-4 rounded-lg hover:bg-primary-hover self-stretch">
-            Buy Tickets
-          </button>
+          {isSoldOut()}
         </div>
       </div>
     </article>

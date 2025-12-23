@@ -28,16 +28,14 @@ public class EventController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EventDTO>> getEvents(@RequestParam(name = "genre", required = false) List<String> genre,
-            @RequestParam(name = "city", required = false) List<String> city,
-            @RequestParam(name = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start,
-            @RequestParam(name = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end) {
+    public ResponseEntity<List<EventDTO>> getEvents(@RequestParam(required = false) List<String> genre,
+            @RequestParam(required = false) List<String> city,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end) {
         System.out.println("Fetch request for events with filters: " + genre + "; " + city + "; " + start + "; " + end);
 
         try {
             List<EventDTO> filteredEvents = eventService.getEvents(genre, city, start, end);
-            //Sort events by date
-            //filteredEvents.stream().sort
             return ResponseEntity.ok(filteredEvents);
         } catch (Exception e) {
             e.printStackTrace();
