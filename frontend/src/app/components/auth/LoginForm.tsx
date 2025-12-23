@@ -9,7 +9,7 @@ import { useAuth } from "../../context/AuthContext";
 import { typeGuard } from "@/app/utils/utils";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
+  const [credentials, setCredentials] = useState(""); //Email or username
   const [password, setPassword] = useState("");
   const [emptyFields, setEmptyFields] = useState(false);
   const [error, setError] = useState("");
@@ -23,25 +23,30 @@ export default function LoginForm() {
     setError("");
     setSuccess("");
 
-    if (email.trim() == "" || password.trim() == "") {
+    if (credentials.trim() == "" || password.trim() == "") {
       setEmptyFields(true);
       return;
     }
 
-    if (
-      !(
-        email.includes("@gmail.com") ||
-        email.includes("@hotmail.com") ||
-        email.includes("@outlook.es") ||
-        email.includes("@email.com")
+    //Verify a valid email address. Perhaps in could be done with regular expressions instead.
+    if (credentials.includes("@")) {
+      if (
+        !(
+          credentials.includes("@gmail.com") ||
+          credentials.includes("@hotmail.com") ||
+          credentials.includes("@outlook.es") ||
+          credentials.includes("@email.com")
+        )
       )
-    ) {
       alert("Please enter a valid email address.");
+      return;
+    } else if (credentials.length < 1) {
+      alert("Please enter a valid username address.");
       return;
     }
 
     try {
-      const user = await login(email, password);
+      const user = await login(credentials, password);
 
       typeGuard(
         user,
@@ -82,7 +87,9 @@ export default function LoginForm() {
           <span className="text-3xl font-bold text-blue ml-2">Log In</span>
         </div>
         {emptyFields ? (
-          <span className="text-red-500 pb-2">Email or password cannot be empty!</span>
+          <span className="text-red-500 pb-2">
+            Email or password cannot be empty!
+          </span>
         ) : null}
         <label className="inputLabel">Username or email address</label>
         <input
@@ -90,10 +97,10 @@ export default function LoginForm() {
           type="text"
           placeholder="Username / Email"
           className="inputForm"
-          value={email}
+          value={credentials}
           onChange={(e) => {
             setEmptyFields(false);
-            setEmail(e.target.value);
+            setCredentials(e.target.value);
           }}
         />
         <div className="relative mb-1">

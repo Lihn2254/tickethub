@@ -16,9 +16,15 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User authenticate(String email, String password) {
+    public User authenticate(String credentials, String password) {
         try {
-            User tmpUser = userRepository.findByEmail(email);
+            User tmpUser;
+
+            if (credentials.contains("@")) {
+                tmpUser = userRepository.findByEmail(credentials);
+            } else {
+                tmpUser = userRepository.findByUsername(credentials);
+            }
 
             if (!(tmpUser == null)) {
                 if (tmpUser.getPassword().equals(password)) {
