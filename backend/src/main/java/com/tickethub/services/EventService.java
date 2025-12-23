@@ -104,6 +104,9 @@ public class EventService {
         dto.setAddress(event.getAddress());
         dto.setStartTime(event.getStartTime());
         dto.setPrice(event.getPrice());
+        dto.setAvaliablePlaces(event.getAvaliablePlaces());
+        dto.setMaxAttendees(event.getMaxAttendees());
+        dto.setStatus(event.getStatus());
         
         // Convert organizers to OrganizerDTOs (only id and name)
         if (event.getOrganizers() != null) {
