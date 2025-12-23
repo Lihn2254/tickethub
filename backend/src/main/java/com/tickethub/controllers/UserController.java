@@ -14,11 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tickethub.domain.User;
 import com.tickethub.services.UserService;
 
-record LoginRequest(String email, String password) {
+record LoginRequest(String credentials, String password) { //credentials refers to either a username or email, couldn't find a better word
 }
-
-record singleStringRequest(String text) {
-} // Email || username
 
 record RegisterRequest(int userId, String email, String username, String password, Date registrationDate,
         String userType) {
@@ -36,9 +33,9 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest) {
-        System.out.println("Login request received for email: " + loginRequest.email());
+        System.out.println("Login request received for: " + loginRequest.credentials());
 
-        User authenticatedUser = userService.authenticate(loginRequest.email(), loginRequest.password());
+        User authenticatedUser = userService.authenticate(loginRequest.credentials(), loginRequest.password());
 
         if (authenticatedUser == null) {
             System.out.println("User was not found.");
@@ -50,10 +47,10 @@ public class UserController {
     }
 
     @PostMapping("/check-duplicate")
-    public ResponseEntity<Boolean> checkDuplicate(@RequestBody singleStringRequest request) {
-        Boolean isAvaliable = userService.isCredentialAvaliable(request.text());
+    public ResponseEntity<Boolean> checkDuplicate(@RequestBody String identifier) { //Email or Username
+        Boolean isAvaliable = userService.isCredentialAvaliable(identifier);
 
-        System.out.println(request.text() + " is avaliable: " + isAvaliable);
+        System.out.println(identifier + " is avaliable: " + isAvaliable);
 
         return ResponseEntity.ok(isAvaliable);
     }
