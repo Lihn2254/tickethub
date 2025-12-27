@@ -1,6 +1,6 @@
 package com.tickethub.dto.ticket;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,5 +17,5 @@ public class TicketEventDTO {
     private String flyerPath;
     private String city;
     private String address;
-    private Date startTime;
+    private OffsetDateTime startTime;
 }

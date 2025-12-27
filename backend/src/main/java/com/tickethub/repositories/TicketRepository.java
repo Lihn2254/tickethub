@@ -1,6 +1,6 @@
 package com.tickethub.repositories;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,7 +21,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
         WHERE t.status = 1 
         AND t.event.startTime < :cutoffTime
     """)
-    int expireOldTickets(@Param("cutoffTime") Date cutoffTime);
+    int expireOldTickets(@Param("cutoffTime") OffsetDateTime cutoffTime);
     
     List<Ticket> findByOrder_Client_Id(Long clientId);
 }

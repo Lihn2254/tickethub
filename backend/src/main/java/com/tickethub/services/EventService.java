@@ -1,10 +1,8 @@
 package com.tickethub.services;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +25,7 @@ public class EventService {
         this.eventRepository = eventRepository;
     }
 
-    public List<EventDTO> getEvents(List<String> genres, List<String> cities, Date start, Date end) throws Exception {
+    public List<EventDTO> getEvents(List<String> genres, List<String> cities, OffsetDateTime start, OffsetDateTime end) throws Exception {
     try {
         Specification<Event> filteredEvents = (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -66,8 +64,8 @@ public class EventService {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("startTime"), start));
             } else { 
                 //If no start date is indicated, the default start date will be today.
-                ZonedDateTime zdt = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("startTime"), Date.from(zdt.toInstant())));
+                OffsetDateTime todayStart = LocalDate.now().atStartOfDay().atOffset(OffsetDateTime.now().getOffset());
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("startTime"), todayStart));
             }
 
             // 4. End date filter <=

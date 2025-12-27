@@ -1,7 +1,7 @@
 package com.tickethub.domain;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,11 +22,24 @@ import lombok.NoArgsConstructor;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private Date orderDate;
+    private Integer id;
+    private OffsetDateTime orderDate;
     private BigDecimal totalAmount;
     private int paymentStatus;
     @ManyToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
+
+    public Order (BigDecimal totalAmount, int paymentStatus, Client client) {
+        this.totalAmount = totalAmount;
+        this.paymentStatus = paymentStatus;
+        this.client = client;
+    }
+
+    public Order (Integer id, BigDecimal totalAmount, int paymentStatus, Client client) {
+        this.id = id;
+        this.totalAmount = totalAmount;
+        this.paymentStatus = paymentStatus;
+        this.client = client;
+    }
 }

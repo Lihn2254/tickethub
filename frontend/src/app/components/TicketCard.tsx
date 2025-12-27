@@ -37,17 +37,17 @@ function QRmodal({
 export default function TicketCard(ticket: Ticket) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const date = new Intl.DateTimeFormat("en-US", {
+  const date = ticket.event.startTime.toLocaleString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
-  }).format(ticket.event.startTime);
+  });
 
-  const time = new Intl.DateTimeFormat("en-US", {
+  const time = ticket.event.startTime.toLocaleString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
-  }).format(ticket.event.startTime.getDate());
+  });
 
   const onModalClose = () => setIsModalOpen(false);
 

@@ -1,6 +1,6 @@
 package com.tickethub.controllers;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tickethub.dto.EventDTO;
 import com.tickethub.services.EventService;
 
-record EventRequest(List<String> genre, List<String> city, Date start, Date end) {
+record EventRequest(List<String> genre, List<String> city, OffsetDateTime start, OffsetDateTime end) {
 }
 
 @RestController
@@ -30,8 +30,8 @@ public class EventController {
     @GetMapping
     public ResponseEntity<List<EventDTO>> getEvents(@RequestParam(required = false) List<String> genre,
             @RequestParam(required = false) List<String> city,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end) {
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime start,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime end) {
         System.out.println("Fetch request for events with filters: " + genre + "; " + city + "; " + start + "; " + end);
 
         try {

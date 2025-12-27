@@ -6,17 +6,17 @@ import { Xevent } from "../types/eventTypes";
 import { useEffect } from "react";
 
 export default function EventCard(event: Xevent) {
-  const date = new Intl.DateTimeFormat("en-US", {
+  const date = event.startTime.toLocaleString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
-  }).format(event.startTime);
+  });
 
-  const time = new Intl.DateTimeFormat("en-US", {
+  const time = event.startTime.toLocaleString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
-  }).format(event.startTime.getDate());
+  });
 
   const handleClick = () => {
     console.log("Nya! X3 You clicked on me!");
@@ -27,6 +27,7 @@ export default function EventCard(event: Xevent) {
       return (
         <button
           type="button"
+          disabled={true}
           className="border-gray-400 border-2 text-gray-400 font-bold mt-5 py-2 px-4 rounded-lg hover:bg-primary-hover self-stretch"
         >
           Sold Out!

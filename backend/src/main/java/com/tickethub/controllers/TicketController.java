@@ -23,7 +23,7 @@ public class TicketController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TicketDTO>> getTickets(@RequestParam (name = "client_id", required = true) Long client_id) {
+    public ResponseEntity<List<TicketDTO>> getTickets(@RequestParam (required = true) Long client_id) {
         try {
             if (client_id == null) throw new IllegalArgumentException("Client ID cannot be null.");
 

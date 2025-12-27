@@ -7,6 +7,7 @@ import getTickets from "@/app/services/tickets";
 import { ApiTicket, Ticket } from "@/app/types/ticketTypes";
 import { mapApiTicketsToTickets, typeGuard } from "@/app/utils/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 export default function Tickets() {
@@ -87,7 +88,11 @@ export default function Tickets() {
         ) : (
           <div className="flex flex-col items-center self-auto w-full text-3xl text-gray-400">
             <h1 className="pb-3">No tickets were found!</h1>
-            <h2>Why don't you take a look at our events?</h2>
+            <h2>
+              Why don't you take a look at {" "}
+              <Link href={"http://localhost:3000"} className="text-blue-400">our events</Link>
+              ?
+            </h2>
             <h1 className="mt-10 text-9xl">;D</h1>
           </div>
         )}
