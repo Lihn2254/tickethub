@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { stringify } from "querystring";
 import { Xevent } from "../types/eventTypes";
-import { useEffect } from "react";
+import { convertLocationToSearchParam } from "../utils/utils";
 
 export default function EventCard(event: Xevent) {
   const date = event.startTime.toLocaleString("en-US", {
@@ -61,10 +60,18 @@ export default function EventCard(event: Xevent) {
           />
         </div>
         <div className="flex flex-col w-full">
-          <h3 className="text-lg">{event.location.city}</h3>
-          <h2 className="funnel-text text-xl font-semibold pb-3 text-gray-700">
-            {date + " | " + time}
-          </h2>
+          <a
+            href={`https://www.google.com/maps/search/${convertLocationToSearchParam(
+              event.location.city,
+              event.location.address
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-lg hover:underline"
+          >{`${event.location.city} — ${event.location.address}`}</a>
+          <span className="funnel-text text-xl font-semibold pb-3 text-gray-700">
+            {date + " - " + time}
+          </span>
           {/* <h2 className="text-xl font-semibold text-gray-700">
             {event.subtitle}
           </h2>

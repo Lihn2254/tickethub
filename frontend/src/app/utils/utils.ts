@@ -16,6 +16,10 @@ export function typeGuard(user: User, clientFn: () => void, organizerFn: () => v
     }
 }
 
+export const convertLocationToSearchParam = (city: string, address: string) => {
+    return address.includes(',') ? `${city} ${address.substring(0, address.indexOf(','))}`.split(" ").join("+") : `${city} ${address}`.split(" ").join("+");
+  };
+
 // Map ApiEvent to Xevent
 export function mapApiEventsToXevents(apiEvents: ApiEvent[], apiFlyers: ApiFlyer[]): Xevent[] {
   return apiEvents.map((event, index) => {
