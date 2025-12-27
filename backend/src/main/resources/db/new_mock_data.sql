@@ -207,4 +207,10 @@ INSERT INTO tickets (qr_code, status, purchase_price, attendees, order_id, event
 ('qr_ord23', 1, 600.00, 2, 23, 21),
 ('qr_ord24', 1, 2000.00, 2, 24, 22);
 
+
+-- Update to Events to mark two events as SOLD OUT
+UPDATE events
+SET avaliable_places = 0, status = 3
+WHERE ID IN (7, 8);
+
 -- End of Script
