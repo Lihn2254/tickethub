@@ -2,22 +2,29 @@ package com.tickethub.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.tickethub.domain.Client;
 import com.tickethub.domain.Event;
 import com.tickethub.domain.Order;
 import com.tickethub.domain.Ticket;
+import com.tickethub.dto.OrderDTO;
 import com.tickethub.dto.TicketDTO;
 import com.tickethub.dto.ticket.TicketClientDTO;
 import com.tickethub.dto.ticket.TicketEventDTO;
 import com.tickethub.dto.ticket.TicketOrderDTO;
 import com.tickethub.repositories.TicketRepository;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class TicketService {
     private TicketRepository ticketRepository;
+    private OrderService orderService;
 
     public TicketService(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
@@ -41,12 +48,20 @@ public class TicketService {
         }
     }
 
+    public Ticket createTicket(int clientId, int eventId, int attendees) {
+        Order order = orderService.createOrder(clientId, eventId, attendees);
+
+        Ticket ticket = new Ticket();
+
+        return null;
+    }
+
     private TicketDTO convertToDTO(Ticket ticket) {
         TicketDTO dto = new TicketDTO();
 
         dto.setId(ticket.getId());
         dto.setStatus(ticket.getStatus());
-        dto.setQrCode(ticket.getQrcode());
+        //dto.setQrCode(ticket.getQrcode());
         dto.setPurchasePrice(ticket.getPurchasePrice());
         dto.setAttendees(ticket.getAttendees());
 

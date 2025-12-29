@@ -6,7 +6,6 @@ import { getFlyerImages } from "@/app/services/events";
 import getTickets from "@/app/services/tickets";
 import { ApiTicket, Ticket } from "@/app/types/ticketTypes";
 import { mapApiTicketsToTickets, typeGuard } from "@/app/utils/utils";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
@@ -40,8 +39,7 @@ export default function Tickets() {
     loadTickets();
   }, [user]);
 
-  // 3. Automatically calculate the filtered list whenever 'allTickets' or 'navItem' changes.
-  // This replaces 'ticketList' state and the manual filterTickets function.
+  // Automatically calculate the filtered list whenever 'allTickets' or 'navItem' changes.
   const filteredTickets = useMemo(() => {
     if (navItem === 0) {
       return allTickets.filter((ticket) => ticket.status === 1);

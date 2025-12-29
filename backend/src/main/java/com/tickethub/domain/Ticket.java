@@ -26,8 +26,8 @@ public class Ticket {
     private int id;
     private int attendees;
     private int status;
-    @Column(name = "qr_code")
-    private String qrcode;
+    //@Column(name = "qr_code")
+    //private String qrcode;
     private BigDecimal purchasePrice;
     @OneToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id")
@@ -35,4 +35,6 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "event_id", referencedColumnName = "id")
     private Event event;
+
+
 }

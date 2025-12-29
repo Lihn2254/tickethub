@@ -61,7 +61,7 @@ export function mapApiTicketsToTickets(apiTickets: ApiTicket[], apiFlyers: ApiFl
     return {
       id: ticket.id,
       status: ticket.status,
-      qrCode: ticket.qrCode,
+      //qrCode: ticket.qrCode,
       purchasePrice: ticket.purchasePrice,
       attendees: ticket.attendees,
       order: {

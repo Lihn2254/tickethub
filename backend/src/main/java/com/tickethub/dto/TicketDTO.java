@@ -17,7 +17,7 @@ import lombok.Setter;
 public class TicketDTO implements Comparable<TicketEventDTO>{
     private int id;
     private int status;
-    private String qrCode;
+    //private String qrCode;
     private BigDecimal purchasePrice;
     private int attendees;
 
