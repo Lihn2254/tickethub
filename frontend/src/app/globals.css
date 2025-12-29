@@ -79,7 +79,7 @@ body {
   }
 
   .options-list{
-    @apply pl-5 pr-5 pt-3 pb-3;
+    @apply px-5 py-3;
   }
 }
 
