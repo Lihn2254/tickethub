@@ -35,11 +35,4 @@ public class Order {
         this.paymentStatus = paymentStatus;
         this.client = client;
     }
-
-    public Order (Integer id, BigDecimal totalAmount, int paymentStatus, Client client) {
-        this.id = id;
-        this.totalAmount = totalAmount;
-        this.paymentStatus = paymentStatus;
-        this.client = client;
-    }
 }

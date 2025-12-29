@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tickethub.domain.Order;
+import com.tickethub.dto.OrderDTO;
 import com.tickethub.services.OrderService;
 
 record OrderRequest (int clientId, int eventId, int attendees) {}
@@ -24,18 +25,18 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("")
-    public ResponseEntity<Order> createOrder(@RequestBody OrderRequest orderRequest) {
-        try {
-            Order order = orderService.createOrder(orderRequest.clientId(), orderRequest.eventId(), orderRequest.attendees());
+    // @PostMapping("")
+    // public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderRequest orderRequest) {
+    //     try {
+    //         OrderDTO order = orderService.createOrder(orderRequest.clientId(), orderRequest.eventId(), orderRequest.attendees());
 
-            return ResponseEntity.ok(order);
-        } catch (NoSuchElementException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(404).build(); //Not found
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(500).build(); //Internal server error
-        }
-    }
+    //         return ResponseEntity.ok(order);
+    //     } catch (NoSuchElementException e) {
+    //         System.err.println(e.getMessage());
+    //         return ResponseEntity.status(404).build(); //Not found
+    //     } catch (Exception e) {
+    //         System.err.println(e.getMessage());
+    //         return ResponseEntity.status(500).build(); //Internal server error
+    //     }
+    // }
 }

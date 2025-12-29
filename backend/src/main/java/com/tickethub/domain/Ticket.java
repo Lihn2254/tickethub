@@ -35,6 +35,4 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "event_id", referencedColumnName = "id")
     private Event event;
-
-
 }

@@ -2,20 +2,17 @@ package com.tickethub.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.tickethub.domain.Client;
 import com.tickethub.domain.Event;
 import com.tickethub.domain.Order;
 import com.tickethub.domain.Ticket;
-import com.tickethub.dto.OrderDTO;
 import com.tickethub.dto.TicketDTO;
 import com.tickethub.dto.ticket.TicketClientDTO;
 import com.tickethub.dto.ticket.TicketEventDTO;
 import com.tickethub.dto.ticket.TicketOrderDTO;
+import com.tickethub.repositories.EventRepository;
 import com.tickethub.repositories.TicketRepository;
 
 import lombok.AllArgsConstructor;
@@ -24,11 +21,8 @@ import lombok.AllArgsConstructor;
 @Service
 public class TicketService {
     private TicketRepository ticketRepository;
+    private EventRepository eventRepository;
     private OrderService orderService;
-
-    public TicketService(TicketRepository ticketRepository) {
-        this.ticketRepository = ticketRepository;
-    }
 
     public List<TicketDTO> getTicketsByClient(Long clientId) {
         try {
@@ -49,9 +43,15 @@ public class TicketService {
     }
 
     public Ticket createTicket(int clientId, int eventId, int attendees) {
+        Event event = eventRepository.findById(eventId).get();
+        //The order must be created first as Ticket references an Order
         Order order = orderService.createOrder(clientId, eventId, attendees);
 
-        Ticket ticket = new Ticket();
+        if (order != null) {
+            Ticket ticket = new Ticket();
+        }
+
+        
 
         return null;
     }
