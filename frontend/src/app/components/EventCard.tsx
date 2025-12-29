@@ -27,7 +27,7 @@ export default function EventCard(event: Xevent) {
         <button
           type="button"
           disabled={true}
-          className="border-gray-400 border-2 text-gray-400 font-bold mt-5 py-2 px-4 rounded-lg hover:bg-primary-hover self-stretch"
+          className="border-gray-400 border-2 text-gray-400 font-bold mt-5 py-3 px-4 rounded-lg hover:bg-primary-hover self-stretch"
         >
           Sold Out!
         </button>
@@ -37,9 +37,9 @@ export default function EventCard(event: Xevent) {
         <button
           type="button"
           onClick={handleClick}
-          className="border-yellow hover:border-darker-blue hover:text-darker-blue transition-all duration-300 hover:scale-105 border-2 text-yellow font-bold mt-5 py-2 px-4 rounded-lg hover:bg-primary-hover self-stretch"
+          className="border-yellow hover:border-darker-blue hover:text-darker-blue transition-all duration-300 hover:scale-105 border-2 text-yellow font-bold mt-5 py-3 px-4 rounded-lg hover:bg-primary-hover self-stretch"
         >
-          Buy Tickets
+          Get Tickets
         </button>
       );
     }
@@ -78,14 +78,17 @@ export default function EventCard(event: Xevent) {
           <p className="text-gray-600 mt-2 pb-3 ">{event.description}</p>
           <hr/> */}
           <hr />
-          <p className="text-gray-600 pt-3 pb-1 font-semibold">On stage: </p>
-          <ul>
-            {event.artists.map((artist) => (
-              <li key={artist} className="text-gray-600 pb-0.5">
-                {artist}
-              </li>
-            ))}
-          </ul>
+          <div className="flex-1">
+            <p className="text-gray-600 pt-3 pb-1 font-semibold">On stage: </p>
+            <ul>
+              {event.artists.map((artist) => (
+                <li key={artist} className="text-gray-600 pb-0.5">
+                  {artist}
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {isSoldOut()}
         </div>
       </div>
