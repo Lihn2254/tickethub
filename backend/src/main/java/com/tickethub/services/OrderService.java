@@ -2,6 +2,7 @@ package com.tickethub.services;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -11,24 +12,17 @@ import com.tickethub.domain.Client;
 import com.tickethub.domain.Event;
 import com.tickethub.domain.Order;
 import com.tickethub.dto.OrderDTO;
+import com.tickethub.dto.ticket.TicketClientDTO;
 import com.tickethub.repositories.ClientRepository;
-import com.tickethub.repositories.EventRepository;
 import com.tickethub.repositories.OrderRepository;
 
-import jakarta.persistence.EntityManager;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 @Service
 public class OrderService {
     private OrderRepository orderRepository;
-    private EventRepository eventRepository;
     private ClientRepository clientRepository;
-
-    public OrderService(OrderRepository orderRepository, EventRepository eventRepository,
-            ClientRepository clientRepository) {
-        this.orderRepository = orderRepository;
-        this.eventRepository = eventRepository;
-        this.clientRepository = clientRepository;
-    }
 
     public Order createOrder(int clientId, Event event, int attendees) throws Exception {
         try {
@@ -36,7 +30,8 @@ public class OrderService {
 
             BigDecimal totalAmount = event.getPrice().multiply(new BigDecimal(attendees));
 
-            Order newOrder = new Order(totalAmount, 1, client); // status = 1 (Paid). For now, all orders will be marked as paid
+            Order newOrder = new Order(totalAmount, 1, client); // status = 1 (Paid). For now, all orders will be marked
+                                                                // as paid
             newOrder.setOrderDate(OffsetDateTime.now());
 
             Order savedOrder = orderRepository.save(newOrder);
@@ -51,12 +46,27 @@ public class OrderService {
         }
     }
 
-    public List<OrderDTO> getOrders(int clientId) {
-        return null; //TODO
+    public List<OrderDTO> getOrdersByClient(int clientId) {
+        try {
+            List<Order> orders = orderRepository.findByClient_Id(clientId);
+
+            List<OrderDTO> mappedOrders = new ArrayList<>();
+
+            for (Order order : orders) {
+                mappedOrders.add(convertToDTO(order));
+            }
+
+            return mappedOrders;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("An error ocurred. Orders could not be consulted.");
+            return null;
+        }
     }
 
     private OrderDTO convertToDTO(Order order) {
         return new OrderDTO(order.getId(), order.getOrderDate(), order.getTotalAmount(), order.getPaymentStatus(),
-                order.getClient().getId());
+                new TicketClientDTO(order.getClient().getId(), order.getClient().getEmail(),
+                        order.getClient().getUsername()));
     }
 }

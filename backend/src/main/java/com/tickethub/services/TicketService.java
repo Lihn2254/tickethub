@@ -9,10 +9,10 @@ import com.tickethub.domain.Client;
 import com.tickethub.domain.Event;
 import com.tickethub.domain.Order;
 import com.tickethub.domain.Ticket;
+import com.tickethub.dto.OrderDTO;
 import com.tickethub.dto.TicketDTO;
 import com.tickethub.dto.ticket.TicketClientDTO;
 import com.tickethub.dto.ticket.TicketEventDTO;
-import com.tickethub.dto.ticket.TicketOrderDTO;
 import com.tickethub.repositories.EventRepository;
 import com.tickethub.repositories.TicketRepository;
 
@@ -85,7 +85,7 @@ public class TicketService {
         if (order != null) {
             Client client = order.getClient();
             if (client != null) {
-                dto.setOrder(new TicketOrderDTO(
+                dto.setOrder(new OrderDTO(
                         order.getId(),
                         order.getOrderDate(),
                         order.getTotalAmount(),

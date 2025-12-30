@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.tickethub.domain.User;
 import com.tickethub.repositories.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class UserService {
     private UserRepository userRepository;
@@ -44,6 +46,7 @@ public class UserService {
         return null;
     }
 
+    @Transactional
     public User register(User user) throws Exception {
         User tmpUser;
         try {

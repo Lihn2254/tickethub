@@ -3,17 +3,19 @@ package com.tickethub.dto;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
+import com.tickethub.dto.ticket.TicketClientDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class OrderDTO {
-    private Integer id;
+    private int id;
     private OffsetDateTime orderDate;
-    private BigDecimal totalAmount;
+    private BigDecimal total_amount;
     private int paymentStatus;
-    private int clientId;
+    private TicketClientDTO client;
 }

@@ -3,7 +3,6 @@ package com.tickethub.dto;
 import java.math.BigDecimal;
 
 import com.tickethub.dto.ticket.TicketEventDTO;
-import com.tickethub.dto.ticket.TicketOrderDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +18,7 @@ public class TicketDTO implements Comparable<TicketEventDTO>{
     private BigDecimal purchasePrice;
     private int attendees;
 
-    private TicketOrderDTO order;
+    private OrderDTO order;
     private TicketEventDTO event;
 
     //Natural ordering by startTime of the event
