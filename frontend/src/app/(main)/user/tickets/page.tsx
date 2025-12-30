@@ -78,13 +78,13 @@ export default function Tickets() {
         </ul>
       </nav>
 
-      <section className="flex flex-col gap-6 p-5 overflow-y-scroll w-full justify-center">
-        {filteredTickets.length > 1 ? (
+      <section className="flex flex-col gap-6 p-5 overflow-y-scroll w-full justify-start">
+        {filteredTickets.length > 0 ? (
           filteredTickets.map((ticket) => (
             <TicketCard key={ticket.id} {...ticket}></TicketCard>
           ))
         ) : (
-          <div className="flex flex-col items-center self-auto w-full text-3xl text-gray-400">
+          <div className="flex flex-col flex-1 justify-center items-center w-full text-3xl text-gray-400">
             <h1 className="pb-3">No tickets were found!</h1>
             <h2>
               Why don't you take a look at {" "}
