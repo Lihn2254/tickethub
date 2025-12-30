@@ -2,6 +2,7 @@ package com.tickethub.services;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.tickethub.domain.Client;
@@ -15,6 +16,7 @@ import com.tickethub.dto.ticket.TicketOrderDTO;
 import com.tickethub.repositories.EventRepository;
 import com.tickethub.repositories.TicketRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -42,18 +44,32 @@ public class TicketService {
         }
     }
 
-    public Ticket createTicket(int clientId, int eventId, int attendees) {
-        Event event = eventRepository.findById(eventId).get();
-        //The order must be created first as Ticket references an Order
-        Order order = orderService.createOrder(clientId, eventId, attendees);
-
-        if (order != null) {
-            Ticket ticket = new Ticket();
+    @Transactional
+    public TicketDTO createTicket(int clientId, int eventId, int attendees) throws Exception {
+        if (attendees <= 0) {
+            throw new IllegalArgumentException("The number of attendees must be greater than zero. Operation aborted.");
         }
 
-        
+        Event event = eventRepository.findById(eventId).get();
 
-        return null;
+        if (event.getAvaliablePlaces() < attendees) {
+            throw new Exception("Not enough available places for this event. Operation aborted.");
+        }
+
+        Order order = orderService.createOrder(clientId, event, attendees);
+        Ticket savedTicket = ticketRepository.save(new Ticket(attendees, 1, event.getPrice(), order, event)); //status = Active (1)
+
+        event.setAvaliablePlaces(event.getAvaliablePlaces() - attendees); //Update available places
+
+        if (event.getAvaliablePlaces() == 0) { //If no places are available, mark event as sold out
+            event.setStatus(3); //Sold out
+        }
+
+        eventRepository.save(event);
+
+        System.out.println("\tTicket and order were created successfully.\n\tRemaining places for event (id = " + event.getId() + ") '" + event.getName() + "': " + event.getAvaliablePlaces());
+
+        return convertToDTO(savedTicket);
     }
 
     private TicketDTO convertToDTO(Ticket ticket) {

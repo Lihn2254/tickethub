@@ -6,12 +6,10 @@ import com.tickethub.dto.ticket.TicketEventDTO;
 import com.tickethub.dto.ticket.TicketOrderDTO;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class TicketDTO implements Comparable<TicketEventDTO>{

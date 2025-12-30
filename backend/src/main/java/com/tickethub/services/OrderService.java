@@ -15,6 +15,8 @@ import com.tickethub.repositories.ClientRepository;
 import com.tickethub.repositories.EventRepository;
 import com.tickethub.repositories.OrderRepository;
 
+import jakarta.persistence.EntityManager;
+
 @Service
 public class OrderService {
     private OrderRepository orderRepository;
@@ -28,9 +30,8 @@ public class OrderService {
         this.clientRepository = clientRepository;
     }
 
-    public Order createOrder(int clientId, int eventId, int attendees) {
+    public Order createOrder(int clientId, Event event, int attendees) throws Exception {
         try {
-            Event event = eventRepository.findById(eventId).get();
             Client client = clientRepository.findById(clientId).get();
 
             BigDecimal totalAmount = event.getPrice().multiply(new BigDecimal(attendees));
@@ -39,17 +40,14 @@ public class OrderService {
             newOrder.setOrderDate(OffsetDateTime.now());
 
             Order savedOrder = orderRepository.save(newOrder);
-            savedOrder.getClient().setPassword(null);
 
             return savedOrder;
         } catch (NoSuchElementException e) {
             e.printStackTrace();
-            System.err.println("Either the client or event does not exist. Order could not be saved.");
-            return null;
+            throw new NoSuchElementException("The client does not exist. Operation aborted");
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("An unexpected error ocurred. Order could not be saved.");
-            return null;
+            throw new Exception("An unexpected error ocurred. Order could not be saved.");
         }
     }
 
