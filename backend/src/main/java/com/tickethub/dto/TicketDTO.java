@@ -3,25 +3,22 @@ package com.tickethub.dto;
 import java.math.BigDecimal;
 
 import com.tickethub.dto.ticket.TicketEventDTO;
-import com.tickethub.dto.ticket.TicketOrderDTO;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class TicketDTO implements Comparable<TicketEventDTO>{
     private int id;
     private int status;
-    private String qrCode;
+    //private String qrCode;
     private BigDecimal purchasePrice;
     private int attendees;
 
-    private TicketOrderDTO order;
+    private OrderDTO order;
     private TicketEventDTO event;
 
     //Natural ordering by startTime of the event

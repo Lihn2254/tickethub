@@ -37,9 +37,10 @@ export default function LoginForm() {
           credentials.includes("@outlook.es") ||
           credentials.includes("@email.com")
         )
-      )
-      alert("Please enter a valid email address.");
-      return;
+      ) {
+        alert("Please enter a valid email address.");
+        return;
+      }
     } else if (credentials.length < 1) {
       alert("Please enter a valid username address.");
       return;

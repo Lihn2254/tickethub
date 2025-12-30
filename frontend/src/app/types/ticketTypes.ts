@@ -1,7 +1,7 @@
 export type ApiTicket = {
     id: number;
     status: number;
-    qrCode: string;
+    //qrCode: string;
     purchasePrice: number;
     attendees: number;
     order: {
@@ -21,7 +21,7 @@ export type ApiTicket = {
 export type Ticket = {
     id: number;
     status: number;
-    qrCode: string;
+    //qrCode: string;
     purchasePrice: number;
     attendees: number;
     order: {

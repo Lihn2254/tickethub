@@ -1,8 +1,6 @@
 package com.tickethub.domain;
 
-
-
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -35,6 +33,6 @@ public abstract class User {
     @Id
     private int id;
     protected String email, username;
-    protected Date registrationDate;
+    protected OffsetDateTime registrationDate;
     protected String password;
 }

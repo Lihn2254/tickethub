@@ -1,8 +1,7 @@
 package com.tickethub.services;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,7 +21,7 @@ public class TicketExpirationService {
         System.out.println("Running scheduled ticket expiration check...");
         
         // Expire when an event started more than 6 hours ago
-        Date cutoffTime = Date.from(Instant.now().minus(6, ChronoUnit.HOURS));
+        OffsetDateTime cutoffTime = OffsetDateTime.now().minus(6, ChronoUnit.HOURS);
 
         int updatedCount = ticketRepository.expireOldTickets(cutoffTime);
         

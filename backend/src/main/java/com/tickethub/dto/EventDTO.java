@@ -1,7 +1,7 @@
 package com.tickethub.dto;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.Set;
 
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ public class EventDTO implements Comparable<EventDTO>{
     private int id;
     private String flyerPath;
     private String name, genre, subtitle, description, city, address;
-    private Date startTime;
+    private OffsetDateTime startTime;
     private BigDecimal price;
     private int maxAttendees, avaliablePlaces, status;
     private Set<OrganizerDTO> organizers;

@@ -19,17 +19,24 @@ export default function Settings() {
       case 0: {
         return <AccountInfo />;
       }
+      default: {
+        return null;
+      }
     }
   };
 
   return (
-    <div className="flex flex-row">
-      <section className="w-1/4 pl-20 pt-10 pb-10 border-r border-r-red-600">
-        <span className="font-semibold text-3xl">Settings</span>
+    <div className="flex flex-row py-10">
+      <section className="w-1/4 pl-20">
+        <span className="font-semibold text-3xl pl-5">Settings</span>
         <nav className="flex align-top pt-8">
           <ul className="text-xl w-full">
             {navItems.map((item) => (
-              <li key={item.key} className="mb-3 hover:bg-gray-200">
+              <li
+                key={item.key}
+                onClick={() => setNavItem(item.key)}
+                className="hover:bg-gray-200 rounded-2xl options-list funnel-text font-light"
+              >
                 <button
                   type="button"
                   onClick={() => setNavItem(item.key)}
@@ -46,7 +53,10 @@ export default function Settings() {
           </ul>
         </nav>
       </section>
-      {renderSelectedCategory()}
+      <section className="px-5">
+        {renderSelectedCategory()}
+      </section>
+      
     </div>
   );
 }

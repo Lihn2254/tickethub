@@ -3,6 +3,7 @@ import { ApiTicket, Ticket } from "../types/ticketTypes";
 import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import generateQRCode from "../utils/qrcode";
+import { convertLocationToSearchParam } from "../utils/utils";
 
 function QRmodal({
   ticketId,
@@ -24,11 +25,7 @@ function QRmodal({
   }, [isOpen, ticketId]);
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title="QR Code"
-    >
+    <Modal isOpen={isOpen} onClose={onClose} title="QR Code">
       <canvas id="qrcode-canvas" className="p-1 w-full h-full"></canvas>
     </Modal>
   );
@@ -36,18 +33,20 @@ function QRmodal({
 
 export default function TicketCard(ticket: Ticket) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const city = ticket.event.location.city;
+  const address = ticket.event.location.address;
 
-  const date = new Intl.DateTimeFormat("en-US", {
+  const date = ticket.event.startTime.toLocaleString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
-  }).format(ticket.event.startTime);
+  });
 
-  const time = new Intl.DateTimeFormat("en-US", {
+  const time = ticket.event.startTime.toLocaleString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
-  }).format(ticket.event.startTime.getDate());
+  });
 
   const onModalClose = () => setIsModalOpen(false);
 
@@ -61,15 +60,23 @@ export default function TicketCard(ticket: Ticket) {
       />
 
       {/* Ticket info */}
-      <div className="ml-6">
+      <div className="flex flex-col flex-1 ml-6">
         <p className="funnel-text mb-1">#{ticket.id}</p>
         <h1 className="text-3xl font-bold text-blue mb-6">
           {ticket.event.name}
         </h1>
-        <h3 className="text-lg">{ticket.event.location.city}</h3>
-        <h2 className="funnel-text text-xl font-semibold pb-3 text-gray-700">
+        <a
+          href={`https://www.google.com/maps/search/${convertLocationToSearchParam(
+            city,
+            address
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-lg hover:underline"
+        >{`${city} — ${address.includes(',') ? address.substring(0, address.indexOf(',')) : address}`}</a>
+        <span className="funnel-text text-xl font-semibold pb-3 text-gray-700">
           {date + " | " + time}
-        </h2>
+        </span>
         <p>Attendees: {ticket.attendees}</p>
       </div>
 

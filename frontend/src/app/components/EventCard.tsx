@@ -1,22 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import { stringify } from "querystring";
 import { Xevent } from "../types/eventTypes";
-import { useEffect } from "react";
+import { convertLocationToSearchParam } from "../utils/utils";
 
 export default function EventCard(event: Xevent) {
-  const date = new Intl.DateTimeFormat("en-US", {
+  const date = event.startTime.toLocaleString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
-  }).format(event.startTime);
+  });
 
-  const time = new Intl.DateTimeFormat("en-US", {
+  const time = event.startTime.toLocaleString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
-  }).format(event.startTime.getDate());
+  });
 
   const handleClick = () => {
     console.log("Nya! X3 You clicked on me!");
@@ -27,7 +26,8 @@ export default function EventCard(event: Xevent) {
       return (
         <button
           type="button"
-          className="border-gray-400 border-2 text-gray-400 font-bold mt-5 py-2 px-4 rounded-lg hover:bg-primary-hover self-stretch"
+          disabled={true}
+          className="border-gray-400 border-2 text-gray-400 font-bold mt-5 py-3 px-4 rounded-lg hover:bg-primary-hover self-stretch"
         >
           Sold Out!
         </button>
@@ -37,9 +37,9 @@ export default function EventCard(event: Xevent) {
         <button
           type="button"
           onClick={handleClick}
-          className="border-yellow hover:border-darker-blue hover:text-darker-blue transition-all duration-300 hover:scale-105 border-2 text-yellow font-bold mt-5 py-2 px-4 rounded-lg hover:bg-primary-hover self-stretch"
+          className="border-yellow hover:border-darker-blue hover:text-darker-blue transition-all duration-300 hover:scale-105 border-2 text-yellow font-bold mt-5 py-3 px-4 rounded-lg hover:bg-primary-hover self-stretch"
         >
-          Buy Tickets
+          Get Tickets
         </button>
       );
     }
@@ -60,24 +60,35 @@ export default function EventCard(event: Xevent) {
           />
         </div>
         <div className="flex flex-col w-full">
-          <h3 className="text-lg">{event.location.city}</h3>
-          <h2 className="funnel-text text-xl font-semibold pb-3 text-gray-700">
-            {date + " | " + time}
-          </h2>
+          <a
+            href={`https://www.google.com/maps/search/${convertLocationToSearchParam(
+              event.location.city,
+              event.location.address
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-lg hover:underline"
+          >{`${event.location.city} — ${event.location.address}`}</a>
+          <span className="funnel-text text-xl font-semibold pb-3 text-gray-700">
+            {date + " - " + time}
+          </span>
           {/* <h2 className="text-xl font-semibold text-gray-700">
             {event.subtitle}
           </h2>
           <p className="text-gray-600 mt-2 pb-3 ">{event.description}</p>
           <hr/> */}
           <hr />
-          <p className="text-gray-600 pt-3 pb-1 font-semibold">On stage: </p>
-          <ul>
-            {event.artists.map((artist) => (
-              <li key={artist} className="text-gray-600 pb-0.5">
-                {artist}
-              </li>
-            ))}
-          </ul>
+          <div className="flex-1">
+            <p className="text-gray-600 pt-3 pb-1 font-semibold">On stage: </p>
+            <ul>
+              {event.artists.map((artist) => (
+                <li key={artist} className="text-gray-600 pb-0.5">
+                  {artist}
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {isSoldOut()}
         </div>
       </div>

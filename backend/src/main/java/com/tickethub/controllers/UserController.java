@@ -1,6 +1,6 @@
 package com.tickethub.controllers;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,7 +17,7 @@ import com.tickethub.services.UserService;
 record LoginRequest(String credentials, String password) { //credentials refers to either a username or email, couldn't find a better word
 }
 
-record RegisterRequest(int userId, String email, String username, String password, Date registrationDate,
+record RegisterRequest(int userId, String email, String username, String password, OffsetDateTime registrationDate,
         String userType) {
 }
 

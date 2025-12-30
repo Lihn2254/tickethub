@@ -2,7 +2,6 @@ package com.tickethub.domain;
 
 import java.math.BigDecimal;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,8 +25,8 @@ public class Ticket {
     private int id;
     private int attendees;
     private int status;
-    @Column(name = "qr_code")
-    private String qrcode;
+    //@Column(name = "qr_code")
+    //private String qrcode;
     private BigDecimal purchasePrice;
     @OneToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id")
@@ -35,4 +34,12 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "event_id", referencedColumnName = "id")
     private Event event;
+    
+    public Ticket(int attendees, int status, BigDecimal purchasePrice, Order order, Event event) {
+        this.attendees = attendees;
+        this.status = status;
+        this.purchasePrice = purchasePrice;
+        this.order = order;
+        this.event = event;
+    }
 }

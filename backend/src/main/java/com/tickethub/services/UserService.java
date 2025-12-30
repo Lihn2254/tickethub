@@ -1,12 +1,14 @@
 package com.tickethub.services;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
 
 import com.tickethub.domain.User;
 import com.tickethub.repositories.UserRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserService {
@@ -44,11 +46,12 @@ public class UserService {
         return null;
     }
 
+    @Transactional
     public User register(User user) throws Exception {
         User tmpUser;
         try {
-            user.setId(new Random().nextInt(1, (int) Math.pow(2, 31)));
-            user.setRegistrationDate(new Date());
+            user.setId(generateUserId());
+            user.setRegistrationDate(OffsetDateTime.now());
             tmpUser = userRepository.save(user);
             tmpUser.setPassword(null);
             return tmpUser;
@@ -56,6 +59,11 @@ public class UserService {
             e.printStackTrace();
             throw new Exception("An error ocurred. User could not be saved.");
         }
+    }
+
+    // Temp solution
+    private int generateUserId() {
+        return new Random().nextInt(1, (int) Math.pow(2, 31));
     }
 
     public Boolean isCredentialAvaliable(String text) {

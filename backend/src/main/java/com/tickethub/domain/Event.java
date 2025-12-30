@@ -1,7 +1,7 @@
 package com.tickethub.domain;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -40,7 +40,7 @@ public class Event {
     private int id;
     private String flyer;
     private String name, genre, subtitle, description, city, address;
-    private Date startTime;
+    private OffsetDateTime startTime;
     private BigDecimal price;
     private int maxAttendees;
     private int avaliablePlaces;
