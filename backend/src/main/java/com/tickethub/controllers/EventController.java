@@ -2,6 +2,7 @@ package com.tickethub.controllers;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ public class EventController {
         this.eventService = eventService;
     }
 
+    // Returns a list of events filter by genre, city, start time and end time
     @GetMapping
     public ResponseEntity<List<EventDTO>> getEvents(@RequestParam(required = false) List<String> genre,
             @RequestParam(required = false) List<String> city,
@@ -40,6 +42,19 @@ public class EventController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).build();
+        }
+    }
+
+    // Returns a single event given an ID
+    @GetMapping("/id")
+    public ResponseEntity<EventDTO> getEvent(@RequestParam(required = true) Integer event_id) {
+        try {
+            return ResponseEntity.ok(eventService.getEvent(event_id));
+        } catch (NoSuchElementException e) {
+            System.err.println(e.getMessage());
+            return ResponseEntity.status(404).build(); //Not found
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build(); //Error
         }
     }
 }
