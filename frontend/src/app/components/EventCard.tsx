@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Xevent } from "../types/eventTypes";
 import { convertLocationToSearchParam } from "../utils/utils";
+import Link from "next/link";
 
 export default function EventCard(event: Xevent) {
   const date = event.startTime.toLocaleString("en-US", {
@@ -18,8 +19,8 @@ export default function EventCard(event: Xevent) {
   });
 
   const handleClick = () => {
-    console.log("Nya! X3 You clicked on me!");
-  };
+    console.log("Nya! x3 You clicked on me")
+  }
 
   const isSoldOut = () => {
     if (event.avaliablePlaces == 0) {
@@ -34,13 +35,16 @@ export default function EventCard(event: Xevent) {
       );
     } else {
       return (
-        <button
-          type="button"
+        <Link
+          href={{
+            pathname: '/purchase',
+            query: { event_id: event.id }
+          }}
           onClick={handleClick}
-          className="border-yellow hover:border-darker-blue hover:text-darker-blue transition-all duration-300 hover:scale-105 border-2 text-yellow font-bold mt-5 py-3 px-4 rounded-lg hover:bg-primary-hover self-stretch"
+          className="border-yellow hover:border-darker-blue hover:text-darker-blue transition-all duration-300 hover:scale-105 border-2 text-center text-yellow font-bold mt-5 py-3 px-4 rounded-lg hover:bg-primary-hover self-stretch"
         >
           Get Tickets
-        </button>
+        </Link>
       );
     }
   };
