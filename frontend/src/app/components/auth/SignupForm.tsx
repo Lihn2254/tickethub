@@ -348,7 +348,7 @@ function UserInfoInput(props: UserInfoInputProps) {
         <span className="font-medium">Select your account type</span>
         <div className="flex flex-row border-2 rounded-2xl contain-content mt-2">
           <article
-            className={`flex flex-col flex-1 p-3 border-r-1 ${
+            className={`flex flex-col flex-1 p-3 border-r ${
               props.accountType == "client" ? "bg-light-yellow" : "bg-white"
             }`}
             onClick={(e) => props.handleAccountTypeSelection("client")}
@@ -365,7 +365,7 @@ function UserInfoInput(props: UserInfoInputProps) {
             <span>Enjoy events, concerts, festivals and more!</span>
           </article>
           <article
-            className={`flex flex-col flex-1 p-3 border-l-1 ${
+            className={`flex flex-col flex-1 p-3 border-l ${
               props.accountType == "organizer" ? "bg-light-yellow" : "bg-white"
             }`}
             onClick={(e) => props.handleAccountTypeSelection("organizer")}

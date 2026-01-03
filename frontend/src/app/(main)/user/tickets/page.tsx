@@ -91,7 +91,7 @@ export default function Tickets() {
               <Link href={"http://localhost:3000"} className="text-blue-400">our events</Link>
               ?
             </h2>
-            <h1 className="mt-10 text-9xl">;D</h1>
+            <h1 className="mt-10 text-9xl">^_^</h1>
           </div>
         )}
       </section>

@@ -20,7 +20,7 @@ export default function AccountInfo() {
   return (
     <div>
       <h1>Account info</h1>
-      <button type="button" className="inputOk" onClick={handleDeleteAccount}>
+      <button type="button" className="inputOk bg-red-600 border-red-600" onClick={handleDeleteAccount}>
         Delete account
       </button>
     </div>
