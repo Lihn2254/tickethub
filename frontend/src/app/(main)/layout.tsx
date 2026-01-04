@@ -7,7 +7,7 @@ import { AuthProvider } from "../context/AuthContext";
 
 const redHat = Red_Hat_Display({
   subsets: ["latin"],
-  variable: "--font-red-hat", 
+  variable: "--font-red-hat",
   display: "swap",
 });
 

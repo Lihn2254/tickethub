@@ -17,7 +17,7 @@ const funnel = Funnel_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Sign in",
+  title: "Sign In",
   description: "Log in to TicketHub",
 };
 

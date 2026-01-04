@@ -26,7 +26,7 @@ export default function Settings() {
   };
 
   return (
-    <div className="flex flex-row py-10">
+    <div className="flex flex-row py-10 min-h-142">
       <section className="w-1/4 pl-20">
         <span className="font-semibold text-3xl pl-5">Settings</span>
         <nav className="flex align-top pt-8">
@@ -56,7 +56,6 @@ export default function Settings() {
       <section className="px-5">
         {renderSelectedCategory()}
       </section>
-      
     </div>
   );
 }

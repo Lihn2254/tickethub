@@ -6,9 +6,9 @@ import {
   formatLocationToSearchParam,
   mapApiEventsToXevents,
   formatDatetime,
-  formatPrice
+  formatPrice,
 } from "@/app/utils/utils";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,9 +17,12 @@ import { createNewTicket } from "../services/tickets";
 import { useAuth } from "../context/AuthContext";
 import { Ticket } from "../types/ticketTypes";
 import { User } from "../types/userTypes";
+import LoadingPage from "../components/LoadingPage";
+import ErrorPage from "../components/ErrorPage";
 
 export default function Purchase() {
   const { user } = useAuth();
+  const router = useRouter();
   const [event, setEvent] = useState<Xevent>();
   const [ticket, setTicket] = useState<Ticket>();
   const [isLoading, setIsLoading] = useState(true);
@@ -70,7 +73,7 @@ export default function Purchase() {
   }, []);
 
   if (isLoading) {
-    return <LoadingPage />;
+    return <LoadingPage text="Loading event details..." />;
   }
 
   if (isProcessingPayment) {
@@ -138,7 +141,7 @@ export default function Purchase() {
               />
             );
           } else {
-            return <ErrorPage />;
+            return <ErrorPage showHomePage={true}/>;
           }
       }
     };
@@ -202,19 +205,8 @@ export default function Purchase() {
     );
   } else {
     // Error page. Shown when fetching fails
-    return <ErrorPage />;
+    return <ErrorPage showHomePage={true} />;
   }
-}
-
-function LoadingPage() {
-  return (
-    <div className="flex flex-col justify-center items-center w-full min-h-screen">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-16 h-16 border-4 border-blue border-t-transparent rounded-full animate-spin"></div>
-        <span className="text-xl text-gray-600">Loading event details...</span>
-      </div>
-    </div>
-  );
 }
 
 function ProcessingPaymentPage() {
@@ -224,24 +216,6 @@ function ProcessingPaymentPage() {
         <div className="w-16 h-16 border-4 border-blue border-t-transparent rounded-full animate-spin"></div>
         <span className="text-xl text-gray-600">Processing payment...</span>
       </div>
-    </div>
-  );
-}
-
-function ErrorPage() {
-  return (
-    <div className="flex flex-col flex-1 justify-center items-center w-full min-h-165 p-20 text-3xl text-gray-400">
-      <div className="flex flex-col items-center">
-        <span>Something went wrong!</span>
-        <span>Please try again later</span>
-      </div>
-      <span className="my-10 text-9xl">o_0</span>
-      <Link
-        href={"/"}
-        className="mt-10 text-blue-400 funnel-text text-2xl font-light"
-      >
-        Go to home page
-      </Link>
     </div>
   );
 }
@@ -692,9 +666,9 @@ function PaymentPage({
 }
 
 interface ConfirmationPageProps {
-  user: User,
-  ticket:Ticket,
-  cardholderName: string
+  user: User;
+  ticket: Ticket;
+  cardholderName: string;
 }
 
 function ConfirmationPage({
