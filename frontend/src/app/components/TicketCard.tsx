@@ -47,6 +47,7 @@ export default function TicketCard(ticket: Ticket) {
         alt={ticket.event.flyer.alt}
         width={150}
         height={150}
+        className="rounded-lg object-cover"
       />
 
       {/* Ticket info */}

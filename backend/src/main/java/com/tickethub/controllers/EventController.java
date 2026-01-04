@@ -34,7 +34,7 @@ public class EventController {
             @RequestParam(required = false) List<String> city,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime start,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime end) {
-        System.out.println("Fetch request for events with filters: " + genre + "; " + city + "; " + start + "; " + end);
+        System.out.println("\n------\nFetch request for events with filters: " + genre + "; " + city + "; " + start + "; " + end);
 
         try {
             List<EventDTO> filteredEvents = eventService.getEvents(genre, city, start, end);

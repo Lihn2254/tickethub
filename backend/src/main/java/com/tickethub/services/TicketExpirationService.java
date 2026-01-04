@@ -21,7 +21,7 @@ public class TicketExpirationService {
     @Scheduled(cron = "0 0 * * * *") 
     @EventListener(ApplicationReadyEvent.class)
     public void checkExpiredTickets() {
-        System.out.println("Running ticket expiration check...");
+        System.out.println("\n------\nRunning ticket expiration check...");
         
         // Expire when an event started more than 6 hours ago
         OffsetDateTime cutoffTime = OffsetDateTime.now().minus(6, ChronoUnit.HOURS);

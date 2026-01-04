@@ -52,6 +52,8 @@ public class TicketController {
 
     @PostMapping
     public ResponseEntity<TicketDTO> createTicket(@RequestBody TicketRequest ticketRequest) {
+        System.out.println("Request receiver for new ticket: event ID = " + ticketRequest.eventId() + "; client ID = " + ticketRequest.clientId());
+
         try {
             TicketDTO ticket = ticketService.createTicket(ticketRequest.clientId(), ticketRequest.eventId(), ticketRequest.attendees());
 
