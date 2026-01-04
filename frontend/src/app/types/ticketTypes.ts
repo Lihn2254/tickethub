@@ -1,3 +1,5 @@
+import { Flyer } from "./eventTypes";
+
 export type ApiTicket = {
     id: number;
     status: number;
@@ -41,7 +43,7 @@ export type Ticket = {
 type TicketEvent = {
     id: number;
     name: string;
-    flyer: { img: string | null; ext: string | null; alt: string };
+    flyer: Flyer;
     location: { city: string; address: string };
     startTime: Date;
 }

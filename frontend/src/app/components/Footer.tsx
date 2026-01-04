@@ -17,7 +17,7 @@ const SocialIcon = ({
 
 export default function Footer() {
   return (
-    <footer className="bg-darker-blue text-white py-12">
+    <footer className="bg-dark-blue text-white py-12">
       <div className="container mx-auto px-6">
         <div className="flex flex-col lg:flex-row lg:flex-wrap space-y-8 md:space-y-0 not-lg:items-center not-lg:text-center lg:justify-evenly">
           <div className="footer-section">

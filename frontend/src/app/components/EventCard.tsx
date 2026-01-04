@@ -2,24 +2,12 @@
 
 import Image from "next/image";
 import { Xevent } from "../types/eventTypes";
-import { convertLocationToSearchParam } from "../utils/utils";
+import { formatLocationToSearchParam } from "../utils/utils";
+import { formatDatetime } from "@/app/utils/utils";
+import Link from "next/link";
 
 export default function EventCard(event: Xevent) {
-  const date = event.startTime.toLocaleString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
-  const time = event.startTime.toLocaleString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-
-  const handleClick = () => {
-    console.log("Nya! X3 You clicked on me!");
-  };
+  const {date, time} = formatDatetime(event.startTime);
 
   const isSoldOut = () => {
     if (event.avaliablePlaces == 0) {
@@ -34,13 +22,16 @@ export default function EventCard(event: Xevent) {
       );
     } else {
       return (
-        <button
-          type="button"
-          onClick={handleClick}
-          className="border-yellow hover:border-darker-blue hover:text-darker-blue transition-all duration-300 hover:scale-105 border-2 text-yellow font-bold mt-5 py-3 px-4 rounded-lg hover:bg-primary-hover self-stretch"
+        <Link
+          href={{
+            pathname: '/purchase',
+            query: { event: event.id }
+          }}
+          onClick={() => console.log("Nya! x3 You clicked on me")}
+          className="border-yellow hover:border-darker-blue hover:text-darker-blue transition-all duration-300 hover:scale-105 border-2 text-center text-yellow font-bold mt-5 py-3 px-4 rounded-lg hover:bg-primary-hover self-stretch"
         >
           Get Tickets
-        </button>
+        </Link>
       );
     }
   };
@@ -61,7 +52,7 @@ export default function EventCard(event: Xevent) {
         </div>
         <div className="flex flex-col w-full">
           <a
-            href={`https://www.google.com/maps/search/${convertLocationToSearchParam(
+            href={`https://www.google.com/maps/search/${formatLocationToSearchParam(
               event.location.city,
               event.location.address
             )}`}

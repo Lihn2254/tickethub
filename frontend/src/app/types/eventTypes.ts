@@ -1,7 +1,7 @@
 export type Xevent = {
   id: number;
   name: string;
-  flyer: { img: string | null; ext: string | null; alt: string };
+  flyer: Flyer;
   genre: string[];
   subtitle: string;
   description: string;
@@ -13,6 +13,10 @@ export type Xevent = {
   status: number;
   artists: string[];
 };
+
+export type Flyer = {
+  img: string | null; ext: string | null; alt: string
+}
 
 export type ApiEvent = {
   id: number;

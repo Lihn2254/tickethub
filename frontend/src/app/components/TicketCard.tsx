@@ -3,7 +3,7 @@ import { ApiTicket, Ticket } from "../types/ticketTypes";
 import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import generateQRCode from "../utils/qrcode";
-import { convertLocationToSearchParam } from "../utils/utils";
+import { formatLocationToSearchParam, formatDatetime } from "../utils/utils";
 
 function QRmodal({
   ticketId,
@@ -36,17 +36,7 @@ export default function TicketCard(ticket: Ticket) {
   const city = ticket.event.location.city;
   const address = ticket.event.location.address;
 
-  const date = ticket.event.startTime.toLocaleString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
-  const time = ticket.event.startTime.toLocaleString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
+  const {date, time} = formatDatetime(ticket.event.startTime);
 
   const onModalClose = () => setIsModalOpen(false);
 
@@ -57,6 +47,7 @@ export default function TicketCard(ticket: Ticket) {
         alt={ticket.event.flyer.alt}
         width={150}
         height={150}
+        className="rounded-lg object-cover"
       />
 
       {/* Ticket info */}
@@ -66,7 +57,7 @@ export default function TicketCard(ticket: Ticket) {
           {ticket.event.name}
         </h1>
         <a
-          href={`https://www.google.com/maps/search/${convertLocationToSearchParam(
+          href={`https://www.google.com/maps/search/${formatLocationToSearchParam(
             city,
             address
           )}`}

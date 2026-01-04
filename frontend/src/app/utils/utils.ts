@@ -4,26 +4,51 @@ import { User } from "../types/userTypes";
 
 //Type guard
 export function typeGuard(user: User, clientFn: () => void, organizerFn: () => void): void {
-    switch (user.accountType) {
-        case "client": {
-            clientFn();
-            break;
-        }
-        case "organizer": {
-            organizerFn();
-            break;
-        }
+  switch (user.accountType) {
+    case "client": {
+      clientFn();
+      break;
     }
+    case "organizer": {
+      organizerFn();
+      break;
+    }
+  }
 }
 
-export const convertLocationToSearchParam = (city: string, address: string) => {
-    return address.includes(',') ? `${city} ${address.substring(0, address.indexOf(','))}`.split(" ").join("+") : `${city} ${address}`.split(" ").join("+");
-  };
+export const formatDatetime = (startTime: Date) => {
+  const date = startTime.toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  const time = startTime.toLocaleString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+  return { date, time };
+}
+
+export const formatPrice = (price: number) => {
+  return new Intl.NumberFormat("es-MX", {
+    style: "decimal",
+    minimumFractionDigits: price % 1 === 0 ? 0 : 2,
+    maximumFractionDigits: 2,
+  }).format(price);
+};
+
+
+export const formatLocationToSearchParam = (city: string, address: string) => {
+  return address.includes(',') ? `${city} ${address.substring(0, address.indexOf(','))}`.split(" ").join("+") : `${city} ${address}`.split(" ").join("+");
+};
 
 // Map ApiEvent to Xevent
 export function mapApiEventsToXevents(apiEvents: ApiEvent[], apiFlyers: ApiFlyer[]): Xevent[] {
   return apiEvents.map((event, index) => {
-    
+
     // Get the matching flyer using the same index
     const currentFlyer = apiFlyers[index];
 
@@ -33,7 +58,7 @@ export function mapApiEventsToXevents(apiEvents: ApiEvent[], apiFlyers: ApiFlyer
       flyer: {
         // Use the attributes from the flyer object
         // We use optional chaining (?.) just in case apiFlyers is shorter than apiEvents
-        img: currentFlyer?.img ?? null, 
+        img: currentFlyer?.img ?? null,
         ext: currentFlyer?.ext ?? null,
         alt: event.name,
       },

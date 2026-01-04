@@ -32,7 +32,7 @@ public class EventImageController {
             return ResponseEntity.status(400).build();
         }
         
-        System.out.println("Request received for the following images:");
+        System.out.println("\n------\nRequest received for the following images:");
         
         //Check one by one if the files exist
         for (String fileName : fileNames) {
