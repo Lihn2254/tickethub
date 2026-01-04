@@ -4,10 +4,22 @@ import Image from "next/image";
 import { Xevent } from "../types/eventTypes";
 import { formatLocationToSearchParam } from "../utils/utils";
 import { formatDatetime } from "@/app/utils/utils";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
 export default function EventCard(event: Xevent) {
-  const {date, time} = formatDatetime(event.startTime);
+  const router = useRouter();
+  const { user } = useAuth();
+  const { date, time } = formatDatetime(event.startTime);
+
+  const goToPurchasePage = () => {
+    console.log("Nya! x3 You clicked on me"); //Legacy code
+    if (user != null) {
+      router.push(`/purchase?event=${event.id}`);
+    } else {
+      router.push('/login');
+    }
+  };
 
   const isSoldOut = () => {
     if (event.avaliablePlaces == 0) {
@@ -22,16 +34,12 @@ export default function EventCard(event: Xevent) {
       );
     } else {
       return (
-        <Link
-          href={{
-            pathname: '/purchase',
-            query: { event: event.id }
-          }}
-          onClick={() => console.log("Nya! x3 You clicked on me")}
+        <button
+          onClick={goToPurchasePage}
           className="border-yellow hover:border-darker-blue hover:text-darker-blue transition-all duration-300 hover:scale-105 border-2 text-center text-yellow font-bold mt-5 py-3 px-4 rounded-lg hover:bg-primary-hover self-stretch"
         >
           Get Tickets
-        </Link>
+        </button>
       );
     }
   };

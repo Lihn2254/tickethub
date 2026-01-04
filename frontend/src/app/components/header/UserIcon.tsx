@@ -22,7 +22,7 @@ function MenuLink({
 }) {
   return (
     <>
-      <Link onClick={buttonClicked} href={href} className="flex flex-row">
+      <Link onClick={buttonClicked} href={href} className="flex">
         <Image src={src} alt={alt} width={20} height={20} className="mr-2" />
         {text}
       </Link>
@@ -89,14 +89,15 @@ function ProfileOptions({
         />
       ))}
       <hr className="mt-1 mb-1" />
-      <li>
-        <MenuLink
-          text="Logout"
-          buttonClicked={handleLogout}
-          href="/login"
+      <li onClick={handleLogout} className="flex cursor-pointer">
+        <Image
           src="/icons/logout.svg"
           alt="Logout"
+          width={20}
+          height={20}
+          className="mr-2"
         />
+        <span>Log out</span>
       </li>
     </ul>
   );
