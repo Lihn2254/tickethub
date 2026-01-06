@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrganizerDTO {
-    private int id;
+    private String id;
     private String name;
 }

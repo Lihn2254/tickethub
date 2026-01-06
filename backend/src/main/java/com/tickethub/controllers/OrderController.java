@@ -12,20 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tickethub.dto.OrderDTO;
 import com.tickethub.services.OrderService;
 
+import lombok.RequiredArgsConstructor;
+
 record OrderRequest (int clientId, int eventId, int attendees) {}
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/orders")
 @CrossOrigin(origins = "http://localhost:3000")
 public class OrderController {
-    private OrderService orderService;
-
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
+    private final OrderService orderService;
 
     @GetMapping
-    public ResponseEntity<List<OrderDTO>> getOrders(@RequestParam(required = true) Integer client_id) {
+    public ResponseEntity<List<OrderDTO>> getOrders(@RequestParam(required = true) String client_id) {
         try {
             if (client_id == null)
                 throw new IllegalArgumentException("Client ID cannot be null.");

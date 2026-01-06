@@ -1,7 +1,5 @@
 package com.tickethub.controllers;
 
-import java.time.OffsetDateTime;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,22 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tickethub.domain.User;
 import com.tickethub.services.UserService;
 
+import lombok.RequiredArgsConstructor;
+
 record LoginRequest(String credentials, String password) { //credentials refers to either a username or email, couldn't find a better word
 }
 
-record RegisterRequest(int userId, String email, String username, String password, OffsetDateTime registrationDate,
-        String userType) {
-}
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/user")
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
-    private UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest) {

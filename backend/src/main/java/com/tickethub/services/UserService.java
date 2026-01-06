@@ -9,14 +9,12 @@ import com.tickethub.domain.User;
 import com.tickethub.repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Service
 public class UserService {
-    private UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
 
     public User authenticate(String credentials, String password) {
         try {
@@ -30,7 +28,7 @@ public class UserService {
 
             if (!(tmpUser == null)) {
                 if (tmpUser.getPassword().equals(password)) {
-                    // Prevents the User password of being sent to the frontend
+                    // Prevents the User password from being sent to the frontend
                     tmpUser.setPassword(null);
                     return tmpUser;
                 } else {
@@ -61,7 +59,7 @@ public class UserService {
         }
     }
 
-    // Temp solution
+    // TODO - Temp solution
     private int generateUserId() {
         return new Random().nextInt(1, (int) Math.pow(2, 31));
     }

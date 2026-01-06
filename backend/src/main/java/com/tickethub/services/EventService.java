@@ -15,32 +15,33 @@ import com.tickethub.dto.ArtistDTO;
 import com.tickethub.dto.EventDTO;
 import com.tickethub.dto.OrganizerDTO;
 import com.tickethub.repositories.EventRepository;
+import com.tickethub.utils.randomizeId;
 
 import jakarta.persistence.criteria.Predicate;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Service
 public class EventService {
-    public EventRepository eventRepository;
+    private final EventRepository eventRepository;
 
-    public EventService(EventRepository eventRepository) {
-        this.eventRepository = eventRepository;
-    }
-
-    public EventDTO getEvent(Integer eventId) throws Exception {
-        if (eventId == null) {
+    public EventDTO getEvent(String strEventId) throws Exception {
+        if (strEventId.equals(null) || strEventId.isEmpty() || strEventId.isBlank()) {
             throw new IllegalArgumentException("eventId cannot be null");
         }
 
         try {
-            return convertToDTO(eventRepository.findById(eventId).get());
+            return convertToDTO(eventRepository.findById(randomizeId.decode(strEventId)).get());
         } catch (NoSuchElementException e) {
             e.printStackTrace();
-            throw new NoSuchElementException("Event with id = " + eventId + " could not be found");
+            throw new NoSuchElementException("Event with id = " + strEventId + " could not be found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("An unexpected error ocurred. Event ID could not be decoded");
         }
     }
 
-    public List<EventDTO> getEvents(List<String> genres, List<String> cities, OffsetDateTime start, OffsetDateTime end)
-            throws Exception {
+    public List<EventDTO> getEvents(List<String> genres, List<String> cities, OffsetDateTime start, OffsetDateTime end) throws Exception {
         try {
             Specification<Event> filteredEvents = (root, query, criteriaBuilder) -> {
                 List<Predicate> predicates = new ArrayList<>();
@@ -109,7 +110,7 @@ public class EventService {
 
     private EventDTO convertToDTO(Event event) {
         EventDTO dto = new EventDTO();
-        dto.setId(event.getId());
+        dto.setId(randomizeId.encode(event.getId()));
         dto.setFlyerPath(event.getFlyer());
         dto.setName(event.getName());
         dto.setGenre(event.getGenre());
@@ -126,14 +127,14 @@ public class EventService {
         // Convert organizers to OrganizerDTOs (only id and name)
         if (event.getOrganizers() != null) {
             dto.setOrganizers(event.getOrganizers().stream()
-                    .map(org -> new OrganizerDTO(org.getId(), org.getName()))
+                    .map(org -> new OrganizerDTO(randomizeId.encode(org.getId()), org.getName()))
                     .collect(Collectors.toSet()));
         }
 
         // Convert artists to ArtistDTOs (only id and name)
         if (event.getArtists() != null) {
             dto.setArtists(event.getArtists().stream()
-                    .map(artist -> new ArtistDTO(artist.getId(), artist.getName()))
+                    .map(artist -> new ArtistDTO(randomizeId.encode(artist.getId()), artist.getName()))
                     .collect(Collectors.toSet()));
         }
 

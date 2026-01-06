@@ -23,5 +23,5 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
     """)
     int expireOldTickets(@Param("cutoffTime") OffsetDateTime cutoffTime);
     
-    List<Ticket> findByOrder_Client_Id(Long clientId);
+    List<Ticket> findByOrder_Client_Id(Integer clientId);
 }

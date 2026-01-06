@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TicketClientDTO {
-    private int id;
+    private String id;
     private String email;
     private String username;
 }

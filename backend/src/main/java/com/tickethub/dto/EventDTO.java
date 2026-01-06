@@ -14,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventDTO implements Comparable<EventDTO>{
-    private int id;
+    private String id;
     private String flyerPath;
     private String name, genre, subtitle, description, city, address;
     private OffsetDateTime startTime;

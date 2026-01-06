@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO {
-    private int id;
+    private String id;
     private OffsetDateTime orderDate;
     private BigDecimal total_amount;
     private int paymentStatus;
