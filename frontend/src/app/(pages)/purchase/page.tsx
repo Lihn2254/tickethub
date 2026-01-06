@@ -13,12 +13,13 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus } from "lucide-react";
-import { createNewTicket } from "../services/tickets";
-import { useAuth } from "../context/AuthContext";
-import { Ticket } from "../types/ticketTypes";
-import { User } from "../types/userTypes";
-import LoadingPage from "../components/LoadingPage";
-import ErrorPage from "../components/ErrorPage";
+import ErrorPage from "@/app/components/ErrorPage";
+import LoadingPage from "@/app/components/LoadingPage";
+import { useAuth } from "@/app/context/AuthContext";
+import { createNewTicket } from "@/app/services/tickets";
+import { Ticket } from "@/app/types/ticketTypes";
+import { User } from "@/app/types/userTypes";
+
 
 export default function Purchase() {
   const { user } = useAuth();

@@ -1,12 +1,12 @@
 "use client";
 
-import EventCard from "../components/EventCard";
+import ErrorPage from "@/app/components/ErrorPage";
+import EventCard from "@/app/components/EventCard";
+import LoadingPage from "@/app/components/LoadingPage";
+import getEvents, { getFlyerImages } from "@/app/services/events";
+import { Xevent } from "@/app/types/eventTypes";
+import { mapApiEventsToXevents } from "@/app/utils/utils";
 import { useEffect, useState } from "react";
-import getEvents, { getFlyerImages } from "../services/events";
-import { Xevent } from "../types/eventTypes";
-import { mapApiEventsToXevents } from "../utils/utils";
-import LoadingPage from "../components/LoadingPage";
-import ErrorPage from "../components/ErrorPage";
 
 export default function Home() {
   const [events, setEvents] = useState<Xevent[]>([]);
