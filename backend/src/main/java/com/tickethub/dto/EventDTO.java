@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.Set;
 
+import com.tickethub.dto.event.EventOrganizerDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +22,7 @@ public class EventDTO implements Comparable<EventDTO>{
     private OffsetDateTime startTime;
     private BigDecimal price;
     private int maxAttendees, avaliablePlaces, status;
-    private Set<OrganizerDTO> organizers;
+    private Set<EventOrganizerDTO> organizers;
     private Set<ArtistDTO> artists;
 
     //Natural ordering by startTime

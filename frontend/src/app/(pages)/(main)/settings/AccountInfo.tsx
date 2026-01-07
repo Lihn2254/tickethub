@@ -11,16 +11,25 @@ export default function AccountInfo() {
     try {
       deleteAccount(user!);
       logoutUser();
-      alert('Your account was deleted successfully.');
+      alert("Your account was deleted successfully.");
     } catch (error) {
-        alert('An error ocurred. Your account could not be deleted.');
+      alert("An error ocurred. Your account could not be deleted.");
     }
   };
 
   return (
     <div>
-      <h1>Account info</h1>
-      <button type="button" className="inputOk bg-red-600 border-red-600" onClick={handleDeleteAccount}>
+      <div className="flex flex-col">
+        <span>User ID: {user?.id?.toUpperCase()}</span>
+        <span>Username: {user?.username}</span>
+        <span>Email: {user?.email}</span>
+        <span>Name: {user?.name}</span>
+      </div>
+      <button
+        type="button"
+        className="inputOk bg-red-600 border-red-600"
+        onClick={handleDeleteAccount}
+      >
         Delete account
       </button>
     </div>

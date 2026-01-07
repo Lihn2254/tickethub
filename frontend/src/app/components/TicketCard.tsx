@@ -10,7 +10,7 @@ function QRmodal({
   isOpen,
   onClose,
 }: {
-  ticketId: number;
+  ticketId: string;
   isOpen: boolean;
   onClose: () => void;
 }) {
@@ -52,7 +52,7 @@ export default function TicketCard(ticket: Ticket) {
 
       {/* Ticket info */}
       <div className="flex flex-col flex-1 ml-6">
-        <p className="funnel-text mb-1">#{ticket.id}</p>
+        <p className="funnel-text mb-1">#{ticket.id.toUpperCase()}</p>
         <h1 className="text-3xl font-bold text-blue mb-6">
           {ticket.event.name}
         </h1>

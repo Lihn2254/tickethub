@@ -29,6 +29,8 @@ public class TicketController {
 
     @GetMapping
     public ResponseEntity<List<TicketDTO>> getTickets(@RequestParam(required = true) String client_id) {
+        System.out.println("\n------\nTicket request received for User with ID = " + client_id);
+
         try {
             if (client_id == null)
                 throw new IllegalArgumentException("Client ID cannot be null.");

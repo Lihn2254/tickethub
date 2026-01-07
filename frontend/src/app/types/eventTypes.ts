@@ -1,5 +1,5 @@
 export type Xevent = {
-  id: number;
+  id: string;
   name: string;
   flyer: Flyer;
   genre: string[];
@@ -19,7 +19,7 @@ export type Flyer = {
 }
 
 export type ApiEvent = {
-  id: number;
+  id: string;
   flyerPath: string;
   name: string;
   genre: string;

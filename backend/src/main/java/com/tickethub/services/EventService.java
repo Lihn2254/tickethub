@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import com.tickethub.domain.Event;
 import com.tickethub.dto.ArtistDTO;
 import com.tickethub.dto.EventDTO;
-import com.tickethub.dto.OrganizerDTO;
+import com.tickethub.dto.event.EventOrganizerDTO;
 import com.tickethub.repositories.EventRepository;
 import com.tickethub.utils.randomizeId;
 
@@ -127,7 +127,7 @@ public class EventService {
         // Convert organizers to OrganizerDTOs (only id and name)
         if (event.getOrganizers() != null) {
             dto.setOrganizers(event.getOrganizers().stream()
-                    .map(org -> new OrganizerDTO(randomizeId.encode(org.getId()), org.getName()))
+                    .map(org -> new EventOrganizerDTO(randomizeId.encode(org.getId()), org.getName()))
                     .collect(Collectors.toSet()));
         }
 
