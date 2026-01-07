@@ -1,7 +1,6 @@
 package com.tickethub.dto;
 
-import java.util.Map;
-import java.util.Set;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,8 +11,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper=true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrganizerDTO extends UserDTO{
-    private String name;
-    private Map<String, String> socials;
-    private Set<EventDTO> events;
+public class ClientDTO extends UserDTO {
+    private String name, lastname, gender, phone;
+    private LocalDate birthDate;
 }

@@ -1,5 +1,5 @@
 interface UserBase {
-    id: number | null;
+    id: string | null;
     email: string;
     username: string;
     password: string | null;

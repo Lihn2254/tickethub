@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TicketEventDTO {
-    private int id;
+    private String id;
     private String name;
     private String flyerPath;
     private String city;

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TicketDTO implements Comparable<TicketEventDTO>{
-    private int id;
+    private String id;
     private int status;
     //private String qrCode;
     private BigDecimal purchasePrice;

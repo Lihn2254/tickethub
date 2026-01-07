@@ -15,21 +15,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tickethub.dto.TicketDTO;
 import com.tickethub.services.TicketService;
 
-record TicketRequest(int clientId, int eventId, int attendees) {
+import lombok.RequiredArgsConstructor;
+
+record TicketRequest(String clientId, String eventId, int attendees) {
 }
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/tickets")
 @CrossOrigin(origins = "http://localhost:3000")
 public class TicketController {
-    private TicketService ticketService;
-
-    public TicketController(TicketService ticketService) {
-        this.ticketService = ticketService;
-    }
+    private final TicketService ticketService;
 
     @GetMapping
-    public ResponseEntity<List<TicketDTO>> getTickets(@RequestParam(required = true) Long client_id) {
+    public ResponseEntity<List<TicketDTO>> getTickets(@RequestParam(required = true) String client_id) {
+        System.out.println("\n------\nTicket request received for User with ID = " + client_id);
+
         try {
             if (client_id == null)
                 throw new IllegalArgumentException("Client ID cannot be null.");

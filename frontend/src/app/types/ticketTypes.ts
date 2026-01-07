@@ -1,7 +1,7 @@
 import { Flyer } from "./eventTypes";
 
 export type ApiTicket = {
-    id: number;
+    id: string;
     status: number;
     //qrCode: string;
     purchasePrice: number;
@@ -21,7 +21,7 @@ export type ApiTicket = {
 }
 
 export type Ticket = {
-    id: number;
+    id: string;
     status: number;
     //qrCode: string;
     purchasePrice: number;
@@ -41,7 +41,7 @@ export type Ticket = {
 }
 
 type TicketEvent = {
-    id: number;
+    id: string;
     name: string;
     flyer: Flyer;
     location: { city: string; address: string };
@@ -49,7 +49,7 @@ type TicketEvent = {
 }
 
 type ApiTicketEvent = {
-    id: number;
+    id: string;
     name: string;
     flyerPath: string;
     city: string;

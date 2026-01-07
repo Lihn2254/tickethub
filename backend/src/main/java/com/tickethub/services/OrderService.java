@@ -15,23 +15,23 @@ import com.tickethub.dto.OrderDTO;
 import com.tickethub.dto.ticket.TicketClientDTO;
 import com.tickethub.repositories.ClientRepository;
 import com.tickethub.repositories.OrderRepository;
+import com.tickethub.utils.randomizeId;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class OrderService {
-    private OrderRepository orderRepository;
-    private ClientRepository clientRepository;
+    private final OrderRepository orderRepository;
+    private final ClientRepository clientRepository;
 
-    public Order createOrder(int clientId, Event event, int attendees) throws Exception {
+    public Order createOrder(String clientId, Event event, int attendees) throws Exception {
         try {
-            Client client = clientRepository.findById(clientId).get();
+            Client client = clientRepository.findById(randomizeId.decode(clientId)).get();
 
             BigDecimal totalAmount = event.getPrice().multiply(new BigDecimal(attendees));
 
-            Order newOrder = new Order(totalAmount, 1, client); // status = 1 (Paid). For now, all orders will be marked
-                                                                // as paid
+            Order newOrder = new Order(totalAmount, 1, client); // status = 1 (Paid). For now, all orders will be marked as paid
             newOrder.setOrderDate(OffsetDateTime.now());
 
             Order savedOrder = orderRepository.save(newOrder);
@@ -46,9 +46,9 @@ public class OrderService {
         }
     }
 
-    public List<OrderDTO> getOrdersByClient(int clientId) {
+    public List<OrderDTO> getOrdersByClient(String clientId) {
         try {
-            List<Order> orders = orderRepository.findByClient_Id(clientId);
+            List<Order> orders = orderRepository.findByClient_Id(randomizeId.decode(clientId));
 
             List<OrderDTO> mappedOrders = new ArrayList<>();
 
@@ -65,8 +65,8 @@ public class OrderService {
     }
 
     private OrderDTO convertToDTO(Order order) {
-        return new OrderDTO(order.getId(), order.getOrderDate(), order.getTotalAmount(), order.getPaymentStatus(),
-                new TicketClientDTO(order.getClient().getId(), order.getClient().getEmail(),
+        return new OrderDTO(randomizeId.encode(order.getId()), order.getOrderDate(), order.getTotalAmount(), order.getPaymentStatus(),
+                new TicketClientDTO(randomizeId.encode(order.getClient().getId()), order.getClient().getEmail(),
                         order.getClient().getUsername()));
     }
 }

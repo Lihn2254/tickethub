@@ -15,18 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tickethub.dto.EventDTO;
 import com.tickethub.services.EventService;
 
-record EventRequest(List<String> genre, List<String> city, OffsetDateTime start, OffsetDateTime end) {
-}
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/events")
 @CrossOrigin(origins = "http://localhost:3000")
 public class EventController {
-    private EventService eventService;
-
-    public EventController(EventService eventService) {
-        this.eventService = eventService;
-    }
+    private final EventService eventService;
 
     // Returns a list of events filter by genre, city, start time and end time
     @GetMapping
@@ -47,7 +43,7 @@ public class EventController {
 
     // Returns a single event given an ID
     @GetMapping("/id")
-    public ResponseEntity<EventDTO> getEvent(@RequestParam(required = true) Integer event_id) {
+    public ResponseEntity<EventDTO> getEvent(@RequestParam(required = true) String event_id) {
         try {
             return ResponseEntity.ok(eventService.getEvent(event_id));
         } catch (NoSuchElementException e) {

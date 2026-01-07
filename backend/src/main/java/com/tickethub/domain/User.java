@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 })
 public abstract class User {
     @Id
-    private int id;
+    private Integer id;
     protected String email, username;
     protected OffsetDateTime registrationDate;
     protected String password;

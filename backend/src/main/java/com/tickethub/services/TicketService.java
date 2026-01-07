@@ -15,20 +15,22 @@ import com.tickethub.dto.ticket.TicketClientDTO;
 import com.tickethub.dto.ticket.TicketEventDTO;
 import com.tickethub.repositories.EventRepository;
 import com.tickethub.repositories.TicketRepository;
+import com.tickethub.utils.randomizeId;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class TicketService {
-    private TicketRepository ticketRepository;
-    private EventRepository eventRepository;
-    private OrderService orderService;
+    private final TicketRepository ticketRepository;
+    private final EventRepository eventRepository;
+    private final OrderService orderService;
 
-    public List<TicketDTO> getTicketsByClient(Long clientId) {
+    public List<TicketDTO> getTicketsByClient(String clientId) {
         try {
-            List<Ticket> tickets = ticketRepository.findByOrder_Client_Id(clientId);
+
+            List<Ticket> tickets = ticketRepository.findByOrder_Client_Id(randomizeId.decode(clientId));
 
             List<TicketDTO> mappedTickets = new ArrayList<>();
 
@@ -45,12 +47,12 @@ public class TicketService {
     }
 
     @Transactional
-    public TicketDTO createTicket(int clientId, int eventId, int attendees) throws Exception {
+    public TicketDTO createTicket(String clientId, String eventId, int attendees) throws Exception {
         if (attendees <= 0) {
             throw new IllegalArgumentException("The number of attendees must be greater than zero. Operation aborted.");
         }
 
-        Event event = eventRepository.findById(eventId).get();
+        Event event = eventRepository.findById(randomizeId.decode(eventId)).get();
 
         if (event.getAvaliablePlaces() < attendees) {
             throw new Exception("Not enough available places for this event. Operation aborted.");
@@ -75,7 +77,7 @@ public class TicketService {
     private TicketDTO convertToDTO(Ticket ticket) {
         TicketDTO dto = new TicketDTO();
 
-        dto.setId(ticket.getId());
+        dto.setId(randomizeId.encode(ticket.getId()));
         dto.setStatus(ticket.getStatus());
         //dto.setQrCode(ticket.getQrcode());
         dto.setPurchasePrice(ticket.getPurchasePrice());
@@ -86,12 +88,12 @@ public class TicketService {
             Client client = order.getClient();
             if (client != null) {
                 dto.setOrder(new OrderDTO(
-                        order.getId(),
+                        randomizeId.encode(order.getId()),
                         order.getOrderDate(),
                         order.getTotalAmount(),
                         order.getPaymentStatus(),
                         new TicketClientDTO(
-                                client.getId(),
+                                randomizeId.encode(client.getId()),
                                 client.getEmail(),
                                 client.getUsername())));
             }
@@ -100,7 +102,7 @@ public class TicketService {
         Event event = ticket.getEvent();
         if (event != null) {
             dto.setEvent(new TicketEventDTO(
-                    event.getId(),
+                    randomizeId.encode(event.getId()),
                     event.getName(),
                     event.getFlyer(),
                     event.getCity(),

@@ -13,15 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tickethub.dto.ImageDTO;
 import com.tickethub.services.EventImageService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/events/images")
 @CrossOrigin(origins = "http://localhost:3000")
 public class EventImageController {
-    EventImageService eventImageService;
-
-    public EventImageController(EventImageService eventImageService) {
-        this.eventImageService = eventImageService;
-    }
+    private final EventImageService eventImageService;
 
     @GetMapping
     public ResponseEntity<List<ImageDTO>> getFlyerImage(@RequestParam(name = "flyer_path", required = true) List<String> fileNames) {
