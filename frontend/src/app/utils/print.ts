@@ -66,7 +66,7 @@ export const printTicket = async (ticket: Ticket) => {
         const finalHeight = height * ratio;
 
         // Cap height if it's too tall (e.g., portrait flyers)
-        const maxHeight = 125;
+        const maxHeight = 135;
         let renderHeight;
 
         renderHeight = finalHeight > maxHeight ? maxHeight : finalHeight;
@@ -118,7 +118,7 @@ export const printTicket = async (ticket: Ticket) => {
     }
 
     // Move Y position down past the flyer section
-    yPos = Math.max(yPos + 125, detailsY + 10);
+    yPos = Math.max(yPos + 135, detailsY + 10);
 
     // --- 5. ORDER SUMMARY BOX ---
     doc.setFillColor(lightGray[0], lightGray[1], lightGray[2]);

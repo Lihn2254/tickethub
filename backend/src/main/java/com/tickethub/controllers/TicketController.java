@@ -39,7 +39,6 @@ public class TicketController {
 
             if (tickets == null || tickets.isEmpty()) {
                 System.out.println("No tickets were found for this user");
-                return ResponseEntity.status(404).build();
             }
 
             return ResponseEntity.ok(tickets);

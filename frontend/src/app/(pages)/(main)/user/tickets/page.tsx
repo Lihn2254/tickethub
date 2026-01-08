@@ -38,6 +38,9 @@ export default function Tickets() {
           const mappedTickets = mapApiTicketsToTickets(apiTickets, eventFlyers);
 
           setAllTickets(mappedTickets);
+        }
+        
+        if (apiTickets) {
           setSuccess(true);
         }
       } catch (error) {
@@ -51,18 +54,18 @@ export default function Tickets() {
   }, [user]);
 
   // Automatically calculate the filtered list whenever 'allTickets' or 'navItem' changes.
-    const filteredTickets = useMemo(() => {
-      if (navItem === 0) {
-        return allTickets.filter((ticket) => ticket.status === 1);
-      } else if (navItem === 1) {
-        return allTickets.filter(
-          (ticket) => ticket.status === 0 || ticket.status === 3
-        );
-      } else if (navItem === 2) {
-        return allTickets.filter((ticket) => ticket.status === 2);
-      }
-      return [];
-    }, [allTickets, navItem]);
+  const filteredTickets = useMemo(() => {
+    if (navItem === 0) {
+      return allTickets.filter((ticket) => ticket.status === 1);
+    } else if (navItem === 1) {
+      return allTickets.filter(
+        (ticket) => ticket.status === 0 || ticket.status === 3
+      );
+    } else if (navItem === 2) {
+      return allTickets.filter((ticket) => ticket.status === 2);
+    }
+    return [];
+  }, [allTickets, navItem]);
 
   if (isLoading) {
     return <LoadingPage text="Loading tickets..." />;
