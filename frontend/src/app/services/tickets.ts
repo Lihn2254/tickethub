@@ -16,7 +16,7 @@ export default async function getTickets(client: Client): Promise<ApiTicket[]> {
     return res.json()
 }
 
-export async function createNewTicket(clientId: number, eventId: number, attendees: number): Promise<ApiTicket> {
+export async function createNewTicket(clientId: string, eventId: string, attendees: number): Promise<ApiTicket> {
     const res = await fetch(`${apiUrl}/tickets`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
