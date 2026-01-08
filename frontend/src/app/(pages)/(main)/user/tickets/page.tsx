@@ -99,8 +99,9 @@ export default function Tickets() {
 
         <section className="flex flex-col gap-6 p-5 overflow-y-scroll w-full justify-start">
           {filteredTickets.length > 0 ? (
-            filteredTickets.map((ticket) => (
-              <TicketCard key={ticket.id} {...ticket}></TicketCard>
+            filteredTickets.map((ticket) => ( navItem == 0 ?
+              <TicketCard key={ticket.id} ticket={ticket} optionsAvaliable={true}></TicketCard> :
+              <TicketCard key={ticket.id} ticket={ticket} optionsAvaliable={false}></TicketCard>
             ))
           ) : (
             <div className="flex flex-col flex-1 justify-center items-center w-full text-3xl text-gray-400">

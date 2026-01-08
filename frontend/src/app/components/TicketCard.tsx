@@ -1,10 +1,11 @@
 import Image from "next/image";
 import { ApiTicket, Ticket } from "../types/ticketTypes";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Modal from "./Modal";
 import generateQRCodeToCanvas from "../utils/qrcode";
 import { formatLocationToSearchParam, formatDatetime } from "../utils/utils";
 import PrintButton from "./PrintButton";
+import { useOutsideClick } from "../hooks/useOutsideClick";
 
 function QRmodal({
   ticketId,
@@ -32,17 +33,33 @@ function QRmodal({
   );
 }
 
-export default function TicketCard(ticket: Ticket) {
+export default function TicketCard({
+  ticket,
+  optionsAvaliable,
+}: {
+  ticket: Ticket;
+  optionsAvaliable: boolean;
+}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const city = ticket.event.location.city;
   const address = ticket.event.location.address;
+
+  useOutsideClick(containerRef, () => {
+    isOptionsOpen ? setIsOptionsOpen(false) : null;
+  });
 
   const { date, time } = formatDatetime(ticket.event.startTime);
 
   const onModalClose = () => setIsModalOpen(false);
 
+  const showOptions = () => setIsOptionsOpen(!isOptionsOpen);
+
+  const cancelOrder = () => alert("Your order was NOT canceled"); //TODO
+
   return (
-    <article className="bg-white border-2 rounded-2xl p-6 shadow-lg border-light-blue max-w-3xl h-fit flex flex-row">
+    <article className="bg-white border-2 rounded-2xl p-6 shadow-lg border-light-blue max-w-3xl h-fit flex flex-row relative">
       <Image
         src={`data:image/jpeg;base64,${ticket.event.flyer.img}`}
         alt={ticket.event.flyer.alt}
@@ -77,19 +94,42 @@ export default function TicketCard(ticket: Ticket) {
       </div>
 
       {/* Buttons */}
-      <div className="ml-10">
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="border-yellow border-3 p-1 rounded-2xl cursor-pointer transition-all duration-300 hover:scale-105"
-        >
-          <Image
-            src={"/icons/qrcode.svg"}
-            alt="qrcode"
-            width={40}
-            height={40}
-          />
-        </button>
-        <PrintButton ticket={ticket} />
+      <div className="flex flex-col ml-10">
+        <div className="flex-1">
+          <button
+            type="button"
+            onClick={() => setIsModalOpen(true)}
+            className="border-yellow border-3 p-1 rounded-2xl cursor-pointer transition-all duration-300 hover:scale-105"
+          >
+            <Image
+              src={"/icons/qrcode.svg"}
+              alt="qrcode"
+              width={40}
+              height={40}
+            />
+          </button>
+          <PrintButton ticket={ticket} />
+        </div>
+        <div ref={containerRef} className="self-end">
+          {optionsAvaliable ? (
+            <button
+              type="button"
+              onClick={showOptions}
+              className="self-end p-1 rounded-full hover:bg-light-gray"
+            >
+              <img src="/icons/options.svg" alt="options" width={35} />
+            </button>
+          ) : null}
+          {isOptionsOpen ? (
+            <button
+              type="button"
+              onClick={cancelOrder}
+              className="absolute bottom-6 right-18 py-2 px-4 border border-gray-200 bg-gray-50 rounded-3xl font-medium hover:text-red-500 hover:font-semibold"
+            >
+              Cancel order
+            </button>
+          ) : null}
+        </div>
       </div>
 
       <QRmodal
