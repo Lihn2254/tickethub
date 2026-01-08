@@ -20,7 +20,7 @@ export default function AccountInfo() {
   return (
     <div>
       <div className="flex flex-col">
-        <span>User ID: {user?.id?.toUpperCase()}</span>
+        <span>User ID: {user?.id}</span>
         <span>Username: {user?.username}</span>
         <span>Email: {user?.email}</span>
         <span>Name: {user?.name}</span>
