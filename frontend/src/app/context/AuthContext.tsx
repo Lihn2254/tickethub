@@ -1,9 +1,15 @@
-'use client';
+"use client";
 
-import { useRouter, usePathname } from 'next/navigation';
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { typeGuard } from '../utils';
-import { User } from '../types/userTypes';
+import { useRouter, usePathname } from "next/navigation";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import { typeGuard } from "../utils/utils";
+import { User } from "../types/userTypes";
 
 interface AuthContextType {
   user: User | null;
@@ -17,31 +23,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const publicPaths = ["/", "/login", "/signup", "/about"]; //The user can visit this pages without an account
 
   useEffect(() => {
-    const publicPaths = ['/login', '/signup'];
-    const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const tmpUser: User = JSON.parse(storedUser);
-      typeGuard(tmpUser, () => setUser(tmpUser), () => setUser(tmpUser));
-    } else if(!publicPaths.includes(pathname)) {
-      router.push('/login');
+      typeGuard(
+        tmpUser,
+        () => setUser(tmpUser),
+        () => setUser(tmpUser)
+      );
+    } else if (!publicPaths.includes(pathname)) {
+      router.push("/login");
     }
   }, [pathname, router]);
 
   const loginUser = (userData: User) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify(userData));
   };
 
   const logoutUser = () => {
     setUser(null);
-    localStorage.removeItem('user');
-    router.push('/login');
+    localStorage.removeItem("user");
+    if (!publicPaths.includes(pathname)) {
+      router.push("/login");
+    }
   };
 
   return (
-    
     <AuthContext.Provider value={{ user, loginUser, logoutUser }}>
       {children}
     </AuthContext.Provider>
@@ -51,7 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

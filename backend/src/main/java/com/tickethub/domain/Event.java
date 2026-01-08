@@ -1,7 +1,7 @@
 package com.tickethub.domain;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -16,14 +16,12 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode(exclude = {"organizers", "artists"})
 @ToString(exclude = {"organizers", "artists"})
 @AllArgsConstructor
@@ -40,7 +38,7 @@ public class Event {
     private int id;
     private String flyer;
     private String name, genre, subtitle, description, city, address;
-    private Date startTime;
+    private OffsetDateTime startTime;
     private BigDecimal price;
     private int maxAttendees;
     private int avaliablePlaces;

@@ -1,12 +1,12 @@
 interface UserBase {
-    id: number | null;
+    id: string | null;
     email: string;
     username: string;
     password: string | null;
     registrationDate: Date | null;
 }
 
-interface Client extends UserBase {
+export interface Client extends UserBase {
     accountType: 'client';
     name: string;
     lastname: string;
@@ -15,7 +15,7 @@ interface Client extends UserBase {
     phone: string;
 }
 
-interface Organizer extends UserBase {
+export interface Organizer extends UserBase {
     accountType: 'organizer';
     name: string;
     socials: string[];

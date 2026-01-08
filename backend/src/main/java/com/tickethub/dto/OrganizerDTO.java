@@ -1,15 +1,19 @@
 package com.tickethub.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.Map;
+import java.util.Set;
 
-@Getter
-@Setter
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+@Data
+@EqualsAndHashCode(callSuper=true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrganizerDTO {
-    private int id;
+public class OrganizerDTO extends UserDTO{
     private String name;
+    private Map<String, String> socials;
+    private Set<EventDTO> events;
 }

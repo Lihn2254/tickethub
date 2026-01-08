@@ -1,7 +1,7 @@
 export type Xevent = {
-  id: number;
+  id: string;
   name: string;
-  flyer: { img: string | null; ext: string | null; alt: string };
+  flyer: Flyer;
   genre: string[];
   subtitle: string;
   description: string;
@@ -14,8 +14,12 @@ export type Xevent = {
   artists: string[];
 };
 
+export type Flyer = {
+  img: string | null; ext: string | null; alt: string
+}
+
 export type ApiEvent = {
-  id: number;
+  id: string;
   flyerPath: string;
   name: string;
   genre: string;

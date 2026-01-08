@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Red_Hat_Display, Funnel_Display } from "next/font/google";
-import "../globals.css";
-import Header from "../components/header/Header";
-import Footer from "../components/Footer";
-import { AuthProvider } from "../context/AuthContext";
+import "@/app/globals.css";
+import { AuthProvider } from "@/app/context/AuthContext";
+import Footer from "@/app/components/Footer";
 
 const redHat = Red_Hat_Display({
   subsets: ["latin"],
@@ -18,8 +17,8 @@ const funnel = Funnel_Display({
 });
 
 export const metadata: Metadata = {
-  title: "TicketHub",
-  description: "Ticket sales for events.",
+  title: "Ticket purchase",
+  description: "Buy tickets for an event",
 };
 
 export default function RootLayout({
@@ -31,7 +30,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${redHat.variable} ${funnel.variable} antialiased`}>
         <AuthProvider>
-          <Header />
           {children}
           <Footer />
         </AuthProvider>

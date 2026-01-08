@@ -39,6 +39,28 @@ export default async function getEvents(
   return res.json();
 }
 
+export async function getEvent(eventId: string | null): Promise<ApiEvent | null> {
+  if (eventId == null) {
+    console.log('Event ID cannot be null');
+    return null;
+  }
+
+  const params = new URLSearchParams();
+
+  params.append("event_id", eventId);
+
+  const fetchUrl = `${apiUrl}/events/id?${params.toString()}`;
+
+  const res = await fetch(fetchUrl);
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.message);
+  }
+
+  return res.json();
+}
+
 export async function getFlyerImages(flyerPaths: string[]): Promise<ApiFlyer[]> {
   const params = new URLSearchParams();
 

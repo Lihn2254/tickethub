@@ -1,6 +1,6 @@
 package com.tickethub.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -17,5 +17,5 @@ import lombok.NoArgsConstructor;
 @Table(name = "clients")
 public class Client extends User{
     private String name, lastname, gender, phone;
-    private Date birthDate;
+    private LocalDate birthDate;
 }

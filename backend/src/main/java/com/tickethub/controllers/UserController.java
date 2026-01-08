@@ -1,71 +1,60 @@
 package com.tickethub.controllers;
 
-import java.util.Date;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tickethub.domain.User;
+import com.tickethub.dto.UserDTO;
 import com.tickethub.services.UserService;
 
-record LoginRequest(String email, String password) {
+import lombok.RequiredArgsConstructor;
+
+record LoginRequest(String credentials, String password) { //credentials refers to either a username or email, couldn't find a better word
 }
 
-record singleStringRequest(String text) {
-} // Email || username
-
-record RegisterRequest(int userId, String email, String username, String password, Date registrationDate,
-        String userType) {
-}
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/user")
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
-    private UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest) {
-        System.out.println("Login request received for email: " + loginRequest.email());
+    public ResponseEntity<UserDTO> login(@RequestBody LoginRequest loginRequest) {
+        System.out.println("\n------\nLogin request received for: " + loginRequest.credentials());
 
-        User authenticatedUser = userService.authenticate(loginRequest.email(), loginRequest.password());
+        UserDTO authenticatedUser = userService.authenticate(loginRequest.credentials(), loginRequest.password());
 
         if (authenticatedUser == null) {
             System.out.println("User was not found.");
             return ResponseEntity.status(500).build();
         }
 
-        System.out.println("User " + authenticatedUser.toString() + " was returned.");
+        System.out.println("User " + authenticatedUser.toString() + " was returned successfully.");
         return ResponseEntity.ok(authenticatedUser);
     }
 
     @PostMapping("/check-duplicate")
-    public ResponseEntity<Boolean> checkDuplicate(@RequestBody singleStringRequest request) {
-        Boolean isAvaliable = userService.isCredentialAvaliable(request.text());
+    public ResponseEntity<Boolean> checkDuplicate(@RequestBody String identifier) { //Email or Username
+        Boolean isAvaliable = userService.isCredentialAvaliable(identifier);
 
-        System.out.println(request.text() + " is avaliable: " + isAvaliable);
+        System.out.println("\n------\n" + identifier + " is avaliable: " + isAvaliable);
 
         return ResponseEntity.ok(isAvaliable);
     }
 
-    @PutMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
-        System.out.println("Sign up request received for user: " + user.toString());
+    @PostMapping("/register")
+    public ResponseEntity<UserDTO> register(@RequestBody UserDTO user) {
+        System.out.println("\n------\nSign up request received for user: " + user.toString());
 
-        User registeredUser;
+        UserDTO registeredUser;
         try {
             registeredUser = userService.register(user);
-            System.out.println("User: " + user.toString() + "was registered and returned.");
+            System.out.println("User: ID=" + registeredUser.getId().toUpperCase() + " " + registeredUser.toString() + " was registered successfully.");
             return ResponseEntity.ok(registeredUser);
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,11 +63,11 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Boolean> delete(@RequestBody User user) {
+    public ResponseEntity<Boolean> delete(@RequestBody UserDTO user) {
         try {
             boolean res = userService.delete(user);
-            System.out.println("Deletion request received for user: " + user.getUsername() + " | " + user.getEmail());
-            System.out.println("User: " + user.toString() + "was successfully deleted.");
+            System.out.println("\n------\nDeletion request received for user: " + user.getUsername() + " | " + user.getEmail());
+            System.out.println("User: " + user.toString() + " was successfully deleted.");
             return ResponseEntity.ok(res);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());

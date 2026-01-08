@@ -22,7 +22,7 @@ function MenuLink({
 }) {
   return (
     <>
-      <Link onClick={buttonClicked} href={href} className="flex flex-row">
+      <Link onClick={buttonClicked} href={href} className="flex">
         <Image src={src} alt={alt} width={20} height={20} className="mr-2" />
         {text}
       </Link>
@@ -32,10 +32,10 @@ function MenuLink({
 
 function ProfileOptions({
   user,
-  buttonClicked
+  buttonClicked,
 }: {
-  user: User | null,
-  buttonClicked: () => void
+  user: User | null;
+  buttonClicked: () => void;
 }) {
   const { logoutUser } = useAuth();
 
@@ -44,49 +44,60 @@ function ProfileOptions({
     buttonClicked();
   };
 
+  const menuLinks = [
+    {
+      key: 1,
+      text: "Profile",
+      href: "/user",
+      src: "/icons/user.svg",
+    },
+    {
+      key: 2,
+      text: "My tickets",
+      href: "/user/tickets",
+      src: "/icons/ticket.svg",
+    },
+    {
+      key: 3,
+      text: "Purchase history",
+      href: "/user/history",
+      src: "/icons/history.svg",
+    },
+    {
+      key: 4,
+      text: "Settings",
+      href: "/settings",
+      src: "/icons/settings.svg",
+    },
+  ];
+
   return (
-    <ul  className="mt-2 flex flex-col min-w-35 gap-1.5 absolute bg-white border-2 rounded-md p-4 border-light-blue whitespace-nowrap right-0">
+    <ul className="mt-2 flex flex-col min-w-45 gap-1.5 absolute bg-white border-2 rounded-md p-4 border-light-blue whitespace-nowrap right-0">
       <li>
         <p className="font-bold">{user?.name}</p>
         <p className="text-sm font-semibold">{user?.username}</p>
       </li>
-      <hr className="mt-1 mb-1"/>
-      <li>
-        <MenuLink
-          text="Profile"
-          buttonClicked={buttonClicked}
-          href="/user"
-          src="/icons/user.svg"
-          alt="Profile"
-        />
-      </li>
-      <li>
-        <MenuLink
-          text="My tickets"
-          buttonClicked={buttonClicked}
-          href="/user/tickets"
-          src="/icons/ticket.svg"
-          alt="Ticket"
-        />{" "}
-      </li>
-      <li>
-        <MenuLink
-          text="Settings"
-          buttonClicked={buttonClicked}
-          href="/settings"
-          src="/icons/settings.svg"
-          alt="Settings"
-        />
-      </li>
       <hr className="mt-1 mb-1" />
-      <li>
+      {menuLinks.map((menuLink) => (
         <MenuLink
-          text="Logout"
-          buttonClicked={handleLogout}
-          href="/login"
+          key={menuLink.key}
+          text={menuLink.text}
+          buttonClicked={buttonClicked}
+          href={menuLink.href}
+          src={menuLink.src}
+          alt={menuLink.text}
+        />
+      ))}
+      <hr className="mt-1 mb-1" />
+      <li onClick={handleLogout} className="flex cursor-pointer">
+        <Image
           src="/icons/logout.svg"
           alt="Logout"
+          width={20}
+          height={20}
+          className="mr-2"
         />
+        <span>Log out</span>
       </li>
     </ul>
   );

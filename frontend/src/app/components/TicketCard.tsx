@@ -1,49 +1,102 @@
 import Image from "next/image";
-import { Ticket } from "../types/ticketTypes";
+import { ApiTicket, Ticket } from "../types/ticketTypes";
+import { useState, useEffect } from "react";
+import Modal from "./Modal";
+import generateQRCodeToCanvas from "../utils/qrcode";
+import { formatLocationToSearchParam, formatDatetime } from "../utils/utils";
+import PrintButton from "./PrintButton";
+
+function QRmodal({
+  ticketId,
+  isOpen,
+  onClose,
+}: {
+  ticketId: string;
+  isOpen: boolean;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    if (isOpen) {
+      // setTimeout to ensure the canvas is rendered before calling generateQRCode
+      const timer = setTimeout(() => {
+        generateQRCodeToCanvas(ticketId);
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, ticketId]);
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} title="QR Code">
+      <canvas id="qrcode-canvas" className="p-1 w-full h-full"></canvas>
+    </Modal>
+  );
+}
 
 export default function TicketCard(ticket: Ticket) {
-  const date = new Intl.DateTimeFormat("en-US", {
-    month: "long",
-    day: "numeric",
-  }).format(ticket.event.startTime);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const city = ticket.event.location.city;
+  const address = ticket.event.location.address;
 
-  const time = new Intl.DateTimeFormat("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  }).format(ticket.event.startTime.getDate());
+  const { date, time } = formatDatetime(ticket.event.startTime);
+
+  const onModalClose = () => setIsModalOpen(false);
 
   return (
     <article className="bg-white border-2 rounded-2xl p-6 shadow-lg border-light-blue max-w-3xl h-fit flex flex-row">
       <Image
-        src={ticket.event.flyer.src}
+        src={`data:image/jpeg;base64,${ticket.event.flyer.img}`}
         alt={ticket.event.flyer.alt}
         width={150}
         height={150}
+        className="rounded-lg object-cover"
       />
 
       {/* Ticket info */}
-      <div className="ml-6">
+      <div className="flex flex-col flex-1 ml-6">
         <p className="funnel-text mb-1">#{ticket.id}</p>
         <h1 className="text-3xl font-bold text-blue mb-6">
           {ticket.event.name}
         </h1>
-        <h3 className="text-lg">{ticket.event.location.city}</h3>
-        <h2 className="funnel-text text-xl font-semibold pb-3 text-gray-700">
-          {date + " - " + time}
-        </h2>
-        <p>Attendees: {` ${ticket.attendees}`}</p>
+        <a
+          href={`https://www.google.com/maps/search/${formatLocationToSearchParam(
+            city,
+            address
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-lg hover:underline"
+        >{`${city} — ${
+          address.includes(",")
+            ? address.substring(0, address.indexOf(","))
+            : address
+        }`}</a>
+        <span className="funnel-text text-xl font-semibold pb-3 text-gray-700">
+          {date + " | " + time}
+        </span>
+        <p>Attendees: {ticket.attendees}</p>
       </div>
 
       {/* Buttons */}
       <div className="ml-10">
-        <button className="border-yellow border-3 p-1 rounded-2xl">
-          <Image src={"/icons/qrcode.svg"} alt="qrcode" width={40} height={40} />
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="border-yellow border-3 p-1 rounded-2xl cursor-pointer transition-all duration-300 hover:scale-105"
+        >
+          <Image
+            src={"/icons/qrcode.svg"}
+            alt="qrcode"
+            width={40}
+            height={40}
+          />
         </button>
-        <button className="border-yellow border-3 p-1 rounded-2xl ml-2">
-          <Image src={"/icons/download.svg"} alt="print" width={40} height={40} />
-        </button>
+        <PrintButton ticket={ticket} />
       </div>
+
+      <QRmodal
+        ticketId={ticket.id}
+        isOpen={isModalOpen}
+        onClose={onModalClose}
+      />
     </article>
   );
 }

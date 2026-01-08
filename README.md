@@ -165,7 +165,7 @@ Navigate to the backend directory and start the Spring Boot application:
 
 ```bash
 cd backend
-./mvnw spring-boot:run
+./mvnw spring-boot:run || mvn spring-boot:run
 ```
 
 The backend will start on `http://localhost:8080`
@@ -301,13 +301,13 @@ Ensure the backend has CORS configured for the frontend URL in controllers:
 ### IMPORTANT: Do not commit directly to the main branch. Please.
 1. Locate yourself on the dev branch: `git checkout dev`
 2. Make sure you are up-to-date with the changes made by others on dev: `git pull origin dev`
-3. Create a feature branch: `git checkout -b dev/your-feature`
+3. Create a feature branch: `git checkout -b your-feature`
 4. Move your changes to the stage area: `git add .`
 5. Commit your changes: `git commit -m "Add feature"`
-6. Push to the branch: `git push origin feature/your-feature`
+6. Push to the branch: `git push origin your-feature`
 7. Open a Pull Request
 
 
 ## License
 
-Luego defino la licencia. •ᴗ•
+Luego defino la licencia. •ᴗ• 

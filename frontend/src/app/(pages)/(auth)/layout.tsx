@@ -1,8 +1,8 @@
 import { AuthProvider } from "@/app/context/AuthContext";
 import { Red_Hat_Display, Funnel_Display } from "next/font/google";
-import Footer from "../components/Footer";
-import "../globals.css";
+import "@/app/globals.css";
 import { Metadata } from "next";
+import Footer from "@/app/components/Footer";
 
 const redHat = Red_Hat_Display({
   subsets: ["latin"],
@@ -17,7 +17,7 @@ const funnel = Funnel_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Sign in",
+  title: "Sign In",
   description: "Log in to TicketHub",
 };
 

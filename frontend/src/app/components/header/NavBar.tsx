@@ -17,14 +17,14 @@ export default function NavBar() {
     if (pathname === "/") return "events";
     if (pathname.startsWith("/user/tickets")) return "user";
     if (pathname.startsWith("/about")) return "about";
-    return "events";
+    return null;
   };
 
   const activeKey = getActiveKey();
 
   return (
     <nav>
-      <ul className="flex items-center gap-6 text-md text-gray-600 font-medium">
+      <ul className="flex items-center gap-8 text-lg text-gray-600 font-medium">
         {navItems.map((item) => (
           <li
             key={item.key}

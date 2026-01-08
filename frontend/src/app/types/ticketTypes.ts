@@ -1,13 +1,62 @@
-export type Ticket = {
-    id: number;
-    event: {
-        id: number;
-        name: string;
-        flyer: { src: string; alt: string };
-        location: { city: string; address: string };
-        startTime: Date;
-    };
-    qrcode: string;
+import { Flyer } from "./eventTypes";
+
+export type ApiTicket = {
+    id: string;
     status: number;
+    //qrCode: string;
+    purchasePrice: number;
     attendees: number;
+    order: {
+        id: string;
+        orderDate: Date;
+        totalAmount: number;
+        paymentStatus: number;
+        client: {
+            id: string;
+            email: string;
+            username: string;
+            name: string;
+            lastname: string;
+        }
+    };
+    event: ApiTicketEvent;
+}
+
+export type Ticket = {
+    id: string;
+    status: number;
+    //qrCode: string;
+    purchasePrice: number;
+    attendees: number;
+    order: {
+        id: string;
+        orderDate: Date;
+        totalAmount: number;
+        paymentStatus: number;
+        client: {
+            id: string;
+            email: string;
+            username: string;
+            name: string;
+            lastname: string;
+        }
+    };
+    event: TicketEvent;
+}
+
+type TicketEvent = {
+    id: string;
+    name: string;
+    flyer: Flyer;
+    location: { city: string; address: string };
+    startTime: Date;
+}
+
+type ApiTicketEvent = {
+    id: string;
+    name: string;
+    flyerPath: string;
+    city: string;
+    address: string;
+    startTime: Date;
 }

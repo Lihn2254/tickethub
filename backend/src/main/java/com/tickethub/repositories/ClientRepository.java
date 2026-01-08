@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.tickethub.domain.Client;
 
-public interface ClientRepository extends JpaRepository<Client, Long>{
+public interface ClientRepository extends JpaRepository<Client, Integer>{
     // @Query("""
     //         select c
     //         from clients c

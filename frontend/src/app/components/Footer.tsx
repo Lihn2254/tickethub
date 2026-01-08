@@ -17,11 +17,11 @@ const SocialIcon = ({
 
 export default function Footer() {
   return (
-    <footer className="bg-darker-blue text-white py-12">
+    <footer className="bg-dark-blue text-white py-12">
       <div className="container mx-auto px-6">
         <div className="flex flex-col lg:flex-row lg:flex-wrap space-y-8 md:space-y-0 not-lg:items-center not-lg:text-center lg:justify-evenly">
           <div className="footer-section">
-            <h2 className="text-2xl font-semibold funnel-text">Evant</h2>
+            <h2 className="text-2xl font-semibold funnel-text">TicketHub</h2>
             <p className="text-gray-300 text-sm">
               Your gateway to unforgettable events.
             </p>
@@ -31,7 +31,7 @@ export default function Footer() {
             <h3 className="text-lg funnel-text font-semibold mb-2">Contact Us</h3>
             <p className="text-gray-300">123 Music Lane</p>
             <p className="text-gray-300">Culiacán, Sinaloa, Mexico</p>
-            <p className="text-gray-300 mt-2">contact@evant.com</p>
+            <p className="text-gray-300 mt-2">contact@tickethub.com</p>
           </div>
 
           <div className="footer-section">
@@ -81,7 +81,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-300 mt-8 pt-6 text-center text-gray-300 text-sm">
           <p>
-            &copy; {new Date().getFullYear()} Evant. All rights reserved.
+            &copy; {new Date().getFullYear()} TicketHub. All rights reserved.
           </p>
         </div>
       </div>

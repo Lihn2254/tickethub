@@ -10,11 +10,11 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-red-hat), sans-serif;
   --font-mono: var(--font-funnel), sans-serif;
-  --color-blue: #166CC8;
   --color-light-blue: #2986cc;
+  --color-blue: #166CC8;
+  --color-dark-blue: #1D58A0;
+  --color-darker-blue: #072340;
   --color-alt-blue: #668CFF;
-  --color-dark-blue: #16537e;
-  --color-darker-blue: #00497D;
   --color-yellow: #f1c232;
   --color-light-yellow: #ffd966;
   --color-light-gray: #f5f5f5;
@@ -79,7 +79,12 @@ body {
   }
 
   .options-list{
-    @apply pl-5 pr-5 pt-3 pb-3;
+    @apply px-5 py-3;
   }
 }
 
+/* Colors used for icons 
+All icons must be 48 in size
+    - Dark gray: #434343
+    - Dark blue: #00497D
+*/
