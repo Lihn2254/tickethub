@@ -713,7 +713,7 @@ function ConfirmationPage({
         <div className="bg-blue-50 rounded-lg p-8 border-2 border-blue mb-8">
           <div className="mb-6">
             <p className="text-gray-600 text-sm mb-1">Confirmation Number</p>
-            <p className="text-2xl font-bold text-blue">{ticket.id}</p>
+            <p className="text-3xl font-bold text-blue">{ticket.id}</p>
           </div>
 
           <hr className="border-blue-200 mb-6" />

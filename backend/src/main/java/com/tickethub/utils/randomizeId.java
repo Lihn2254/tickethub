@@ -5,7 +5,10 @@ import java.util.Arrays;
 import org.sqids.Sqids;
 
 public class randomizeId {
-    private static Sqids sqids = Sqids.builder().minLength(8).build();
+    private static Sqids sqids = Sqids.builder()
+            .alphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+            .minLength(8)
+            .build();
 
     public static String encode(Integer id) {
         return sqids.encode(Arrays.asList(Long.valueOf(id)));

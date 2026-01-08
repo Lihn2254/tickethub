@@ -59,17 +59,21 @@ public class TicketService {
         }
 
         Order order = orderService.createOrder(clientId, event, attendees);
-        Ticket savedTicket = ticketRepository.save(new Ticket(attendees, 1, event.getPrice(), order, event)); //status = Active (1)
+        Ticket savedTicket = ticketRepository.save(new Ticket(attendees, 1, event.getPrice(), order, event)); // status
+                                                                                                              // =
+                                                                                                              // Active
+                                                                                                              // (1)
 
-        event.setAvaliablePlaces(event.getAvaliablePlaces() - attendees); //Update available places
+        event.setAvaliablePlaces(event.getAvaliablePlaces() - attendees); // Update available places
 
-        if (event.getAvaliablePlaces() == 0) { //If no places are available, mark event as sold out
-            event.setStatus(3); //Sold out
+        if (event.getAvaliablePlaces() == 0) { // If no places are available, mark event as sold out
+            event.setStatus(3); // Sold out
         }
 
         eventRepository.save(event);
 
-        System.out.println("\tTicket and order were created successfully.\n\tRemaining places for event (id = " + event.getId() + ") '" + event.getName() + "': " + event.getAvaliablePlaces());
+        System.out.println("\tTicket and order were created successfully.\n\tRemaining places for event (id = "
+                + event.getId() + ") '" + event.getName() + "': " + event.getAvaliablePlaces());
 
         return convertToDTO(savedTicket);
     }
@@ -79,7 +83,7 @@ public class TicketService {
 
         dto.setId(randomizeId.encode(ticket.getId()));
         dto.setStatus(ticket.getStatus());
-        //dto.setQrCode(ticket.getQrcode());
+        // dto.setQrCode(ticket.getQrcode());
         dto.setPurchasePrice(ticket.getPurchasePrice());
         dto.setAttendees(ticket.getAttendees());
 
@@ -95,7 +99,9 @@ public class TicketService {
                         new TicketClientDTO(
                                 randomizeId.encode(client.getId()),
                                 client.getEmail(),
-                                client.getUsername())));
+                                client.getUsername(),
+                                client.getName(),
+                                client.getLastname())));
             }
         }
 

@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class OrderDTO {
     private String id;
     private OffsetDateTime orderDate;
-    private BigDecimal total_amount;
+    private BigDecimal totalAmount;
     private int paymentStatus;
     private TicketClientDTO client;
 }

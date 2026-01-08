@@ -7,14 +7,16 @@ export type ApiTicket = {
     purchasePrice: number;
     attendees: number;
     order: {
-        id: number;
+        id: string;
         orderDate: Date;
         totalAmount: number;
         paymentStatus: number;
         client: {
-            id: number;
+            id: string;
             email: string;
             username: string;
+            name: string;
+            lastname: string;
         }
     };
     event: ApiTicketEvent;
@@ -27,14 +29,16 @@ export type Ticket = {
     purchasePrice: number;
     attendees: number;
     order: {
-        id: number;
+        id: string;
         orderDate: Date;
         totalAmount: number;
         paymentStatus: number;
         client: {
-            id: number;
+            id: string;
             email: string;
             username: string;
+            name: string;
+            lastname: string;
         }
     };
     event: TicketEvent;

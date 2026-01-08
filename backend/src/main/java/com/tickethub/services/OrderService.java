@@ -67,6 +67,6 @@ public class OrderService {
     private OrderDTO convertToDTO(Order order) {
         return new OrderDTO(randomizeId.encode(order.getId()), order.getOrderDate(), order.getTotalAmount(), order.getPaymentStatus(),
                 new TicketClientDTO(randomizeId.encode(order.getClient().getId()), order.getClient().getEmail(),
-                        order.getClient().getUsername()));
+                        order.getClient().getUsername(), order.getClient().getName(), order.getClient().getLastname()));
     }
 }

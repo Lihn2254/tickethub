@@ -2,8 +2,9 @@ import Image from "next/image";
 import { ApiTicket, Ticket } from "../types/ticketTypes";
 import { useState, useEffect } from "react";
 import Modal from "./Modal";
-import generateQRCode from "../utils/qrcode";
+import generateQRCodeToCanvas from "../utils/qrcode";
 import { formatLocationToSearchParam, formatDatetime } from "../utils/utils";
+import PrintButton from "./PrintButton";
 
 function QRmodal({
   ticketId,
@@ -18,7 +19,7 @@ function QRmodal({
     if (isOpen) {
       // setTimeout to ensure the canvas is rendered before calling generateQRCode
       const timer = setTimeout(() => {
-        generateQRCode(ticketId);
+        generateQRCodeToCanvas(ticketId);
       }, 0);
       return () => clearTimeout(timer);
     }
@@ -36,7 +37,7 @@ export default function TicketCard(ticket: Ticket) {
   const city = ticket.event.location.city;
   const address = ticket.event.location.address;
 
-  const {date, time} = formatDatetime(ticket.event.startTime);
+  const { date, time } = formatDatetime(ticket.event.startTime);
 
   const onModalClose = () => setIsModalOpen(false);
 
@@ -52,7 +53,7 @@ export default function TicketCard(ticket: Ticket) {
 
       {/* Ticket info */}
       <div className="flex flex-col flex-1 ml-6">
-        <p className="funnel-text mb-1">#{ticket.id.toUpperCase()}</p>
+        <p className="funnel-text mb-1">#{ticket.id}</p>
         <h1 className="text-3xl font-bold text-blue mb-6">
           {ticket.event.name}
         </h1>
@@ -64,7 +65,11 @@ export default function TicketCard(ticket: Ticket) {
           target="_blank"
           rel="noopener noreferrer"
           className="text-lg hover:underline"
-        >{`${city} — ${address.includes(',') ? address.substring(0, address.indexOf(',')) : address}`}</a>
+        >{`${city} — ${
+          address.includes(",")
+            ? address.substring(0, address.indexOf(","))
+            : address
+        }`}</a>
         <span className="funnel-text text-xl font-semibold pb-3 text-gray-700">
           {date + " | " + time}
         </span>
@@ -75,7 +80,7 @@ export default function TicketCard(ticket: Ticket) {
       <div className="ml-10">
         <button
           onClick={() => setIsModalOpen(true)}
-          className="border-yellow border-3 p-1 rounded-2xl"
+          className="border-yellow border-3 p-1 rounded-2xl cursor-pointer transition-all duration-300 hover:scale-105"
         >
           <Image
             src={"/icons/qrcode.svg"}
@@ -84,14 +89,7 @@ export default function TicketCard(ticket: Ticket) {
             height={40}
           />
         </button>
-        <button className="border-yellow border-3 p-1 rounded-2xl ml-2">
-          <Image
-            src={"/icons/download.svg"}
-            alt="print"
-            width={40}
-            height={40}
-          />
-        </button>
+        <PrintButton ticket={ticket} />
       </div>
 
       <QRmodal

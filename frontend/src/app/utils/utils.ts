@@ -97,7 +97,9 @@ export function mapApiTicketsToTickets(apiTickets: ApiTicket[], apiFlyers: ApiFl
         client: {
           id: ticket.order.client.id,
           email: ticket.order.client.email,
-          username: ticket.order.client.username
+          username: ticket.order.client.username,
+          name: ticket.order.client.name,
+          lastname: ticket.order.client.lastname
         }
       },
       event: {
