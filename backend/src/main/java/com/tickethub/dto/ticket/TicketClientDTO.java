@@ -1,16 +1,13 @@
 package com.tickethub.dto.ticket;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class TicketClientDTO {
     private String id;
-    private String email;
-    private String username;
+    private String email, username, name, lastname;
 }
