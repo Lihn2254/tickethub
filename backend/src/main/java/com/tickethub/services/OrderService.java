@@ -19,6 +19,10 @@ import com.tickethub.utils.randomizeId;
 
 import lombok.RequiredArgsConstructor;
 
+enum PaymentStatus {
+    PENDING, PAID, REIMBURSED
+}
+
 @RequiredArgsConstructor
 @Service
 public class OrderService {

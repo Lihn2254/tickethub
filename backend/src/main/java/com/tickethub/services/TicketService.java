@@ -1,5 +1,7 @@
 package com.tickethub.services;
 
+import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,10 +61,9 @@ public class TicketService {
         }
 
         Order order = orderService.createOrder(clientId, event, attendees);
-        Ticket savedTicket = ticketRepository.save(new Ticket(attendees, 1, event.getPrice(), order, event)); // status
-                                                                                                              // =
-                                                                                                              // Active
-                                                                                                              // (1)
+
+        // status = Active (1)
+        Ticket savedTicket = ticketRepository.save(new Ticket(attendees, 1, event.getPrice(), order, event));
 
         event.setAvaliablePlaces(event.getAvaliablePlaces() - attendees); // Update available places
 
@@ -74,6 +75,52 @@ public class TicketService {
 
         System.out.println("\tTicket and order were created successfully.\n\tRemaining places for event (id = "
                 + event.getId() + ") '" + event.getName() + "': " + event.getAvaliablePlaces());
+
+        return convertToDTO(savedTicket);
+    }
+
+    @Transactional
+    public TicketDTO updateTicketStatus(String ticketId, String clientId, int newStatus) throws Exception {
+        if (ticketId == null || clientId == null) {
+            throw new IllegalArgumentException("Parameters cannot be null");
+        }
+
+        // (0) Used, (1) Active, (2) Canceled, (3) Expired
+        if (newStatus > 3 || newStatus < 0) {
+            throw new IllegalArgumentException(newStatus + " is not a valid ticket status");
+        }
+
+        int intTicketId = randomizeId.decode(ticketId);
+        int intClientId = randomizeId.decode(clientId);
+
+        Ticket ticket = ticketRepository.findById(intTicketId).get();
+
+        if (!ticket.getOrder().getClient().getId().equals(intClientId)) {
+            throw new IllegalArgumentException(
+                    "Ticket ID = " + ticketId + " does not belong to Client ID = " + clientId);
+        }
+
+        if (newStatus == 2) { // If newStatus is a cancelation and the corresponding Order must be processed
+
+            // If the ticket is canceled 48 hours or more before the event, the order will
+            // be reimbursed
+            long hoursUntilEvent = ChronoUnit.HOURS.between(OffsetDateTime.now(), ticket.getEvent().getStartTime());
+            if (hoursUntilEvent >= 48L) {
+                System.out.println("\tThe order is eligible for reimbursment");
+                ticket.getOrder().setPaymentStatus(2); // status = Reimbursed (2)
+                System.out.println("\tReimbursement was processed");
+            } else {
+                System.out.println(
+                        "\tThe order is not eligible for reimbursement. (Event is in " + hoursUntilEvent + " hours)");
+            }
+        }
+
+        // Update ticket status
+        ticket.setStatus(newStatus);
+
+        // As @Transactional is being used, when saving the ticket the order is also
+        // saved
+        Ticket savedTicket = ticketRepository.save(ticket);
 
         return convertToDTO(savedTicket);
     }
