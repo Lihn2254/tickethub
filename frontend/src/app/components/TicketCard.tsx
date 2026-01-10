@@ -6,6 +6,10 @@ import generateQRCodeToCanvas from "../utils/qrcode";
 import { formatLocationToSearchParam, formatDatetime } from "../utils/utils";
 import PrintButton from "./PrintButton";
 import { useOutsideClick } from "../hooks/useOutsideClick";
+import { cancelTicket, checkRefundAvailability } from "../services/tickets";
+import { useAuth } from "../context/AuthContext";
+import ConfirmationPopup from "./ConfirmationPopup";
+import { useRouter } from "next/navigation";
 
 function QRmodal({
   ticketId,
@@ -40,23 +44,42 @@ export default function TicketCard({
   ticket: Ticket;
   optionsAvaliable: boolean;
 }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+  const [showQRModal, setShowQRModal] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
+  const [refundAvaliable, setRefundAvaliable] = useState<boolean>();
+  const [isModalLoading, setIsModalLoading] = useState(true);
+  const { user } = useAuth();
+  const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
   const city = ticket.event.location.city;
   const address = ticket.event.location.address;
 
   useOutsideClick(containerRef, () => {
-    isOptionsOpen ? setIsOptionsOpen(false) : null;
+    showOptions ? setShowOptions(false) : null;
   });
 
   const { date, time } = formatDatetime(ticket.event.startTime);
 
-  const onModalClose = () => setIsModalOpen(false);
+  const handleOrderCancellation = () => {
+    if (user && user.id != null) {
+      cancelTicket(ticket.id, user.id);
+      location.reload();
+    } else {
+      alert("Active session could not be validated");
+      router.push("/login");
+    }
+  };
 
-  const showOptions = () => setIsOptionsOpen(!isOptionsOpen);
+  const handleCancelClick = async () => {
+    await handleRefundCheck();
+    setShowConfirmation(true);
+  };
 
-  const cancelOrder = () => alert("Your order was NOT canceled"); //TODO
+  const handleRefundCheck = async () => {
+    const refund = await checkRefundAvailability(ticket.id);
+    setRefundAvaliable(refund);
+  };
 
   return (
     <article className="bg-white border-2 rounded-2xl p-6 shadow-lg border-light-blue max-w-3xl h-fit flex flex-row relative">
@@ -98,7 +121,7 @@ export default function TicketCard({
         <div className="flex-1">
           <button
             type="button"
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => setShowQRModal(true)}
             className="border-yellow border-3 p-1 rounded-2xl cursor-pointer transition-all duration-300 hover:scale-105"
           >
             <Image
@@ -114,16 +137,16 @@ export default function TicketCard({
           {optionsAvaliable ? (
             <button
               type="button"
-              onClick={showOptions}
+              onClick={() => setShowOptions(!showOptions)}
               className="self-end p-1 rounded-full hover:bg-light-gray"
             >
               <img src="/icons/options.svg" alt="options" width={35} />
             </button>
           ) : null}
-          {isOptionsOpen ? (
+          {showOptions ? (
             <button
               type="button"
-              onClick={cancelOrder}
+              onClick={handleCancelClick}
               className="absolute bottom-6 right-18 py-2 px-4 border border-gray-200 bg-gray-50 rounded-3xl font-medium hover:text-red-500 hover:font-semibold"
             >
               Cancel order
@@ -134,9 +157,20 @@ export default function TicketCard({
 
       <QRmodal
         ticketId={ticket.id}
-        isOpen={isModalOpen}
-        onClose={onModalClose}
+        isOpen={showQRModal}
+        onClose={() => setShowQRModal(false)}
       />
+
+      {showConfirmation ? (
+        <ConfirmationPopup
+          message="Your order will be cancelled"
+          confirmButtonRed={true}
+          importantMessage={refundAvaliable ? "This order will be refunded" : "This order cannot be refunded"}
+          showImportantMessage={true}
+          onConfirm={handleOrderCancellation}
+          onCancel={() => setShowConfirmation(false)}
+        />
+      ) : null}
     </article>
   );
 }
