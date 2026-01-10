@@ -1,5 +1,5 @@
 import { ApiEvent, ApiFlyer } from "../types/eventTypes";
-import { apiUrl } from "../api";
+import API_BASE_URL from "../api";
 
 export default async function getEvents(
   genres: string[] | null,
@@ -26,8 +26,8 @@ export default async function getEvents(
   const queryString = params.toString();
 
   const fetchUrl = queryString
-    ? `${apiUrl}/events?${queryString}`
-    : `${apiUrl}/events`;
+    ? `${API_BASE_URL}/events?${queryString}`
+    : `${API_BASE_URL}/events`;
 
   const res = await fetch(fetchUrl);
 
@@ -49,7 +49,7 @@ export async function getEvent(eventId: string | null): Promise<ApiEvent | null>
 
   params.append("event_id", eventId);
 
-  const fetchUrl = `${apiUrl}/events/id?${params.toString()}`;
+  const fetchUrl = `${API_BASE_URL}/events/id?${params.toString()}`;
 
   const res = await fetch(fetchUrl);
 
@@ -70,7 +70,7 @@ export async function getFlyerImages(flyerPaths: string[]): Promise<ApiFlyer[]> 
 
   const queryString = params.toString();
 
-  const res = await fetch(`${apiUrl}/events/images?${queryString}`);
+  const res = await fetch(`${API_BASE_URL}/events/images?${queryString}`);
 
   if (!res.ok) {
     const errorData = await res.json();

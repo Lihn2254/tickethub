@@ -1,7 +1,6 @@
 import { ApiTicket, TicketStatus } from "../types/ticketTypes";
 import { Client } from "../types/userTypes";
-import { apiUrl } from "../api";
-import { useSearchParams } from "next/navigation";
+import API_BASE_URL from "../api";
 
 export default async function getTickets(client: Client): Promise<ApiTicket[]> {
     const params = new URLSearchParams();
@@ -12,13 +11,13 @@ export default async function getTickets(client: Client): Promise<ApiTicket[]> {
 
     const queryString = params.toString();
 
-    const res = await fetch(`${apiUrl}/tickets?${queryString}`);
+    const res = await fetch(`${API_BASE_URL}/tickets?${queryString}`);
 
     return res.json()
 }
 
 export async function createNewTicket(clientId: string, eventId: string, attendees: number): Promise<ApiTicket> {
-    const res = await fetch(`${apiUrl}/tickets`, {
+    const res = await fetch(`${API_BASE_URL}/tickets`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ clientId, eventId, attendees }),
@@ -32,8 +31,8 @@ export async function createNewTicket(clientId: string, eventId: string, attende
     return res.json();
 }
 
-export async function udpateTicketStatus(ticketId: string, clientId: string, newStatus: number): Promise<ApiTicket>  {
-    const res = await fetch(`${apiUrl}/tickets`, {
+export async function udpateTicketStatus(ticketId: string, clientId: string, newStatus: number): Promise<ApiTicket> {
+    const res = await fetch(`${API_BASE_URL}/tickets`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ticketId, clientId, newStatus: 2 }),
@@ -49,12 +48,12 @@ export async function udpateTicketStatus(ticketId: string, clientId: string, new
 
 export const cancelTicket = (ticketId: string, clientId: string) => udpateTicketStatus(ticketId, clientId, TicketStatus.CANCELLED);
 
-export async function checkRefundAvailability(ticketId: string): Promise<boolean>  {
+export async function checkRefundAvailability(ticketId: string): Promise<boolean> {
     const params = new URLSearchParams();
 
     params.append('ticket_id', ticketId);
 
-    const res = await fetch(`${apiUrl}/tickets/refund?${params.toString()}`);
+    const res = await fetch(`${API_BASE_URL}/tickets/refund?${params.toString()}`);
     if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message);

@@ -1,8 +1,8 @@
 import { User } from "../types/userTypes";
-import { apiUrl } from "../api";
+import API_BASE_URL from "../api";
 
 export async function login(credentials: string, password: string): Promise<User> {
-  const res = await fetch(`${apiUrl}/user/login`, {
+  const res = await fetch(`${API_BASE_URL}/user/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ credentials, password }),
@@ -17,7 +17,7 @@ export async function login(credentials: string, password: string): Promise<User
 }
 
 export async function checkDuplicate(text: string): Promise<boolean> {
-  const res = await fetch(`${apiUrl}/user/check-duplicate`, {
+  const res = await fetch(`${API_BASE_URL}/user/check-duplicate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text }),
