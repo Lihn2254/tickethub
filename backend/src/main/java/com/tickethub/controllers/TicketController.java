@@ -27,7 +27,7 @@ record UpdateTicketRequest(String ticketId, String clientId, int newStatus) {
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/tickets")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class TicketController {
     private final TicketService ticketService;
 
