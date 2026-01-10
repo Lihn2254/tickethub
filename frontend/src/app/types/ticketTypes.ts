@@ -1,5 +1,13 @@
 import { Flyer } from "./eventTypes";
 
+export enum TicketStatus {
+    USED, ACTIVE, CANCELLED, EXPIRED
+}
+
+export enum PaymentStatus {
+    PENDING, PAID, REFUNDED
+}
+
 export type ApiTicket = {
     id: string;
     status: number;

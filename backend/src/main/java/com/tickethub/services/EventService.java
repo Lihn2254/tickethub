@@ -20,6 +20,10 @@ import com.tickethub.utils.randomizeId;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 
+enum Status {
+    CANCELED, AVALIABLE, ENDED, SOLDOUT
+}
+
 @RequiredArgsConstructor
 @Service
 public class EventService {
