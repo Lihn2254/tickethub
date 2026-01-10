@@ -100,19 +100,9 @@ public class TicketService {
                     "Ticket ID = " + ticketId + " does not belong to Client ID = " + clientId);
         }
 
-        if (newStatus == 2) { // If newStatus is a cancelation and the corresponding Order must be processed
-
-            // If the ticket is canceled 48 hours or more before the event, the order will
-            // be reimbursed
-            long hoursUntilEvent = ChronoUnit.HOURS.between(OffsetDateTime.now(), ticket.getEvent().getStartTime());
-            if (hoursUntilEvent >= 48L) {
-                System.out.println("\tThe order is eligible for reimbursment");
-                ticket.getOrder().setPaymentStatus(2); // status = Reimbursed (2)
-                System.out.println("\tReimbursement was processed");
-            } else {
-                System.out.println(
-                        "\tThe order is not eligible for reimbursement. (Event is in " + hoursUntilEvent + " hours)");
-            }
+        if (newStatus == 2 && isRefundable(ticket)) { // If newStatus is a cancelation then the corresponding Order must be processed
+            ticket.getOrder().setPaymentStatus(2); // status = Reimbursed (2)
+            System.out.println("\tReimbursement was processed");
         }
 
         // Update ticket status
@@ -123,6 +113,38 @@ public class TicketService {
         Ticket savedTicket = ticketRepository.save(ticket);
 
         return convertToDTO(savedTicket);
+    }
+
+    public Boolean isRefundable(Ticket ticket) {
+        // If the ticket is canceled 48 hours or more before the event, the order will
+        // be reimbursed
+        long hoursUntilEvent = ChronoUnit.HOURS.between(OffsetDateTime.now(), ticket.getEvent().getStartTime());
+        if (hoursUntilEvent >= 48L) {
+            System.out.println("\tThe order is eligible for a refund");
+            return true;
+        } else {
+            System.out.println("\tThe order is not eligible for a refund. (Event is in " + hoursUntilEvent + " hours)");
+            return false;
+        }
+    }
+
+    public Boolean isRefundable(String ticketId) {
+        if (ticketId == null) {
+            throw new IllegalArgumentException("Ticket ID cannot be null");
+        }
+
+        Ticket ticket = ticketRepository.findById(randomizeId.decode(ticketId)).get();
+
+        // If the ticket is canceled 48 hours or more before the event, the order will
+        // be reimbursed
+        long hoursUntilEvent = ChronoUnit.HOURS.between(OffsetDateTime.now(), ticket.getEvent().getStartTime());
+        if (hoursUntilEvent >= 48L) {
+            System.out.println("\tTicket ID = " + ticketId + " is eligible for a refund");
+            return true;
+        } else {
+            System.out.println("\tTicket ID = " + ticketId + " is not eligible for a refund. (Event is in " + hoursUntilEvent + " hours)");
+            return false;
+        }
     }
 
     private TicketDTO convertToDTO(Ticket ticket) {

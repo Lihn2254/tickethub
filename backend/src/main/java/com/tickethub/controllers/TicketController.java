@@ -83,8 +83,26 @@ public class TicketController {
                 + updateTicketRequest.newStatus());
 
         try {
-            TicketDTO updatedTicket = ticketService.updateTicketStatus(updateTicketRequest.ticketId(), updateTicketRequest.clientId(), updateTicketRequest.newStatus());
+            TicketDTO updatedTicket = ticketService.updateTicketStatus(updateTicketRequest.ticketId(),
+                    updateTicketRequest.clientId(), updateTicketRequest.newStatus());
             return ResponseEntity.ok(updatedTicket);
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+            return ResponseEntity.status(400).build(); // Bad request
+        } catch (NoSuchElementException e) {
+            System.err.println("Ticket could not be found");
+            return ResponseEntity.status(404).build(); // Not found
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return ResponseEntity.status(500).build(); // Internal server error
+        }
+    }
+
+    @GetMapping("/refund")
+    public ResponseEntity<Boolean> isRefundable(@RequestParam(required = true) String ticket_id) {
+        try {
+            Boolean isRefundable = ticketService.isRefundable(ticket_id);
+            return ResponseEntity.ok(isRefundable);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
             return ResponseEntity.status(400).build(); // Bad request
