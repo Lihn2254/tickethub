@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tickethub.dto.ScannedTicketDTO;
 import com.tickethub.dto.TicketDTO;
 import com.tickethub.services.TicketService;
 
@@ -22,6 +23,9 @@ record NewTicketRequest(String clientId, String eventId, int attendees) {
 }
 
 record UpdateTicketRequest(String ticketId, String clientId, int newStatus) {
+}
+
+record MarkAsUsedRequest(String ticketId, boolean markAll) {
 }
 
 @RequiredArgsConstructor
@@ -78,7 +82,7 @@ public class TicketController {
 
     @PutMapping
     public ResponseEntity<TicketDTO> updateTicketStatus(@RequestBody UpdateTicketRequest updateTicketRequest) {
-        System.out.println("\n------\nUpdate request receiver for Ticket ID = " + updateTicketRequest.ticketId()
+        System.out.println("\n------\nUpdate request received for Ticket ID = " + updateTicketRequest.ticketId()
                 + " by Client ID = " + updateTicketRequest.clientId() + "\nNew status: "
                 + updateTicketRequest.newStatus());
 
@@ -115,8 +119,22 @@ public class TicketController {
         }
     }
 
-    @PutMapping("/mark_ticket")
-    public ResponseEntity<TicketDTO> markTicketAsUsed (@RequestBody(required = true) String ticketId, boolean markAll) {
-        return null;
+    @PutMapping("/mark_tickets")
+    public ResponseEntity<ScannedTicketDTO> markAsUsed(@RequestBody(required = true) MarkAsUsedRequest req) {
+        System.out.println("\n------\nRequest received to mark Ticket ID = " + req.ticketId() + " as used");
+
+        try {
+            ScannedTicketDTO ticket = ticketService.markAsUsed(req.ticketId(), req.markAll());
+            return ResponseEntity.ok(ticket);
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+            return ResponseEntity.status(400).build(); // Bad request
+        } catch (NoSuchElementException e) {
+            System.err.println("Ticket could not be found");
+            return ResponseEntity.status(404).build(); // Not found
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return ResponseEntity.status(500).build(); // Internal server error
+        }
     }
 }
