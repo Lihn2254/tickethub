@@ -114,4 +114,9 @@ public class TicketController {
             return ResponseEntity.status(500).build(); // Internal server error
         }
     }
+
+    @PutMapping("/mark_ticket")
+    public ResponseEntity<TicketDTO> markTicketAsUsed (@RequestBody(required = true) String ticketId, boolean markAll) {
+        return null;
+    }
 }
