@@ -14,10 +14,9 @@ import lombok.NoArgsConstructor;
 public class TicketDTO implements Comparable<TicketEventDTO>{
     private String id;
     private int status;
-    //private String qrCode;
     private BigDecimal purchasePrice;
     private int attendees;
-
+    private int remainingAttendees;
     private OrderDTO order;
     private TicketEventDTO event;
 

@@ -23,10 +23,8 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int attendees;
+    private int attendees, remainingAttendees;
     private int status;
-    //@Column(name = "qr_code")
-    //private String qrcode;
     private BigDecimal purchasePrice;
     @OneToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id")
@@ -37,6 +35,7 @@ public class Ticket {
     
     public Ticket(int attendees, int status, BigDecimal purchasePrice, Order order, Event event) {
         this.attendees = attendees;
+        this.remainingAttendees = attendees;
         this.status = status;
         this.purchasePrice = purchasePrice;
         this.order = order;
