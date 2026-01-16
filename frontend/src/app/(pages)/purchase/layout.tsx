@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${redHat.variable} ${funnel.variable} antialiased`}>
+      <body className={`${redHat.variable} ${funnel.variable} antialiased min-h-dvh`}>
         <AuthProvider>
           {children}
           <Footer />

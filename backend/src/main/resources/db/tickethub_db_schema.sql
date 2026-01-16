@@ -129,7 +129,8 @@ CREATE TABLE tickets (
     --qr_code VARCHAR(255), -- Stores a URL or the encoded string for the QR code.
     status SMALLINT NOT NULL, -- (0) Used, (1) Active, (2) Canceled, (3) Expired
     purchase_price DECIMAL(10, 2) NOT NULL, -- Purchase price of 1 attendee
-    attendees INTEGER NOT NULL DEFAULT 1,
+    attendees INTEGER NOT NULL DEFAULT 1, -- Total attendees included
+    remaining_attendees INTEGER NOT NULL, -- Remaining times a ticket can be used
     order_id INTEGER NOT NULL UNIQUE, -- One order can only contain one ticket
     event_id INTEGER NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,

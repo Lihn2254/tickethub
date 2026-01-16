@@ -19,7 +19,7 @@ record OrderRequest (int clientId, int eventId, int attendees) {}
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/orders")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class OrderController {
     private final OrderService orderService;
 

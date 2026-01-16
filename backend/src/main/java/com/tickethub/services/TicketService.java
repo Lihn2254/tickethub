@@ -5,6 +5,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.stereotype.Service;
 
 import com.tickethub.domain.Client;
@@ -12,6 +14,7 @@ import com.tickethub.domain.Event;
 import com.tickethub.domain.Order;
 import com.tickethub.domain.Ticket;
 import com.tickethub.dto.OrderDTO;
+import com.tickethub.dto.ScannedTicketDTO;
 import com.tickethub.dto.TicketDTO;
 import com.tickethub.dto.ticket.TicketClientDTO;
 import com.tickethub.dto.ticket.TicketEventDTO;
@@ -100,7 +103,8 @@ public class TicketService {
                     "Ticket ID = " + ticketId + " does not belong to Client ID = " + clientId);
         }
 
-        if (newStatus == 2 && isRefundable(ticket)) { // If newStatus is a cancelation then the corresponding Order must be processed
+        if (newStatus == 2 && isRefundable(ticket)) { // If newStatus is a cancelation then the corresponding Order must
+                                                      // be processed
             ticket.getOrder().setPaymentStatus(2); // status = Reimbursed (2)
             System.out.println("\tReimbursement was processed");
         }
@@ -142,9 +146,43 @@ public class TicketService {
             System.out.println("\tTicket ID = " + ticketId + " is eligible for a refund");
             return true;
         } else {
-            System.out.println("\tTicket ID = " + ticketId + " is not eligible for a refund. (Event is in " + hoursUntilEvent + " hours)");
+            System.out.println("\tTicket ID = " + ticketId + " is not eligible for a refund. (Event is in "
+                    + hoursUntilEvent + " hours)");
             return false;
         }
+    }
+
+    @Transactional
+    public ScannedTicketDTO markAsUsed(String ticketId, boolean markAll) throws Exception {
+        if (ticketId == null) {
+            throw new IllegalArgumentException("Ticket ID cannot be null");
+        }
+
+        Ticket ticket = ticketRepository.findById(randomizeId.decode(ticketId)).get();
+
+        int remainingAttendees = ticket.getRemainingAttendees();
+
+        if (remainingAttendees != 0) {
+            if (markAll) {
+                ticket.setRemainingAttendees(0);
+                ticket.setStatus(0); //Mark ticket as USED
+            } else {
+                ticket.setRemainingAttendees(remainingAttendees - 1);
+
+                if (remainingAttendees - 1 == 0) {
+                    ticket.setStatus(0); //Mark ticket as USED
+                }
+            }
+
+            System.out.println("\tTicket had " + remainingAttendees + " remaining attendees out of " + ticket.getAttendees() + " total attendees");
+            System.out.println("\tCurrent remaining attendees: " + (ticket.getRemainingAttendees()));
+
+            //ticketRepository.save(ticket);
+        } else {
+            System.out.println("\tTicket has no remaining attendees");
+        }
+
+        return converToDTO(ticket);
     }
 
     private TicketDTO convertToDTO(Ticket ticket) {
@@ -152,9 +190,9 @@ public class TicketService {
 
         dto.setId(randomizeId.encode(ticket.getId()));
         dto.setStatus(ticket.getStatus());
-        // dto.setQrCode(ticket.getQrcode());
         dto.setPurchasePrice(ticket.getPurchasePrice());
         dto.setAttendees(ticket.getAttendees());
+        dto.setRemainingAttendees(ticket.getRemainingAttendees());
 
         Order order = ticket.getOrder();
         if (order != null) {
@@ -186,5 +224,44 @@ public class TicketService {
         }
 
         return dto;
+    }
+
+    private ScannedTicketDTO converToDTO(Ticket ticket) throws Exception {
+        try {
+            if (ticket != null) {
+                ScannedTicketDTO dto = new ScannedTicketDTO();
+
+                BeanUtils.copyProperties(ticket, dto, "id", "event");
+
+                dto.setId(randomizeId.encode(ticket.getId()));
+
+                // Map Client to TicketClietnDTO
+                Client client = ticket.getOrder().getClient();
+                TicketClientDTO ticketClientDTO = new TicketClientDTO();
+
+                if (client != null) {
+                    BeanUtils.copyProperties(client, ticketClientDTO, "id");
+                    ticketClientDTO.setId(randomizeId.encode(ticket.getId()));
+                }
+                dto.setClient(ticketClientDTO);
+
+                // Map Event to TicketEventDTO
+                Event event = ticket.getEvent();
+                TicketEventDTO ticketEventDTO = new TicketEventDTO();
+
+                if (event != null) {
+                    BeanUtils.copyProperties(event, ticketEventDTO, "id");
+                    ticketEventDTO.setId(randomizeId.encode(event.getId()));
+                }
+                dto.setEvent(ticketEventDTO);
+
+                return dto;
+            } else {
+                throw new IllegalArgumentException("Ticket cannot be null");
+            }
+        } catch (BeansException e) {
+            e.printStackTrace();
+            throw new Exception("Something went wrong. Could not convert User to UserDTO");
+        }
     }
 }
