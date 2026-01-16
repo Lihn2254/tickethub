@@ -15,6 +15,7 @@ public class ScannedTicketDTO {
     private int status;
     private int attendees;
     private int remainingAttendees;
+    private boolean validInstance;
     private TicketClientDTO client;
     private TicketEventDTO event;
 }

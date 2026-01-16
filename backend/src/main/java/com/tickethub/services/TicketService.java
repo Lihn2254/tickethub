@@ -160,15 +160,17 @@ public class TicketService {
 
         Ticket ticket = ticketRepository.findById(randomizeId.decode(ticketId)).get();
 
+        boolean validInstance = false;
         int remainingAttendees = ticket.getRemainingAttendees();
 
         if (remainingAttendees != 0) {
+            validInstance = true;
+            
             if (markAll) {
                 ticket.setRemainingAttendees(0);
                 ticket.setStatus(0); //Mark ticket as USED
             } else {
                 ticket.setRemainingAttendees(remainingAttendees - 1);
-
                 if (remainingAttendees - 1 == 0) {
                     ticket.setStatus(0); //Mark ticket as USED
                 }
@@ -177,12 +179,12 @@ public class TicketService {
             System.out.println("\tTicket had " + remainingAttendees + " remaining attendees out of " + ticket.getAttendees() + " total attendees");
             System.out.println("\tCurrent remaining attendees: " + (ticket.getRemainingAttendees()));
 
-            //ticketRepository.save(ticket);
+            ticketRepository.save(ticket);
         } else {
             System.out.println("\tTicket has no remaining attendees");
         }
 
-        return converToDTO(ticket);
+        return converToDTO(ticket, validInstance);
     }
 
     private TicketDTO convertToDTO(Ticket ticket) {
@@ -226,7 +228,7 @@ public class TicketService {
         return dto;
     }
 
-    private ScannedTicketDTO converToDTO(Ticket ticket) throws Exception {
+    private ScannedTicketDTO converToDTO(Ticket ticket, boolean valid) throws Exception {
         try {
             if (ticket != null) {
                 ScannedTicketDTO dto = new ScannedTicketDTO();
@@ -234,6 +236,7 @@ public class TicketService {
                 BeanUtils.copyProperties(ticket, dto, "id", "event");
 
                 dto.setId(randomizeId.encode(ticket.getId()));
+                dto.setValidInstance(valid);
 
                 // Map Client to TicketClietnDTO
                 Client client = ticket.getOrder().getClient();
