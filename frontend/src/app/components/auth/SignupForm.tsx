@@ -335,8 +335,9 @@ interface UserInfoInputProps {
 function UserInfoInput(props: UserInfoInputProps) {
   return (
     <div className="flex flex-col">
-      <label className="inputLabel">Username</label>
+      <label className="inputLabel" htmlFor="username_input">Username</label>
       <input
+        id="username_input"
         type="text"
         placeholder="Username"
         className="inputForm"
@@ -348,7 +349,7 @@ function UserInfoInput(props: UserInfoInputProps) {
         <span className="font-medium">Select your account type</span>
         <div className="flex flex-row border-2 rounded-2xl contain-content mt-2">
           <article
-            className={`flex flex-col flex-1 p-3 border-r ${
+            className={`flex flex-col flex-1 p-3 border-r cursor-pointer ${
               props.accountType == "client" ? "bg-light-yellow" : "bg-white"
             }`}
             onClick={(e) => props.handleAccountTypeSelection("client")}
@@ -356,7 +357,7 @@ function UserInfoInput(props: UserInfoInputProps) {
             <div className="flex flex-row items-center gap-1">
               <Image
                 src="/icons/user_black.svg"
-                alt="Go back"
+                alt="Personal account"
                 width={22}
                 height={25}
               />
@@ -365,7 +366,7 @@ function UserInfoInput(props: UserInfoInputProps) {
             <span>Enjoy events, concerts, festivals and more!</span>
           </article>
           <article
-            className={`flex flex-col flex-1 p-3 border-l ${
+            className={`flex flex-col flex-1 p-3 border-l cursor-pointer ${
               props.accountType == "organizer" ? "bg-light-yellow" : "bg-white"
             }`}
             onClick={(e) => props.handleAccountTypeSelection("organizer")}
@@ -373,7 +374,7 @@ function UserInfoInput(props: UserInfoInputProps) {
             <div className="flex flex-row items-center gap-1">
               <Image
                 src="/icons/business_black.svg"
-                alt="Go back"
+                alt="Organizer account"
                 width={22}
                 height={25}
               />

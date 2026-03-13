@@ -48,8 +48,8 @@ export default function Home() {
         <h1 className="mb-2 text-5xl funnel-text font-medium">
           Upcoming events
         </h1>
-        <p className="pb-8 pt-7 text-red-600 sticky top-0 text-center w-fit">
-          Aquí poner opciones de filtrado.
+        <p className="pb-8 pt-7 text-slate-400 sticky top-0 text-center w-fit">
+          Filtering options coming soon... ;)
         </p>
         <main className="flex flex-col lg:flex-row w-full flex-wrap gap-6 justify-center items-center lg:items-start">
           {events.map((event) => (

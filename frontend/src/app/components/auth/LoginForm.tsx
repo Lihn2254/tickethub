@@ -133,7 +133,7 @@ export default function LoginForm() {
         </button>
       </form>
       <div className="flex flex-row justify-center mt-8">
-        <span>New to Evant?</span>
+        <span>New to TicketHub?</span>
         <Link
           href="/signup"
           className="hover:underline text-end text-darker-blue pl-1"
