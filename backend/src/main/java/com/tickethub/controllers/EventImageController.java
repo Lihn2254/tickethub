@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/events/images")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://tickethub.erickdh.com")
 public class EventImageController {
     private final EventImageService eventImageService;
 

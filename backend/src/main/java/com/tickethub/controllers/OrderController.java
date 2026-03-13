@@ -19,7 +19,7 @@ record OrderRequest (int clientId, int eventId, int attendees) {}
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/orders")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://tickethub.erickdh.com")
 public class OrderController {
     private final OrderService orderService;
 

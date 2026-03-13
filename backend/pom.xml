@@ -65,13 +65,18 @@
 			<artifactId>sqids</artifactId>
 			<version>0.1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>me.paulschwarz</groupId>
+			<artifactId>spring-dotenv</artifactId>
+			<version>4.0.0</version>
+		</dependency>
 		<!-- Testing -->
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>5.21.0</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
 			<version>5.9.3</version>
@@ -82,7 +87,7 @@
 			<artifactId>junit-vintage-engine</artifactId>
 			<version>5.9.3</version>
 			<scope>test</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-inline</artifactId>

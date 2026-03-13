@@ -31,7 +31,7 @@ record MarkAsUsedRequest(String ticketId, boolean markAll) {
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/tickets")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://tickethub.erickdh.com")
 public class TicketController {
     private final TicketService ticketService;
 

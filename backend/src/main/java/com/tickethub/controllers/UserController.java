@@ -19,7 +19,7 @@ record LoginRequest(String credentials, String password) { //credentials refers 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://tickethub.erickdh.com")
 public class UserController {
     private final UserService userService;
 
