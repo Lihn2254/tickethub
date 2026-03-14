@@ -1,5 +1,5 @@
 # TicketHub
-
+ 
 A modern event ticketing platform built with Spring Boot and Next.js. This application allows users to browse events, purchase tickets, and manage their ticket collections.
 
 
